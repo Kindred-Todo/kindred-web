@@ -29,8 +29,11 @@ COPY --from=builder /app/bun.lockb ./
 # Install only production dependencies
 RUN bun install --frozen-lockfile --production
 
+# Install serve globally
+RUN bun install -g serve
+
 # Expose the port your app runs on
 EXPOSE 3000
 
 # Start the application
-CMD ["bun", "run", "serve"]
+CMD ["serve", "-s", "dist", "-l", "3000"]
