@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function TopNav() {
   return (
     <div className="grid grid-cols-12 grid-rows-1 w-full px-4 md:px-12 py-4 items-center">
