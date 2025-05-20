@@ -15,9 +15,10 @@
 
 .fraunces-axis-2 {
   font-family: Fraunces;
-  font-size: 6rem;
+  font-size: 3rem;
   font-style: italic;
   line-height: 125%;
+  padding-bottom: 3rem;
   font-variation-settings:
     'SOFT' 50,
     'opsz' 144,
@@ -31,7 +32,11 @@
 
 @media (min-width: 768px) {
   .problem-statement {
-    font-size: 2rem;
+    font-size: 3rem;
+    padding-bottom: 1rem;
+  }
+  .fraunces-axis-2 {
+    font-size: 6rem;
   }
 }
 

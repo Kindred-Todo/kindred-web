@@ -3,7 +3,7 @@ import taskCreate from '@/assets/task-create.png'
 
 export default function Privacy() {
   return (
-    <div className="h-screen flex flex-col bg-dark-bg pt-8">
+    <div className="h-min-screen w-full flex flex-col bg-dark-bg pt-8 overflow-clip">
       <img
         src={eye}
         alt="eye"
@@ -13,7 +13,8 @@ export default function Privacy() {
         }}
       />
       <p className="font-fraunces fraunces-axis-2 text-light-bg ml-12 w-3/4">
-        but, i don’t want my friends to see everything!
+        but, i <span className="text-red-error">don’t</span> want my friends to
+        see everything!
       </p>
       <div
         className="flex w-full justify-end mix-blend-exclusion"
@@ -23,21 +24,22 @@ export default function Privacy() {
       >
         <img src={eye} alt="eye" className="w-1/6 mix-blend-exclusion" />
       </div>
-      <div className="flex flex-row px-16 justify-between">
+      <div className="flex flex-col md:flex-row px-6 md:px-16 gap-16 md:gap-0 justify-between">
         <img
           src={taskCreate}
           alt="task-create"
-          className="w-1/3 object-contain"
+          className="w-full md:w-1/3 object-contain"
         />
         <p
-          className="text-light-bg w-2/5 font-light"
+          className="text-light-bg w-full md:w-2/5 font-light text-center md:text-left"
           style={{
             lineHeight: '200%',
           }}
         >
-          <p className="text-light-bg font-medium">
+          <p className="text-light-bg font-medium text-center md:text-left">
             We get that you don’t want to share everything
           </p>
+          <br />
           All your tasks & workspaces on kindred are private by default. You
           choose what your friends can see and which tasks are visible on your
           profile <br /> <br />

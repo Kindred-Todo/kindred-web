@@ -36,9 +36,7 @@ function App() {
           <Privacy />
         </div>
         <div className="h-96 bg-dark-bg"> .</div>
-        <div>
-          <Footer />
-        </div>
+        <Footer />
         <SheetContent
           side={isMobile ? 'bottom' : 'right'}
           className={`rounded-xl p-12 ${isMobile ? 'h-11/12' : ''}`}

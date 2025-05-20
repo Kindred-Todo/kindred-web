@@ -71,8 +71,8 @@
 
 export default function Footer() {
   return (
-    <div className="w-full bg-dark-bg px-4 md:px-12 py-8 mt-auto text-light-bg flex flex-row justify-between">
-      <div className="text font-light mb-4 flex flex-row gap-2">
+    <div className="w-full bg-dark-bg px-4 md:px-12 py-8 text-light-bg flex flex-row justify-between">
+      <div className="text font-light mb-4 flex flex-col md:flex-row gap-2">
         Made with
         <svg
           width="28"
