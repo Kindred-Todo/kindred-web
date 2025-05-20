@@ -105,12 +105,11 @@
 .landing-text-small {
   color: #fff;
   font-family: Outfit;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-style: normal;
   font-weight: 300;
   line-height: 1.875rem; /* 150% */
-  letter-spacing: 0.125rem;
-  width: 29.4375rem;
+  letter-spacing: 0.05rem;
 }
 
 button {

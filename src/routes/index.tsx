@@ -7,6 +7,8 @@ import HowItWorks from '@/pages/landing/HowItWorks'
 import { Sheet, SheetContent } from '@/components/ui/sheet'
 import Waitlist from '@/pages/landing/Waitlist'
 import { useMobile } from '@/contexts/MobileContext'
+import Privacy from '@/pages/landing/Privacy'
+import Footer from '@/components/footer'
 
 export const Route = createFileRoute('/')({
   component: App,
@@ -28,6 +30,14 @@ function App() {
         </div>
         <div>
           <HowItWorks />
+        </div>
+        <div className="h-32 bg-dark-bg"> .</div>
+        <div>
+          <Privacy />
+        </div>
+        <div className="h-96 bg-dark-bg"> .</div>
+        <div>
+          <Footer />
         </div>
         <SheetContent
           side={isMobile ? 'bottom' : 'right'}

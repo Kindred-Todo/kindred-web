@@ -18,11 +18,26 @@ export default function LandingCard() {
           </span>{' '}
           where everyone wins
         </h1>
-        <div className="w-full h-full flex py-8 md:py-0">
+        <div className="w-full md:py-12">
           <p className="landing-text-small self-end">
             Kindred couples a powerful productivity system with the psychology
-            of social media to enable you to hit your goals
+            of social media to hit your goals
           </p>
+        </div>
+        <div className="flex flex-col gap-2 mt-4 md:flex-row items-center justify-center md:justify-start">
+          <p
+            className="fraunces-axis-2 text-light-bg tracking-wider"
+            style={{
+              fontSize: '2rem',
+            }}
+          >
+            Coming Soon
+          </p>
+          <SheetTrigger asChild>
+            <button className="h-12 hover:underline text-green-success px-6 py-3 rounded-xl max-w-48">
+              Join Waitlist {'->'}
+            </button>
+          </SheetTrigger>
         </div>
 
         <div className="h-full flex flex-col-reverse gap-4 md:flex-row">
@@ -31,13 +46,6 @@ export default function LandingCard() {
             alt="Kindred"
             className="w-12 h-12 self-center md:self-end"
           />
-          <div className="mt-4 mb-4 h-1/4 self-center md:self-end">
-            <SheetTrigger asChild>
-              <button className="bg-dark-component h-12 hover:bg-primary text-light-bg px-6 py-3 rounded-xl max-w-48 ">
-                Join the waitlist
-              </button>
-            </SheetTrigger>
-          </div>
         </div>
       </div>
       <div className="overflow-visible w-full flex pt-12 md:pt-0">
