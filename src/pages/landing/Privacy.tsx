@@ -24,11 +24,11 @@ export default function Privacy() {
       >
         <img src={eye} alt="eye" className="w-1/6 mix-blend-exclusion" />
       </div>
-      <div className="flex flex-col md:flex-row px-6 md:px-16 gap-16 md:gap-0 justify-between">
+      <div className="flex flex-col md:flex-row px-6 md:px-16 md:pr-32 gap-16 md:gap-0 justify-between">
         <img
           src={taskCreate}
           alt="task-create"
-          className="w-full md:w-1/3 object-contain"
+          className="w-full md:w-2/5 object-contain"
         />
         <p
           className="text-light-bg w-full md:w-2/5 font-light text-center md:text-left"
