@@ -13,13 +13,13 @@ import organization from '../../assets/bento/organization.png'
 import post from '../../assets/bento/post.png'
 import encourage from '../../assets/bento/encourage.png'
 
-import activity from '../../assets/bento/activity-grid.png'
-import profileHead from '../../assets/bento/activity-head.png'
+import activity from '../../assets/bento/tings.png'
+import top from '../../assets/bento/top.png'
 import profileStats from '../../assets/bento/profile-stats.png'
 
 export default function Bento() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-5 md:grid-rows-3 w-full min-h-screen gap-4 p-4 md:p-12 overflow-y-auto">
+    <div className="grid grid-cols-1 h-[110vh] md:grid-cols-5 md:grid-rows-3 w-full min-h-screen md:min-h-[110vh] gap-4 px-4 md:px-12">
       <div
         className="md:row-span-1 md:col-start-1 
         overflow-clip
@@ -60,8 +60,12 @@ export default function Bento() {
 
       <div className="md:row-start-2 md:row-span-2 md:col-start-1 md:col-span-1 bg-light-foreground rounded-lg p-4 justify-around overflow-clip">
         <div className="flex flex-col gap-4 h-full justify-end content-center overflow-clip">
-          <img src={profileHead} alt="Profile Head" className="w-full" />
-          <img src={activity} alt="Activity" className="w-full" />
+          <img src={top} alt="Profile Head" className="w-full" />
+          <img
+            src={activity}
+            alt="Activity"
+            className="w-full h-1/2 object-cover object-center"
+          />
           <img src={profileStats} alt="Profile Stats" className="w-full" />
           <BentoHead>Activity & Profiles</BentoHead>
           <BentoBody className="w-full">
@@ -97,8 +101,8 @@ export default function Bento() {
       </div>
 
       <div className="md:row-start-3 md:row-span-1 md:col-start-4 md:col-span-2 bg-light-foreground rounded-lg p-8 overflow-clip">
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="flex flex-col h-full gap-4 self-center justify-center content-center">
+        <div className="flex flex-col h-full md:flex-row gap-4">
+          <div className="flex flex-col h-full w-4/5 gap-4 self-center justify-center content-center">
             <BentoHead>Encouragements</BentoHead>
             <BentoBody className="w-full self-center">
               You can encourage your friend to complete tasks they've put

@@ -9,7 +9,7 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  max-width: 64rem;
+  max-width: 48rem;
   text-align: center;
 }
 
@@ -32,7 +32,7 @@
 
 @media (min-width: 768px) {
   .problem-statement {
-    font-size: 3rem;
+    font-size: 2rem;
     padding-bottom: 1rem;
   }
   .fraunces-axis-2 {

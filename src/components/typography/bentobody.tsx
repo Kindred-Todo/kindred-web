@@ -13,6 +13,7 @@ export default function BentoBody({
       style={{
         letterSpacing: '1px',
         lineHeight: '150%',
+        fontSize: '1rem',
       }}
     >
       {children}

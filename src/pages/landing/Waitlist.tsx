@@ -10,7 +10,7 @@ export default function Waitlist() {
 
   const handleSubmit = () => {
     console.log(name, email)
-    fetch('http://kindredtodo.com/api/v1/Waitlist', {
+    fetch('https://kindredtodo.com/api/v1/Waitlist', {
       method: 'POST',
       body: JSON.stringify({
         name: name,
