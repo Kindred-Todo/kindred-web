@@ -42,7 +42,7 @@ export default function LandingCard() {
             </SheetTrigger>
           </div>
         </div>
-        <div className="">
+        <div className="self-center md:self-start">
           <img src={logo} alt="Kindred" className="w-12 h-12" />
         </div>
       </div>

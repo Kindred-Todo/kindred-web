@@ -3,9 +3,9 @@ import Bento from './bento'
 export default function HowItWorks() {
   return (
     <>
-      <div className="h-[110vh] flex flex-col items-center gap-16">
+      <div className=" flex flex-col items-center gap-16">
         <p
-          className="text-3xl px-12 font-medium"
+          className="text-3xl px-12 font-medium text-center"
           style={{
             fontSize: '2rem',
             fontWeight: '400',

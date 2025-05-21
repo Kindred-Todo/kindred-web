@@ -19,7 +19,7 @@ import profileStats from '../../assets/bento/profile-stats.png'
 
 export default function Bento() {
   return (
-    <div className="grid grid-cols-1 h-[110vh] md:grid-cols-5 md:grid-rows-3 w-full min-h-screen md:min-h-[110vh] gap-4 px-4 md:px-12">
+    <div className="grid grid-cols-1 h-full md:h-screen md:grid-cols-5 md:grid-rows-3 w-full min-h-screen md:min-h-[110vh] gap-4 px-4 md:px-12">
       <div
         className="md:row-span-1 md:col-start-1 
         overflow-clip
