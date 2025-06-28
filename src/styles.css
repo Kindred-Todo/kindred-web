@@ -83,33 +83,41 @@
 
 .landing-text {
   font-family: 'Fraunces', serif;
-  font-size: 2.5rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
   color: var(--color-light-foreground);
 }
 
+.landing-text-small {
+  color: #fff;
+  font-family: Outfit;
+  font-size: 1.1rem;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 1.875rem; /* 150% */
+  letter-spacing: 0.05rem;
+}
+
 @media (min-width: 768px) {
   .landing-text {
-    font-size: 3rem;
+    font-size: 4vw;
+    line-height: 1.1;
+  }
+  .landing-text-small {
+    font-size: 1.1vw;
+    line-height: 1.4;
   }
 }
 
 @media (min-width: 1024px) {
   .landing-text {
-    font-size: 3.5rem;
+    font-size: 4.6vw;
   }
-}
-
-.landing-text-small {
-  color: #fff;
-  font-family: Outfit;
-  font-size: 1.05rem;
-  font-style: normal;
-  font-weight: 300;
-  line-height: 1.875rem; /* 150% */
-  letter-spacing: 0.05rem;
+  .landing-text-small {
+    font-size: 1.2vw;
+    line-height: 1.5;
+  }
 }
 
 button {
