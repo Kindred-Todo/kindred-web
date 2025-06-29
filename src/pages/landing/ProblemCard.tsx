@@ -10,6 +10,8 @@ export default function ProblemCard() {
         Its also hard to consistently meet your goals on time, form new habits,
         and stay organized
       </p>
+      <p className="problem-statement">
+      kindred is here to address that and shape a new model of productivity</p>
     </div>
   )
 }

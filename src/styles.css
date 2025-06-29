@@ -83,29 +83,28 @@
 
 .landing-text {
   font-family: 'Fraunces', serif;
-  font-size: 2.5rem;
+  font-size: clamp(2rem, 10vh, 4rem); /* 3 lines ≈ 24vh */
   font-style: normal;
   font-weight: 400;
-  line-height: normal;
+  line-height: 1.1;
   color: var(--color-light-foreground);
+  text-align: left;
 }
 
 @media (min-width: 768px) {
-  .landing-text {
-    font-size: 3rem;
+  .problem-statement {
+    font-size: 2rem;
+    padding-bottom: 1rem;
   }
-}
-
-@media (min-width: 1024px) {
-  .landing-text {
-    font-size: 3.5rem;
+  .fraunces-axis-2 {
+    font-size: 6rem;
   }
 }
 
 .landing-text-small {
   color: #fff;
   font-family: Outfit;
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   font-style: normal;
   font-weight: 300;
   line-height: 1.875rem; /* 150% */
