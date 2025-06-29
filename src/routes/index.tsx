@@ -32,7 +32,7 @@ function App() {
         <div>
           <HowItWorks />
         </div>
-        <div>
+        <div className="bg-dark-bg">
           <BentoWrapper />
         </div>
         <div className="h-32 bg-dark-bg"> .</div>
