@@ -20,7 +20,7 @@ export default function LandingCard() {
             Kindred couples a powerful productivity system with the psychology
             of social media to hit your goals
           </p>
-          <div className="flex flex-col gap-2 mt-10 md:flex-row md:items-center justify-center md:justify-start md:content-center align-top md:pb-12">
+          <div className="flex flex-col gap-4 mt-10 md:flex-row md:items-center justify-center md:justify-start md:content-center align-top md:pb-12">
             <p
               className="fraunces-axis-2 text-light-bg tracking-wider"
               style={{
@@ -35,12 +35,19 @@ export default function LandingCard() {
                 Join Waitlist {'->'}
               </button>
             </SheetTrigger>
+          {isMobile && (
+            <div className="w-full flex justify-center">
+              <img src={logo} alt="Kindred" className="w-12 h-12" />
+            </div>
+          )}
           </div>
         </div>
       </div>
+      {!isMobile && (
         <div className="absolute left-32 bottom-32">
           <img src={logo} alt="Kindred" className="w-12 h-12" />
         </div>
+      )}
 
       <div className="overflow-visible w-full flex pt-12 md:pt-0">
         <img

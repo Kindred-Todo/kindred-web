@@ -83,15 +83,35 @@
 
 .landing-text {
   font-family: 'Fraunces', serif;
-  font-size: clamp(2rem, 10vh, 4rem); /* 3 lines ≈ 24vh */
+  font-size: clamp(2rem, 8vh, 2.5rem); /* 3 lines ≈ 24vh */
+  text-align: center;
   font-style: normal;
   font-weight: 400;
-  line-height: 1.1;
+  margin-bottom: 1rem;
+  margin-top: 3rem;
+  line-height: 1.2;
   color: var(--color-light-foreground);
-  text-align: left;
+}
+
+.landing-text-small {
+  color: #fff;
+  font-family: Outfit;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 1.875rem; /* 150% */
+  letter-spacing: 0.05rem;
 }
 
 @media (min-width: 768px) {
+  .landing-text {
+    font-size: clamp(2rem, 10vh, 4rem); /* 3 lines ≈ 24vh */
+    text-align: left;
+    line-height: 1.1;
+  }
+  .landing-text-small {
+    font-size: 1.2rem;
+  }
   .problem-statement {
     font-size: 2rem;
     padding-bottom: 1rem;
@@ -101,15 +121,7 @@
   }
 }
 
-.landing-text-small {
-  color: #fff;
-  font-family: Outfit;
-  font-size: 1.2rem;
-  font-style: normal;
-  font-weight: 300;
-  line-height: 1.875rem; /* 150% */
-  letter-spacing: 0.05rem;
-}
+
 
 button {
   @apply transition-all duration-300 ease-in-out cursor-pointer;
