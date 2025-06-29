@@ -1,0 +1,58 @@
+.bentoGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-areas:
+    "a b c d"
+    "e f g h"
+    "i j k l";
+  gap: 24px;
+  padding: 32px;
+  background: #181622;
+  min-height: 100vh;
+}
+.cardA { grid-area: a; }
+.cardB { grid-area: b; }
+.cardC { grid-area: c; }
+.cardD { grid-area: d; }
+.cardE { grid-area: e; }
+.cardF { grid-area: f; }
+.cardG { grid-area: g; }
+.cardH { grid-area: h; }
+.cardI { grid-area: i; }
+.cardJ { grid-area: j; }
+.cardK { grid-area: k; }
+.cardL { grid-area: l; }
+
+@media (max-width: 1024px) {
+  .bentoGrid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas:
+      "a b"
+      "c d"
+      "e f"
+      "g h"
+      "i j"
+      "k l";
+  }
+}
+@media (max-width: 640px) {
+  .bentoGrid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "a"
+      "b"
+      "c"
+      "d"
+      "e"
+      "f"
+      "g"
+      "h"
+      "i"
+      "j"
+      "k"
+      "l";
+    gap: 16px;
+    padding: 12px;
+  }
+} 

@@ -1,4 +1,4 @@
-import Bento from './bento'
+import { Bento } from './bento'
 import Title from '@/components/typography/title'
 
 export default function HowItWorks() {
@@ -22,7 +22,7 @@ export default function HowItWorks() {
           </svg>
           <span className="relative z-10 px-4 py-2">todo list,</span>
         </span>social <span className="underline">connections</span>, and <span className="text-primary">blueprints</span> </Title>
-        <Bento />
+
       </div>
       <div className="h-32"> .</div>
       <div

@@ -9,6 +9,7 @@ import Waitlist from '@/pages/landing/Waitlist'
 import { useMobile } from '@/contexts/MobileContext'
 import Privacy from '@/pages/landing/Privacy'
 import Footer from '@/components/footer'
+import { BentoWrapper } from '@/pages/landing/bento-wrapper'
 
 export const Route = createFileRoute('/')({
   component: App,
@@ -31,10 +32,13 @@ function App() {
         <div>
           <HowItWorks />
         </div>
-        <div className="h-32 bg-dark-bg"> .</div>
         <div>
-          <Privacy />
+          <BentoWrapper />
         </div>
+        <div className="h-32 bg-dark-bg"> .</div>
+        {/* <div>
+          <Privacy />
+        </div> */}
         <div className="h-96 bg-dark-bg"> .</div>
         <Footer />
         <SheetContent
