@@ -8,6 +8,7 @@ export const BentoWrapper = () => {
   const [isInView, setIsInView] = useState(false);
   const [scrollYWhenInView, setScrollYWhenInView] = useState(0);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const isInViewRef = useRef(false);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -28,14 +29,15 @@ export const BentoWrapper = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        const wasInView = isInView;
+        const wasInView = isInViewRef.current;
         const nowInView = entry.isIntersecting;
         
+        isInViewRef.current = nowInView;
         setIsInView(nowInView);
         
         // Store the scroll position when element first enters view
         if (!wasInView && nowInView) {
-          setScrollYWhenInView(scrollY);
+          setScrollYWhenInView(window.scrollY);
         }
       },
       {
@@ -49,11 +51,11 @@ export const BentoWrapper = () => {
     }
 
     return () => observer.disconnect();
-  }, [isInView, scrollY]);
+  }, []); // Remove dependencies to prevent re-observing
 
-  // Calculate parallax transform - moves slower than scroll, only when in view
+  // Calculate parallax transform - moves faster than scroll, only when in view
   // Use the difference from when it entered view to avoid jumping
-  const parallaxY = isInView ? (scrollY - scrollYWhenInView) * 0.2 : 0;
+  const parallaxY = isInView ? (scrollY - scrollYWhenInView) * -0.3 : 0;
 
   return (
     <div 
