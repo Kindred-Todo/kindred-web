@@ -29,7 +29,7 @@ function App() {
         <div>
           <ProblemCard />
         </div>
-        <div>
+        <div className="bg-light-bg">
           <HowItWorks />
         </div>
         <div className="bg-dark-bg">

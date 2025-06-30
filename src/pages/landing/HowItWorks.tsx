@@ -3,12 +3,13 @@ import Title from '@/components/typography/title'
 import Star from '@/assets/Star.svg'
 import PencilSimpleLine from '@/assets/PencilSimpleLine.svg'
 import Handshake from '@/assets/Handshake.svg'
+import { useEffect, useState } from 'react'
 
 export default function HowItWorks() {
   return (
     <>
-      <div className=" flex flex-col gap-16">
-        <div className="w-full flex justify-center">
+      <div className="flex flex-col gap-16 mt-12 md:mt-0">
+        <div className="w-full flex justify-center z-10 bg-white">
 
         <Title >Our model revolves around tools for your 
         <span className="relative inline-block">
@@ -28,7 +29,7 @@ export default function HowItWorks() {
           <span className="relative z-10 px-4 py-2">todo list,</span>
         </span>social <span className="underline">connections</span>, and <span className="text-primary">blueprints</span> </Title>
               </div>
-        <div className="flex flex-col gap-0">
+        <div className="flex flex-col gap-16 md:gap-0">
 
       <HowItWorksRow title="01. Productivity" icon={<img src={Star} alt="Star" className="w-10 h-10" />}>
           <div>
@@ -88,6 +89,17 @@ what you're actually doing</p>
 const HowItWorksRow = ({title, icon, children}: {title: string, icon: React.ReactNode, children: React.ReactNode}) => {
   // left side 
   // right side 
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", () => {
+      setIsMobile(window.innerWidth < 768);
+    });
+    return () => window.removeEventListener("resize", () => {
+      setIsMobile(window.innerWidth < 768);
+    });
+  }, []);
 
   // Determine which pattern to use based on the title
   let pattern: React.ReactNode = null;
@@ -121,18 +133,20 @@ const HowItWorksRow = ({title, icon, children}: {title: string, icon: React.Reac
   }
 
   return (
-    <div className="flex flex-row gap-16 w-full px-32 min-h-[40vh] my-0 py-0">
-      <div className="flex flex-col gap-4 flex-start w-1/3 h-full border-r-1 border-black pr-8"> {/* 30 of element */}
+    <div className="flex flex-row gap-16 w-full px-8 md:px-32 min-h-[40vh] my-0 py-0 text-center md:text-left bg-light-bg">
+      <div className="flex flex-col gap-4 flex-start w-full md:w-1/3 h-full md:border-r-1 border-black md:pr-8"> {/* 30 of element */}
         <div className="flex flex-col gap-4">   
-          <div className="text-3xl font-fraunces font-regular flex flex-row gap-4">{title} <div className="">{icon}</div></div>
+          <div className="text-3xl font-fraunces font-regular flex flex-row gap-4 justify-center md:justify-start">{title} <div className="">{icon}</div></div>
           <div className="flex flex-col gap-4">
             {children}
           </div>
         </div>
       </div>
-      <div className="flex flex-row gap-4 h-full w-2/3 relative min-h-[30vh]">
-        {pattern}
-      </div>
+      {!isMobile && (
+        <div className="flex flex-row gap-4 h-full w-2/3 relative min-h-[30vh]">
+          {pattern}
+        </div>
+      )}
     </div>
   )
 }
