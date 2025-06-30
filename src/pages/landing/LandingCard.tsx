@@ -12,8 +12,8 @@ export default function LandingCard() {
       <div className="flex flex-col w-full text-center md:text-left justify-center relative">
         <div className="flex flex-col w-full items-center md:items-start gap-3 pb-20">
           <h1 className="landing-text w-full">
-            Cultivating a culture of<br />
-            <span className="text-green-success italic">mutual productivity</span><br />
+            Cultivating a culture of
+            <span className="text-green-success italic"> mutual productivity</span><br />
             where everyone wins
           </h1>
           <p className="landing-text-small w-[80%] mb-6 mt-4">
