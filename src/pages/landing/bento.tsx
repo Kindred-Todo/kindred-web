@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Fire } from "./fire";
 // import { IconComponentNode } from "./IconComponentNode";
 import ellipse10 from "./ellipse-10.svg";
@@ -22,53 +22,118 @@ const gridColors = [
 ];
 
 export const Bento = () => {
+  const [scaleFactor, setScaleFactor] = useState(1);
+
+  useEffect(() => {
+    const calculateScaleFactor = () => {
+      const originalWidth = 1727;
+      const currentWidth = window.innerWidth;
+      const newScaleFactor = currentWidth / originalWidth;
+      setScaleFactor(newScaleFactor);
+    };
+
+    // Calculate initial scale factor
+    calculateScaleFactor();
+
+    // Add resize listener
+    window.addEventListener('resize', calculateScaleFactor);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', calculateScaleFactor);
+    };
+  }, []);
+
+  // Calculate scaling factor based on 1727 as original width
+  const getScaledValue = (value: number) => {
+    return value * scaleFactor;
+  };
+
   return (
-    <div className="flex flex-col h-[1152px] items-start gap-[28.8px] p-[28.8px] relative bg-colors-sceen-background">
-      <div className="flex items-start gap-[28.8px] relative flex-1 self-stretch w-full grow">
-        <div className="relative w-[403.2px] h-[722.7px] mb-[-377.10px] bg-[#fbfbfb] rounded-[28.8px] overflow-hidden">
+    <div className="flex flex-col items-start relative bg-colors-sceen-background" style={{ 
+      height: getScaledValue(1152),
+      gap: getScaledValue(28.8),
+      padding: getScaledValue(28.8)
+    }}>
+      <div className="flex items-start relative flex-1 self-stretch w-full grow" style={{ gap: getScaledValue(28.8) }}>
+        <div className="relative bg-[#fbfbfb] rounded-[28.8px] overflow-hidden" style={{ 
+          width: getScaledValue(403.2), 
+          height: getScaledValue(722.7),
+          marginBottom: getScaledValue(-377.10)
+        }}>
           <img
-            className="absolute w-[188px] h-[186px] top-0 left-0"
+            className="absolute top-0 left-0"
             alt="Ellipse"
             src={ellipse10}
+            style={{ width: getScaledValue(188), height: getScaledValue(186) }}
           />
 
-          <div className="absolute w-[257px] h-[257px] top-[233px] left-72 bg-[#854cff33] rounded-[128.7px]" />
+          <div className="absolute bg-[#854cff33] rounded-[128.7px]" style={{ 
+            width: getScaledValue(257), 
+            height: getScaledValue(257),
+            top: getScaledValue(233),
+            left: getScaledValue(288)
+          }} />
         </div>
 
-        <div className="relative self-stretch w-[311.4px] bg-[#854cff] rounded-[28.8px] overflow-hidden">
+        <div className="relative self-stretch bg-[#854cff] rounded-[28.8px] overflow-hidden" style={{ width: getScaledValue(311.4) }}>
           <img
-            className="absolute w-[108px] h-[87px] top-[130px] left-[101px]"
+            className="absolute"
             alt="Group"
             src={group4}
+            style={{ 
+              width: getScaledValue(108), 
+              height: getScaledValue(87),
+              top: getScaledValue(130),
+              left: getScaledValue(101)
+            }}
           />
         </div>
 
         <div className="relative flex-1 self-stretch grow bg-white rounded-[28.8px]">
-          <div className="relative w-[861px] h-[374px] top-[-29px] left-[41px]">
-            <div className="flex flex-col w-[655px] h-[217px] items-start justify-center gap-[14.4px] absolute top-[93px] left-0">
-              <div className="font-fraunces relative w-[502.2px] font-normal text-colors-foreground text-4xl tracking-[-1.80px] leading-[normal]">
+          <div className="relative" style={{ 
+            width: getScaledValue(861), 
+            height: getScaledValue(374), 
+            top: getScaledValue(-29),
+            left: getScaledValue(41)
+          }}>
+            <div className="flex flex-col items-start justify-center absolute" style={{ 
+              width: getScaledValue(655), 
+              height: getScaledValue(217),
+              top: getScaledValue(93),
+              left: 0,
+              gap: getScaledValue(14.4)
+            }}>
+              <div className="font-fraunces relative font-normal text-colors-foreground text-4xl tracking-[-1.80px] leading-[normal]" style={{ width: getScaledValue(502.2) }}>
                 Influencers 🤝 Blueprints
               </div>
             </div>
 
             <img
-              className="absolute w-[318px] h-[374px] top-0 left-[544px]"
+              className="absolute"
               alt="Image"
               src={image4}
+              style={{ 
+                width: getScaledValue(318), 
+                height: getScaledValue(374),
+                top: 0,
+                left: getScaledValue(544)
+              }}
             />
           </div>
         </div>
       </div>
 
-      <div className="flex items-start gap-[28.8px] relative flex-1 self-stretch w-full grow">
+      <div className="flex items-start relative flex-1 self-stretch w-full grow" style={{ gap: getScaledValue(28.8) }}>
         <img
-          className="relative self-stretch w-[403.2px]"
+          className="relative self-stretch"
           alt="Frame"
           src={frame}
+          style={{ width: getScaledValue(403.2) }}
         />
 
-        <div className="relative self-stretch w-[772.2px] bg-white rounded-[28.8px] overflow-hidden">
-          <p className="absolute h-[88px] top-32 left-[103px] font-fraunces font-normal text-black text-4xl text-center tracking-[-0.72px] leading-[normal]">
+        <div className="relative self-stretch bg-white rounded-[28.8px] overflow-hidden flex items-center justify-center" style={{ width: getScaledValue(772.2) }}>
+          <p className="font-fraunces font-normal text-black text-4xl text-center tracking-[-0.72px] leading-[normal]" style={{ height: getScaledValue(88) }}>
             redefining both day-to-day
             <br />
             productivity and human connection
@@ -76,77 +141,93 @@ export const Bento = () => {
         </div>
 
         <img
-          className="relative w-[443.6px] h-[345.6px]"
+          className="relative"
           alt="Frame"
           src={frame5082}
+          style={{ width: getScaledValue(443.6), height: getScaledValue(345.6) }}
         />
       </div>
 
-      <div className="flex items-start gap-[28.8px] relative flex-1 self-stretch w-full grow">
-        <div className="relative self-stretch w-[698.4px] bg-white rounded-[28.8px] overflow-hidden">
-          <div className="relative w-[733px] h-[346px] left-[-34px]">
-            <div className="absolute h-11 top-[89px] left-[77px] font-fraunces font-normal text-black text-4xl tracking-[-1.08px] leading-[normal]">
+      <div className="flex items-start relative flex-1 self-stretch w-full grow" style={{ gap: getScaledValue(28.8) }}>
+        <div className="relative self-stretch bg-white rounded-[28.8px] overflow-hidden" style={{ width: getScaledValue(698.4) }}>
+          <div className="relative" style={{ 
+            width: getScaledValue(733), 
+            height: getScaledValue(346),
+            left: getScaledValue(-34)
+          }}>
+            <div className="absolute font-fraunces font-normal text-black text-4xl tracking-[-1.08px] leading-[normal]" style={{ 
+              height: getScaledValue(44),
+              top: getScaledValue(89),
+              left: getScaledValue(77)
+            }}>
               Congrats! 🎉🍵
             </div>
 
-            <div className="absolute w-[733px] h-[346px] top-0 left-0">
-              <p className="absolute w-[514px] h-24 top-[156px] left-[77px] font-outfit font-light text-colors-foreground text-[21.6px] tracking-[0.90px] leading-[32.4px]">
+            <div className="absolute top-0 left-0" style={{ width: getScaledValue(733), height: getScaledValue(346) }}>
+              <p className="absolute font-outfit font-light text-colors-foreground text-[21.6px] tracking-[0.90px] leading-[32.4px]" style={{ 
+                width: getScaledValue(514), 
+                height: getScaledValue(96),
+                top: getScaledValue(156),
+                left: getScaledValue(77)
+              }}>
                 You just finished 'grab matcha with <br />
                 Lok Ye &amp; lock in' its time to share <br />
                 and earn points!
               </p>
 
-              <div className="absolute h-[173px] top-[85px] left-[559px] font-outfit font-light text-black text-[115.2px] tracking-[0.90px] leading-[172.8px] whitespace-nowrap">
+              <div className="absolute font-outfit font-light text-black text-[115.2px] tracking-[0.90px] leading-[172.8px] whitespace-nowrap" style={{ 
+                height: getScaledValue(173),
+                top: getScaledValue(85),
+                left: getScaledValue(559)
+              }}>
                 🎉
               </div>
 
-              <div className="absolute w-[539px] h-[33px] top-[263px] left-0 bg-[#854cff26] rotate-[7.90deg] backdrop-blur-[1.8px] backdrop-brightness-[100%] [-webkit-backdrop-filter:blur(1.8px)_brightness(100%)]" />
+              <div className="absolute bg-[#854cff26] rotate-[7.90deg] backdrop-blur-[1.8px] backdrop-brightness-[100%] [-webkit-backdrop-filter:blur(1.8px)_brightness(100%)]" style={{ 
+                width: getScaledValue(539), 
+                height: getScaledValue(33),
+                top: getScaledValue(263),
+                left: 0
+              }} />
 
               <img
-                className="absolute w-[286px] h-[346px] top-0 left-[446px]"
+                className="absolute"
                 alt="Image"
                 src={image6}
+                style={{ 
+                  width: getScaledValue(286), 
+                  height: getScaledValue(346),
+                  top: 0,
+                  left: getScaledValue(446)
+                }}
               />
             </div>
           </div>
         </div>
 
-        <div className="relative flex-1 self-stretch grow bg-white rounded-[28.8px] overflow-hidden">
-          <div className="absolute w-[446px] h-[419px] top-[-179px] left-8">
-            <div className="absolute w-[406px] h-[419px] top-0 left-10">
-              <img
-                className="absolute w-[104px] h-[103px] top-[233px] left-[45px] object-cover"
-                alt="Image"
-                src={image5}
-              />
-
-              <Fire className="!absolute !w-[67px] !h-16 !top-[302px] !left-[141px]" />
-              <p className="absolute h-[54px] top-[365px] left-0 font-fraunces font-normal text-black text-[21.6px] text-center tracking-[0] leading-[27.0px]">
-                Encourage Luffy to
-                <br />
-                "Go to the Gym"
-              </p>
-
-              <div className="absolute w-[257px] h-[284px] top-0 left-[149px] bg-[#854cff33] rounded-[128.7px/142.2px]" />
-            </div>
-
-            {/* <IconComponentNode className="!absolute !w-[85px] !h-[81px] !top-[215px] !left-0" /> */}
-          </div>
-
-          <div className="inline-flex items-center justify-center gap-[9px] pt-[10.8px] pb-[9px] px-[43.2px] absolute top-[267px] left-[91px] bg-[#854cff] rounded-[10.8px]">
-            <div className="relative w-fit mt-[-0.22px] rotate-[1.13deg] font-outfit font-normal text-white text-[14.4px] tracking-[0] leading-[normal]">
-              Encourage
-            </div>
-          </div>
+        <div className="flex-1 bg-white rounded-2xl flex flex-col items-center justify-center p-8 min-h-[350px] w-full">
+          <img src={image5} alt="Luffy" className="w-24 h-24 object-cover rounded-full mb-4" />
+          <Fire className="w-10 h-10 mb-2" />
+          <p className="font-fraunces text-black text-xl text-center mb-4">
+            Encourage Luffy to<br />"Go to the Gym"
+          </p>
+          <button className="bg-[#854cff] text-white rounded-lg px-8 py-2 font-outfit text-base">
+            Encourage
+          </button>
         </div>
 
-        <div className="relative self-stretch w-[575.1px] bg-white rounded-[28.8px] overflow-hidden flex items-center justify-center">
-          <div className="grid grid-rows-5 grid-cols-10 gap-1 p-6" style={{ minWidth: 520, minHeight: 260 }}>
+        <div className="relative self-stretch bg-white rounded-[28.8px] overflow-hidden flex items-center justify-center" style={{ width: getScaledValue(575.1) }}>
+          <div className="grid grid-rows-5 grid-cols-10" style={{ 
+            minWidth: getScaledValue(520), 
+            minHeight: getScaledValue(260),
+            gap: getScaledValue(4),
+            padding: getScaledValue(24)
+          }}>
             {gridColors.slice(0, 50).map((color, index) => (
               <div
                 key={index}
-                className={`w-12 h-12 rounded-md ${color.startsWith('#') ? '' : `bg-${color}`}`}
-                style={color.startsWith('#') ? { backgroundColor: color } : {}}
+                className={`rounded-md ${color.startsWith('#') ? '' : `bg-${color}`}`}
+                style={color.startsWith('#') ? { backgroundColor: color, width: getScaledValue(48), height: getScaledValue(48) } : { width: getScaledValue(48), height: getScaledValue(48) }}
               />
             ))}
           </div>
@@ -154,9 +235,15 @@ export const Bento = () => {
       </div>
 
       <img
-        className="absolute w-[1108px] h-[626px] top-[131px] left-[-20%]"
+        className="absolute"
         alt="Lol"
         src={lol1}
+        style={{ 
+          width: getScaledValue(1108), 
+          height: getScaledValue(626),
+          top: getScaledValue(131),
+          left: getScaledValue(-345.4) // -20% of 1727
+        }}
       />
     </div>
   );

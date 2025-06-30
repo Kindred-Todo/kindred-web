@@ -1,9 +1,10 @@
 import React from "react";
 
-export const Fire = ({ className }: { className: string }) => {
+export const Fire = ({ className, style }: { className?: string; style?: React.CSSProperties }) => {
   return (
     <svg
-      className={`${className}`}
+      className={className}
+      style={style}
       fill="none"
       height="32"
       viewBox="0 0 32 32"
