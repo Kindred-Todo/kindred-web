@@ -11,7 +11,7 @@ export default function TopNav() {
           about
         </div>
         <SheetTrigger asChild>
-          <button className="font-outfit font-light text-lg md:text-[1.36vw] text-[#13121f] px-4 md:px-6 py-2 md:py-3 rounded-[40px] border border-black hover:bg-gray-50 transition-colors">
+          <button className="font-outfit font-light text-lg md:text-[1.36vw] text-[#13121f] px-3 md:px-4 py-1.5 md:py-2 rounded-[40px] border border-black hover:bg-gray-50 transition-colors">
             coming soon
           </button>
         </SheetTrigger>

@@ -1,22 +1,22 @@
 import logo from '@/assets/logo.svg'
 import { SheetTrigger } from '@/components/ui/sheet'
 
-// Figma assets from localhost
-const imgEllipse19 = "http://localhost:3845/assets/ce31d6bf44b9c83972811daf3c391d4da9e36d3f.png"
-const imgImage2 = "http://localhost:3845/assets/52599c6ef47675256eed37ca203f6ce9c458a802.png"
-const imgImage1 = "http://localhost:3845/assets/ef67a41175ec56236b34e4d8a30576482af23281.png"
-const imgStar4 = "http://localhost:3845/assets/09c9d381c6ceca7265cd227a741bb9acf3fa4024.svg"
-const imgStar7 = "http://localhost:3845/assets/ec6134324748164ecd6d0197340576d1c40a2fe8.svg"
-const imgStar1 = "http://localhost:3845/assets/8194972b30dee9a0a91a7bb22c03438cf1f3f9d7.svg"
-const imgStar5 = "http://localhost:3845/assets/a0717ca2ac28c0ce02f5cd7cb077f2680da382bb.svg"
-const imgPolygon1 = "http://localhost:3845/assets/c744e298ffd9d733e931717b4f9b39713a08458e.svg"
-const imgStar12 = "http://localhost:3845/assets/cd3c2bba69f2d705838e6034810770df5d91a00e.svg"
-const imgStar10 = "http://localhost:3845/assets/5ed4f2cafe1a13137ef9479ece666d7fa8143991.svg"
-const imgPolygon2 = "http://localhost:3845/assets/458195b66a2bbb312474b65498ca9eb4db650820.svg"
-const imgPolygon4 = "http://localhost:3845/assets/07e51bdf0e11f001a9b29619a8242f287db1da2a.svg"
-const imgEllipse18 = "http://localhost:3845/assets/02d405d4a4886053a9a71c2a256982689730f87b.svg"
-const imgEllipse20 = "http://localhost:3845/assets/580fd720754a472115f2ad3cbd4bfe72d913b32c.svg"
-const imgStar8 = "http://localhost:3845/assets/34d796980d89bc1f9294e136a9ef75f44b546f1c.svg"
+// Local shape assets
+import imgEllipse19 from '@/assets/shapes/ellipse19.png'
+import imgImage2 from '@/assets/shapes/image2.png'
+import imgImage1 from '@/assets/shapes/image1.png'
+import imgStar4 from '@/assets/shapes/star4.svg'
+import imgStar7 from '@/assets/shapes/star7.svg'
+import imgStar1 from '@/assets/shapes/star1.svg'
+import imgStar5 from '@/assets/shapes/star5.svg'
+import imgPolygon1 from '@/assets/shapes/polygon1.svg'
+import imgStar12 from '@/assets/shapes/star12.svg'
+import imgStar10 from '@/assets/shapes/star10.svg'
+import imgPolygon2 from '@/assets/shapes/polygon2.svg'
+import imgPolygon4 from '@/assets/shapes/polygon4.svg'
+import imgEllipse18 from '@/assets/shapes/ellipse18.svg'
+import imgEllipse20 from '@/assets/shapes/ellipse20.svg'
+import imgStar8 from '@/assets/shapes/star8.svg'
 
 export default function NewLanding() {
   return (
