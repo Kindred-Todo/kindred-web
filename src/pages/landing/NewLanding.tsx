@@ -24,113 +24,113 @@ export default function NewLanding() {
       {/* Decorative shapes background - Desktop only (hidden on mobile) */}
       <div className="hidden md:block absolute pointer-events-none w-screen z-0" style={{ left: '-165px', top: '-121px' }}>
         {/* Ellipse at 230px, 294px */}
-        <div className="absolute w-[168.382px] h-[168.382px]" style={{ left: '230px', top: '294px' }}>
+        <div className="absolute w-[168.382px] h-[168.382px] opacity-40" style={{ left: '230px', top: '294px' }}>
           <img src={imgEllipse19} alt="" className="w-full h-full" />
         </div>
         
         {/* Star rotated 340.415deg at 14.286% + 90.143px, 82px */}
-        <div className="absolute w-[160.348px] h-[160.348px]" 
+        <div className="absolute w-[160.348px] h-[160.348px] opacity-40" 
              style={{ left: 'calc(14.286% + 90.143px)', top: '82px', transform: 'rotate(340.415deg)' }}>
           <img src={imgStar4} alt="" className="w-full h-full" />
         </div>
 
         {/* Star rotated 19.472deg at 42.857% + 172.713px, 332.04px */}
-        <div className="absolute w-[119.672px] h-[119.672px]" 
+        <div className="absolute w-[119.672px] h-[119.672px] opacity-40" 
              style={{ left: 'calc(42.857% + 172.713px)', top: '332.04px', transform: 'rotate(19.472deg)' }}>
           <img src={imgStar7} alt="" className="w-full h-full" />
         </div>
 
         {/* Star rotated 30deg at 28.571% + 154.286px, 60px */}
-        <div className="absolute w-[80.686px] h-[80.686px]" 
+        <div className="absolute w-[80.686px] h-[80.686px] opacity-40" 
              style={{ left: 'calc(28.571% + 154.286px)', top: '60px', transform: 'rotate(30deg)' }}>
           <img src={imgStar1} alt="" className="w-full h-full" />
         </div>
 
         {/* Star rotated 30deg at 57.143% + 182.571px, 663px */}
-        <div className="absolute w-[80.686px] h-[80.686px]" 
+        <div className="absolute w-[80.686px] h-[80.686px] opacity-40" 
              style={{ left: 'calc(57.143% + 182.571px)', top: '663px', transform: 'rotate(30deg)' }}>
           <img src={imgStar1} alt="" className="w-full h-full" />
         </div>
 
         {/* Star rotated 30deg at 85.714% + 49.609px, 183.67px */}
-        <div className="absolute w-[80.686px] h-[80.686px]" 
+        <div className="absolute w-[80.686px] h-[80.686px] opacity-40" 
              style={{ left: 'calc(85.714% + 49.609px)', top: '183.67px', transform: 'rotate(30deg)' }}>
           <img src={imgStar1} alt="" className="w-full h-full" />
         </div>
 
         {/* Star rotated 23.038deg at 85.714% + 33.857px, 578px */}
-        <div className="absolute w-[107.587px] h-[107.587px]" 
+        <div className="absolute w-[107.587px] h-[107.587px] opacity-40" 
              style={{ left: 'calc(85.714% + 33.857px)', top: '578px', transform: 'rotate(23.038deg)' }}>
           <img src={imgStar5} alt="" className="w-full h-full" />
         </div>
 
         {/* Ellipse at 71.429% - 20.286px, -14px */}
-        <div className="absolute w-[168.382px] h-[168.382px]" 
+        <div className="absolute w-[168.382px] h-[168.382px] opacity-40" 
              style={{ left: 'calc(71.429% - 20.286px)', top: '-14px' }}>
           <img src={imgEllipse19} alt="" className="w-full h-full" />
         </div>
 
         {/* Polygon rotated 31.074deg at 57.143% + 38.318px, 210.78px */}
-        <div className="absolute w-[115.011px] h-[110.77px]" 
+        <div className="absolute w-[115.011px] h-[110.77px] opacity-40" 
              style={{ left: 'calc(57.143% + 38.318px)', top: '210.78px', transform: 'rotate(31.074deg)' }}>
           <img src={imgPolygon1} alt="" className="w-full h-full" />
         </div>
 
         {/* Star rotated 340.415deg at -18.7px, 662.59px */}
-        <div className="absolute w-[160.348px] h-[160.348px]" 
+        <div className="absolute w-[160.348px] h-[160.348px] opacity-40" 
              style={{ left: '-18.7px', top: '662.59px', transform: 'rotate(340.415deg)' }}>
           <img src={imgStar4} alt="" className="w-full h-full" />
         </div>
 
         {/* Star rotated 30deg at 57.143% + 137.571px, 949px */}
-        <div className="absolute w-[124.139px] h-[124.139px]" 
+        <div className="absolute w-[124.139px] h-[124.139px] opacity-40" 
              style={{ left: 'calc(57.143% + 137.571px)', top: '949px', transform: 'rotate(30deg)' }}>
           <img src={imgStar12} alt="" className="w-full h-full" />
         </div>
 
         {/* Star rotated 19.472deg at 14.286% + 166.143px, 881px */}
-        <div className="absolute w-[119.672px] h-[119.672px]" 
+        <div className="absolute w-[119.672px] h-[119.672px] opacity-40" 
              style={{ left: 'calc(14.286% + 166.143px)', top: '881px', transform: 'rotate(19.472deg)' }}>
           <img src={imgStar10} alt="" className="w-full h-full" />
         </div>
 
         {/* Star rotated 30deg at 14.286% + 96.143px, 578px */}
-        <div className="absolute w-[80.686px] h-[80.686px]" 
+        <div className="absolute w-[80.686px] h-[80.686px] opacity-40" 
              style={{ left: 'calc(14.286% + 96.143px)', top: '578px', transform: 'rotate(30deg)' }}>
           <img src={imgStar1} alt="" className="w-full h-full" />
         </div>
 
         {/* Ellipse at 85.714% - 8.143px, 398px */}
-        <div className="absolute w-[168.382px] h-[168.382px]" 
+        <div className="absolute w-[168.382px] h-[168.382px] opacity-40" 
              style={{ left: 'calc(85.714% - 8.143px)', top: '398px' }}>
           <img src={imgEllipse19} alt="" className="w-full h-full" />
         </div>
 
         {/* Polygon rotated 31.074deg at 28.571% + 195.286px, 718px */}
-        <div className="absolute w-[115.011px] h-[110.77px]" 
+        <div className="absolute w-[115.011px] h-[110.77px] opacity-40" 
              style={{ left: 'calc(28.571% + 195.286px)', top: '718px', transform: 'rotate(31.074deg)' }}>
           <img src={imgPolygon1} alt="" className="w-full h-full" />
         </div>
 
         {/* Small polygon rotated 342.137deg at 28.571% + 123.967px, 360.57px */}
-        <div className="absolute w-[48.514px] h-[46.725px]" 
+        <div className="absolute w-[48.514px] h-[46.725px] opacity-40" 
              style={{ left: 'calc(28.571% + 123.967px)', top: '360.57px', transform: 'rotate(342.137deg)' }}>
           <img src={imgPolygon2} alt="" className="w-full h-full" />
         </div>
 
         {/* Small polygon rotated 56.636deg at 45px, 420px */}
-        <div className="absolute w-[48.514px] h-[46.725px]" 
+        <div className="absolute w-[48.514px] h-[46.725px] opacity-40" 
              style={{ left: '45px', top: '420px', transform: 'rotate(56.636deg)' }}>
           <img src={imgPolygon4} alt="" className="w-full h-full" />
         </div>
 
         {/* Gradient ellipse top left - moved right */}
-        <div className="absolute w-[449.519px] h-[442.002px]" style={{ left: '-80px', top: '-121px' }}>
+        <div className="absolute w-[449.519px] h-[442.002px] opacity-100" style={{ left: '-80px', top: '-121px' }}>
           <img src={imgEllipse18} alt="" className="w-full h-full" />
         </div>
 
         {/* Gradient ellipse bottom right at 85.714% + 21.857px, 771px */}
-        <div className="absolute w-[449.519px] h-[442.002px]" 
+        <div className="absolute w-[449.519px] h-[442.002px] opacity-100" 
              style={{ left: 'calc(85.714% + 21.857px)', top: '771px' }}>
           <img src={imgEllipse20} alt="" className="w-full h-full" />
         </div>
