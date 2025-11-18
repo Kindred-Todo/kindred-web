@@ -266,7 +266,25 @@ button:disabled {
   * {
     @apply border-border outline-ring/50;
   }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
   body {
     @apply bg-background text-foreground;
+  }
+  
+  /* Smooth momentum scrolling for a floaty feel */
+  html,
+  body {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Custom smooth scrolling with easing */
+  @supports (scroll-behavior: smooth) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
 }
