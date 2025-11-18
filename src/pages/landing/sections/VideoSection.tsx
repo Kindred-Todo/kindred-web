@@ -6,7 +6,7 @@ export function VideoSection() {
   const videoHeight = scale(964)
   const sectionRef = useRef<HTMLElement>(null)
   const hasSnappedRef = useRef(false)
-  const timeoutRef = useRef<number>()
+  const timeoutRef = useRef<number | undefined>(undefined)
   const [isFixed, setIsFixed] = useState(false)
   
   useEffect(() => {
