@@ -8,6 +8,7 @@ import { ProductivityRewardingSection } from './sections/ProductivityRewardingSe
 import { ScienceSection } from './sections/ScienceSection'
 import { EmpowerSection } from './sections/EmpowerSection'
 import { PlatformFeaturesSection } from './sections/PlatformFeaturesSection'
+import { Footer } from './sections/Footer'
 import { ParallaxProvider, Parallax } from 'react-scroll-parallax'
 
 export default function NewLanding() {
@@ -49,27 +50,29 @@ export default function NewLanding() {
         {/* Content that slides over video with parallax */}
         <Parallax speed={5}>
           <div 
-            className="relative bg-white" 
+            className="relative" 
             style={{ 
               zIndex: 20,
               marginTop: '-100vh',
               boxShadow: '0 -30px 60px rgba(0, 0, 0, 0.2)'
             }}
           >
-            {/* Productivity Has Never Felt So Rewarding */}
-            <ProductivityRewardingSection />
+            <div className="bg-white">
+              {/* Productivity Has Never Felt So Rewarding */}
+              <ProductivityRewardingSection />
 
-            {/* The Science Section */}
-            <ScienceSection />
+              {/* The Science Section */}
+              <ScienceSection />
 
-            {/* Empower Section */}
-            <EmpowerSection />
+              {/* Empower Section */}
+              <EmpowerSection />
 
-            {/* Platform Features Section */}
-            <PlatformFeaturesSection />
+              {/* Platform Features Section */}
+              <PlatformFeaturesSection />
+            </div>
 
-            {/* Bottom spacing */}
-            <div className="h-32 md:h-48" />
+            {/* Footer */}
+            <Footer />
           </div>
         </Parallax>
       </div>
