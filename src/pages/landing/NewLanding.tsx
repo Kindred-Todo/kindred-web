@@ -9,12 +9,9 @@ import { ScienceSection } from './sections/ScienceSection'
 import { EmpowerSection } from './sections/EmpowerSection'
 import { PlatformFeaturesSection } from './sections/PlatformFeaturesSection'
 import { Footer } from './sections/Footer'
-import { ParallaxProvider, Parallax } from 'react-scroll-parallax'
-
 export default function NewLanding() {
   return (
-    <ParallaxProvider>
-    <div className="bg-[#FFFFFF] relative w-full min-h-screen overflow-x-hidden">
+    <div className="bg-[#FFFFFF] w-full overflow-x-hidden">
       {/* Background decorative shapes */}
       <BackgroundShapes />
 
@@ -48,16 +45,16 @@ export default function NewLanding() {
         <VideoSection />
 
         {/* Content that slides over video with parallax */}
-        <Parallax speed={5}>
-          <div 
-            className="relative" 
-            style={{ 
-              zIndex: 20,
-              marginTop: '-100vh',
-              boxShadow: '0 -30px 60px rgba(0, 0, 0, 0.2)'
-            }}
-          >
-            <div className="bg-white">
+        <div 
+          className="relative parallax-content" 
+          style={{ 
+            zIndex: 20,
+            marginTop: '-100vh',
+            boxShadow: '0 -30px 60px rgba(0, 0, 0, 0.2)',
+            willChange: 'transform',
+          }}
+        >
+          <div className="bg-white">
               {/* Productivity Has Never Felt So Rewarding */}
               <ProductivityRewardingSection />
 
@@ -69,14 +66,12 @@ export default function NewLanding() {
 
               {/* Platform Features Section */}
               <PlatformFeaturesSection />
-            </div>
-
-            {/* Footer */}
-            <Footer />
           </div>
-        </Parallax>
+
+          {/* Footer */}
+          <Footer />
+        </div>
       </div>
     </div>
-    </ParallaxProvider>
   )
 }

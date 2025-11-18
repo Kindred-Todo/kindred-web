@@ -1,6 +1,5 @@
 import { columnStart, columns, typography } from '@/lib/design-system'
 import { motion } from 'framer-motion'
-import { Parallax } from 'react-scroll-parallax'
 import { useResponsiveScale, useIsMobile } from '@/hooks/useResponsiveScale'
 
 export function WhatsDealSection() {
@@ -9,7 +8,6 @@ export function WhatsDealSection() {
   
   return (
     <section className="mb-64 md:mb-96 py-32 md:py-48" style={{ paddingLeft: '16px', paddingRight: '16px' }}>
-      <Parallax speed={-5}>
       <div className="flex flex-col md:flex-row md:ml-[var(--col-start-1)] md:max-w-[var(--col-7)]" style={{ '--col-start-1': columnStart(1), '--col-7': columns(7) } as React.CSSProperties}>
         {/* Spacer for column 1 (hidden on mobile) */}
         <div className="hidden md:block" style={{ width: columns(1, false) }} />
@@ -100,7 +98,6 @@ export function WhatsDealSection() {
           </motion.p>
         </div>
       </div>
-      </Parallax>
     </section>
   )
 }

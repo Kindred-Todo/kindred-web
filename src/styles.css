@@ -269,10 +269,12 @@ button:disabled {
   
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
   
   body {
     @apply bg-background text-foreground;
+    overflow-x: hidden;
   }
   
   /* Smooth momentum scrolling for a floaty feel */
@@ -285,6 +287,24 @@ button:disabled {
   @supports (scroll-behavior: smooth) {
     html {
       scroll-behavior: smooth;
+    }
+  }
+}
+
+/* CSS-based parallax effect */
+.parallax-content {
+  transform: translateZ(0);
+  transition: transform 0.1s ease-out;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (transform-style: preserve-3d) {
+    .parallax-slow {
+      transform: translateY(calc(var(--scroll-offset, 0) * -0.2px));
+    }
+    
+    .parallax-medium {
+      transform: translateY(calc(var(--scroll-offset, 0) * -0.4px));
     }
   }
 }

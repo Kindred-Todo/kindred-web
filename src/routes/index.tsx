@@ -14,7 +14,7 @@ function App() {
   const { isMobile } = useMobile()
 
   return (
-    <div className="w-screen min-h-screen overflow-x-hidden">
+    <div className="w-full min-h-screen">
       <Sheet>
         <TopNav />
         <Toaster />

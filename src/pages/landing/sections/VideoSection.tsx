@@ -1,59 +1,55 @@
 import { scale } from '@/lib/design-system'
 import videoSrc from '@/assets/kindred_final_final_4.mp4'
 import { useRef, useEffect, useState } from 'react'
+import { useIsMobile } from '@/hooks/useResponsiveScale'
 
 export function VideoSection() {
-  const videoHeight = scale(964)
   const sectionRef = useRef<HTMLElement>(null)
-  const hasSnappedRef = useRef(false)
-  const timeoutRef = useRef<number | undefined>(undefined)
   const [isFixed, setIsFixed] = useState(false)
+  const lastScrollY = useRef(0)
+  const isMobile = useIsMobile()
   
   useEffect(() => {
     const section = sectionRef.current
     if (!section) return
 
-    // Snap observer - only activates when you're very close to the video
-    const snapObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          // Only snap if a significant portion is visible and scrolling down
-          if (entry.isIntersecting && entry.intersectionRatio > 0.3 && !hasSnappedRef.current) {
-            if (timeoutRef.current) clearTimeout(timeoutRef.current)
-            
-            timeoutRef.current = setTimeout(() => {
-              section.scrollIntoView({ behavior: 'smooth', block: 'start' })
-              hasSnappedRef.current = true
-            }, 150)
-          }
-          
-          if (!entry.isIntersecting) {
-            hasSnappedRef.current = false
-          }
-        })
-      },
-      {
-        threshold: [0.3, 0.4, 0.5],
-        rootMargin: '0px 0px -40% 0px'
-      }
-    )
+    let snapTimeout: number | undefined
+    let isSnapping = false
 
-    // Fixed position controller
+    // Fixed position controller and snap detector
     const handleScroll = () => {
+      const currentScrollY = window.scrollY
+      const scrollDirection = currentScrollY > lastScrollY.current ? 'down' : 'up'
+      lastScrollY.current = currentScrollY
+
       const rect = section.getBoundingClientRect()
-      // Keep fixed as long as section top is above viewport
       const shouldBeFixed = rect.top <= 0 && rect.bottom > 0
       setIsFixed(shouldBeFixed)
+
+      // Snap when approaching from above (scrolling down towards video)
+      // Different thresholds for mobile vs desktop
+      const snapThreshold = isMobile ? 300 : 500
+      const isApproachingFromAbove = rect.top > 100 && rect.top < snapThreshold && scrollDirection === 'down'
+      
+      if (isApproachingFromAbove && !isSnapping) {
+        if (snapTimeout) clearTimeout(snapTimeout)
+        isSnapping = true
+        
+        snapTimeout = window.setTimeout(() => {
+          section.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          setTimeout(() => {
+            isSnapping = false
+          }, 1000)
+        }, 150)
+      }
     }
 
-    snapObserver.observe(section)
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
     handleScroll() // Initial check
 
     return () => {
-      snapObserver.disconnect()
       window.removeEventListener('scroll', handleScroll)
-      if (timeoutRef.current) clearTimeout(timeoutRef.current)
+      if (snapTimeout) clearTimeout(snapTimeout)
     }
   }, [])
   
@@ -66,7 +62,7 @@ export function VideoSection() {
           top: 0,
           left: 0,
           width: '100%',
-          height: videoHeight,
+          height: '100vh',
           zIndex: 0,
           margin: 0,
           padding: 0

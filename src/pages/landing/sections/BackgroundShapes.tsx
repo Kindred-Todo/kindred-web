@@ -18,7 +18,7 @@ export function BackgroundShapes() {
   return (
     <>
       {/* Desktop decorative shapes */}
-      <div className="hidden md:block absolute pointer-events-none w-screen z-0 left-0" style={{ top: scale(-121) }}>
+      <div className="hidden md:block absolute pointer-events-none w-full z-0 left-0" style={{ top: scale(-121) }}>
         {/* Ellipse */}
         <div className="absolute" style={{ left: scale(65), top: scale(294), width: scale(168.382), height: scale(168.382) }}>
           <img src={imgEllipse19} alt="" className="w-full h-full" />
