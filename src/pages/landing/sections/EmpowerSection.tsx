@@ -1,11 +1,18 @@
 import { scale, columnStart, columns, typography } from '@/lib/design-system'
 import { useRef, useEffect, useState } from 'react'
+import demo1 from '@/assets/demos/post.MP4'
+import demo2 from '@/assets/demos/encourage.MP4'
+import demo3 from '@/assets/demos/congrats.MP4'
 
 export function EmpowerSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const [activeCard, setActiveCard] = useState(0)
   const scrollProgress = useRef(0)
   const lastScrollTime = useRef(0)
+  
+  const video1Ref = useRef<HTMLVideoElement>(null)
+  const video2Ref = useRef<HTMLVideoElement>(null)
+  const video3Ref = useRef<HTMLVideoElement>(null)
   
   useEffect(() => {
     const section = sectionRef.current
@@ -26,7 +33,11 @@ export function EmpowerSection() {
         
         // Calculate which card (0, 1, or 2)
         const cardIndex = Math.floor(scrollProgress.current / 400)
-        setActiveCard(Math.min(2, cardIndex))
+        const newActiveCard = Math.min(2, cardIndex)
+        
+        if (newActiveCard !== activeCard) {
+          setActiveCard(newActiveCard)
+        }
         
         console.log('Progress:', scrollProgress.current.toFixed(0), 'Active card:', cardIndex)
         
@@ -59,7 +70,23 @@ export function EmpowerSection() {
     return () => {
       document.removeEventListener('wheel', handleWheel)
     }
-  }, [])
+  }, [activeCard])
+  
+  // Control video playback based on active card
+  useEffect(() => {
+    const videos = [video1Ref.current, video2Ref.current, video3Ref.current]
+    
+    videos.forEach((video, index) => {
+      if (video) {
+        if (index === activeCard) {
+          video.currentTime = 0
+          video.play().catch(e => console.log('Video play failed:', e))
+        } else {
+          video.pause()
+        }
+      }
+    })
+  }, [activeCard])
   
   return (
     <section 
@@ -103,32 +130,68 @@ export function EmpowerSection() {
             </p>
           </div>
 
-          {/* Right column - Three placeholder cards with active states */}
-          <div className="flex flex-col md:flex-row gap-6 md:w-[62%]">
+          {/* Right column - Three video cards with active states */}
+          <div className="flex flex-col md:flex-row gap-6 md:w-[62%] md:items-center">
             <div 
-              className="rounded-tl-[24px] rounded-tr-[24px] w-full md:w-1/3 aspect-[452/586] transition-all duration-700 ease-out"
+              className="rounded-tl-[24px] rounded-tr-[24px] aspect-[9/19.5] transition-all duration-700 ease-out overflow-hidden"
               style={{
-                backgroundColor: activeCard === 0 ? '#eeeeee' : 'rgba(238,238,238,0.25)',
-                transform: activeCard === 0 ? 'scale(1.05)' : 'scale(1)',
-                opacity: activeCard === 0 ? 1 : 0.5
+                transform: activeCard === 0 ? 'scale(1.2)' : 'scale(0.85)',
+                opacity: activeCard === 0 ? 1 : 0.4,
+                width: activeCard === 0 ? '32%' : '28%',
+                flexShrink: 0,
+                zIndex: activeCard === 0 ? 10 : 1,
+                boxShadow: activeCard === 0 ? '0 12px 40px rgba(0, 0, 0, 0.15)' : 'none'
               }}
-            />
+            >
+              <video 
+                ref={video1Ref}
+                src={demo1}
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover"
+              />
+            </div>
             <div 
-              className="rounded-tl-[24px] rounded-tr-[24px] w-full md:w-1/3 aspect-[452/586] transition-all duration-700 ease-out"
+              className="rounded-tl-[24px] rounded-tr-[24px] aspect-[9/19.5] transition-all duration-700 ease-out overflow-hidden"
               style={{
-                backgroundColor: activeCard === 1 ? '#eeeeee' : 'rgba(238,238,238,0.25)',
-                transform: activeCard === 1 ? 'scale(1.05)' : 'scale(1)',
-                opacity: activeCard === 1 ? 1 : 0.5
+                transform: activeCard === 1 ? 'scale(1.2)' : 'scale(0.85)',
+                opacity: activeCard === 1 ? 1 : 0.4,
+                width: activeCard === 1 ? '32%' : '28%',
+                flexShrink: 0,
+                zIndex: activeCard === 1 ? 10 : 1,
+                boxShadow: activeCard === 1 ? '0 12px 40px rgba(0, 0, 0, 0.15)' : 'none'
               }}
-            />
+            >
+              <video 
+                ref={video2Ref}
+                src={demo2}
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover"
+              />
+            </div>
             <div 
-              className="rounded-tl-[24px] rounded-tr-[24px] w-full md:w-1/3 aspect-[452/586] transition-all duration-700 ease-out"
+              className="rounded-tl-[24px] rounded-tr-[24px] aspect-[9/19.5] transition-all duration-700 ease-out overflow-hidden"
               style={{
-                backgroundColor: activeCard === 2 ? '#eeeeee' : 'rgba(238,238,238,0.25)',
-                transform: activeCard === 2 ? 'scale(1.05)' : 'scale(1)',
-                opacity: activeCard === 2 ? 1 : 0.5
+                transform: activeCard === 2 ? 'scale(1.2)' : 'scale(0.85)',
+                opacity: activeCard === 2 ? 1 : 0.4,
+                width: activeCard === 2 ? '32%' : '28%',
+                flexShrink: 0,
+                zIndex: activeCard === 2 ? 10 : 1,
+                boxShadow: activeCard === 2 ? '0 12px 40px rgba(0, 0, 0, 0.15)' : 'none'
               }}
-            />
+            >
+              <video 
+                ref={video3Ref}
+                src={demo3}
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover"
+              />
+            </div>
         </div>
       </div>
     </section>

@@ -1,5 +1,6 @@
 import { SheetTrigger } from '@/components/ui/sheet'
 import { scale, columnStart, typography } from '@/lib/design-system'
+import { Link } from '@tanstack/react-router'
 
 export default function TopNav() {
   return (
@@ -29,8 +30,19 @@ export default function TopNav() {
         </SheetTrigger>
       </div>
       
-      {/* Desktop: show both about and coming soon - aligned with grid column 7 (right edge) */}
+      {/* Desktop: show team, about and coming soon - aligned with grid column 7 (right edge) */}
       <div className="hidden md:flex items-center" style={{ gap: scale(20) }}>
+        <Link to="/team">
+          <div 
+            className="font-outfit font-light text-[#13121f] rounded-[40px] cursor-pointer hover:bg-gray-50 transition-colors leading-normal" 
+            style={{ 
+              ...typography.body.desktop,
+              padding: `${scale(12)} ${scale(24)}` 
+            }}
+          >
+            team
+          </div>
+        </Link>
         <div 
           className="font-outfit font-light text-[#13121f] rounded-[40px] cursor-pointer hover:bg-gray-50 transition-colors leading-normal" 
           style={{ 
