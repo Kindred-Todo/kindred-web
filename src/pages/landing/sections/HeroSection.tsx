@@ -1,4 +1,3 @@
-import { SheetTrigger } from '@/components/ui/sheet'
 import { columnStart, columns, typography } from '@/lib/design-system'
 import { motion } from 'framer-motion'
 import imgImage1 from '@/assets/shapes/image1.png'
@@ -10,7 +9,13 @@ export function HeroSection() {
   const buttonWidth = columns(2)
   
   return (
-    <section className="relative mb-16 md:mb-48 mt-32 md:mt-0" style={{ marginTop: scale(365) }}>
+    <section 
+      className="relative mb-16 md:mb-48" 
+      style={{ 
+        marginTop: isMobile ? scale(120) : scale(365),
+        minHeight: isMobile ? 'auto' : 'auto'
+      }}
+    >
       {/* Hero text - starts at column 2, spans ~4.5 columns */}
       <motion.div 
         className="px-4 md:px-0 md:ml-[var(--col-start-2)] md:max-w-[var(--col-5)] flex flex-col"
@@ -41,19 +46,20 @@ export function HeroSection() {
           <span className="text-[#854dff]">accomplished </span>
         </h1>
         
-        {/* Join the waitlist button */}
-        <SheetTrigger asChild>
-          <button 
-            className="mt-8 px-6 md:px-8 py-3 md:py-4 bg-[#854dff] text-white rounded-full font-outfit font-medium hover:bg-[#7340e6] transition-all w-full md:w-auto"
-            style={{
-              maxWidth: isMobile ? '100%' : buttonWidth,
-              fontSize: scale(20),
-              boxShadow: '0 0 20px rgba(133, 77, 255, 0.3), 0 0 40px rgba(133, 77, 255, 0.15)',
-            }}
-          >
-            Join the waitlist
-          </button>
-        </SheetTrigger>
+        {/* Try the iOS beta button */}
+        <a 
+          href="https://testflight.apple.com/join/YtTj9DQJ"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-8 px-6 md:px-8 py-3 md:py-4 bg-[#854dff] text-white rounded-full font-outfit font-medium hover:bg-[#7340e6] transition-all w-full md:w-auto text-center inline-block"
+          style={{
+            maxWidth: isMobile ? '100%' : buttonWidth,
+            fontSize: scale(16),
+            boxShadow: '0 0 20px rgba(133, 77, 255, 0.3), 0 0 40px rgba(133, 77, 255, 0.15)',
+          }}
+        >
+          Download the iOS Beta
+        </a>
 
         {/* Bicycle illustration */}
         <motion.div

@@ -21,13 +21,9 @@ export default function TopNav() {
         kindred
       </div>
       
-      {/* Mobile: show only coming soon button on right */}
+      {/* Mobile: hide the button */}
       <div className="md:hidden">
-        <SheetTrigger asChild>
-          <button className="font-outfit font-light text-[18px] text-[#13121f] px-4 py-2 rounded-[40px] border border-black hover:bg-gray-50 transition-colors">
-            coming soon
-          </button>
-        </SheetTrigger>
+        {/* Empty div to maintain layout */}
       </div>
       
       {/* Desktop: show team, about and coming soon - aligned with grid column 7 (right edge) */}
