@@ -3,10 +3,11 @@ import imgFrameChart from '@/assets/frame-chart.svg'
 import imgFrameChart2 from '@/assets/frame-chart2.svg'
 import { Sparkle } from '@phosphor-icons/react'
 import { motion } from 'framer-motion'
-import { useResponsiveScale } from '@/hooks/useResponsiveScale'
+import { useResponsiveScale, useIsMobile } from '@/hooks/useResponsiveScale'
 
 export function ScienceSection() {
   const scale = useResponsiveScale()
+  const isMobile = useIsMobile()
   
   return (
     <section className="mb-32 md:mb-48" style={{ paddingLeft: '16px', paddingRight: '16px' }}>
@@ -17,8 +18,11 @@ export function ScienceSection() {
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true, margin: "-100px" }} 
-          className="font-outfit font-light text-[20px] md:text-[1.16vw] tracking-[-0.8px] leading-[1.05] text-black"
-          style={typography.body.desktop}
+          className="font-outfit font-light tracking-[-0.8px] leading-[1.05] text-black"
+          style={{
+            fontSize: scale(isMobile ? 18 : 20),
+            letterSpacing: scale(isMobile ? -0.18 : -0.2),
+          }}
         >
           THE SCIENCE
         </motion.p>
@@ -32,11 +36,11 @@ export function ScienceSection() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true, margin: "-100px" }} 
-              className="font-outfit font-light text-[22px] md:text-[1.39vw] leading-[1.05] text-black mb-8" 
+              className="font-outfit font-light leading-[1.05] text-black mb-8" 
               style={{
-                fontSize: scale(24),
+                fontSize: scale(isMobile ? 20 : 24),
                 lineHeight: '1.05',
-                letterSpacing: scale(-0.24),
+                letterSpacing: scale(isMobile ? -0.2 : -0.24),
               }}
             >
               Self-regulated learning is a model for task completion and motivation
@@ -76,11 +80,11 @@ export function ScienceSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
                 viewport={{ once: true, margin: "-100px" }} 
-                className="font-outfit font-light text-[20px] md:text-[1.39vw] leading-[1.25] text-black mt-8" 
+                className="font-outfit font-light leading-[1.25] text-black mt-8" 
                 style={{
-                  fontSize: scale(24),
+                  fontSize: scale(isMobile ? 20 : 24),
                   lineHeight: '1.25',
-                  letterSpacing: scale(-0.24),
+                  letterSpacing: scale(isMobile ? -0.2 : -0.24),
                 }}
               >
                 <span>Kindred supercharges intrinsic motivation by supporting it with </span>
@@ -112,11 +116,11 @@ export function ScienceSection() {
                 />
               </div>
               <p 
-                className="font-outfit font-light text-[18px] md:text-[1.16vw] leading-[1.25] text-black"
+                className="font-outfit font-light leading-[1.25] text-black"
                 style={{
-                  fontSize: scale(20),
+                  fontSize: scale(isMobile ? 18 : 20),
                   lineHeight: '1.25',
-                  letterSpacing: scale(-0.2),
+                  letterSpacing: scale(isMobile ? -0.18 : -0.2),
                 }}
               >
                 <span className="text-[#854dff]">Kudos</span>

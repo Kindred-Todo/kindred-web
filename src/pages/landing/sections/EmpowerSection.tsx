@@ -1,10 +1,13 @@
 import { scale, columnStart, columns, typography } from '@/lib/design-system'
 import { useRef, useEffect, useState } from 'react'
+import { useResponsiveScale, useIsMobile } from '@/hooks/useResponsiveScale'
 import demo1 from '@/assets/demos/post.MP4'
 import demo2 from '@/assets/demos/encourage.MP4'
 import demo3 from '@/assets/demos/congrats.MP4'
 
 export function EmpowerSection() {
+  const scale = useResponsiveScale()
+  const isMobile = useIsMobile()
   const sectionRef = useRef<HTMLElement>(null)
   const [activeCard, setActiveCard] = useState(0)
   const scrollProgress = useRef(0)
@@ -103,9 +106,11 @@ export function EmpowerSection() {
           {/* Left column - Text content */}
           <div className="flex flex-col gap-8 md:w-[35%]">
             <div 
-              className="font-fraunces font-light text-[36px] md:text-[2.78vw] leading-[1.05] text-black" 
+              className="font-fraunces font-light leading-[1.05] text-black" 
               style={{
-                ...typography.h3.desktop,
+                fontSize: scale(isMobile ? 36 : 48),
+                letterSpacing: scale(isMobile ? -0.72 : -0.96),
+                lineHeight: '1.05',
               }}
             >
               <div>
@@ -119,11 +124,11 @@ export function EmpowerSection() {
             </div>
 
             <p 
-              className="font-outfit font-light text-[22px] md:text-[1.39vw] leading-[1.25] text-black" 
+              className="font-outfit font-light leading-[1.25] text-black" 
               style={{
-                fontSize: scale(24),
+                fontSize: scale(isMobile ? 20 : 24),
                 lineHeight: '1.25',
-                letterSpacing: scale(-0.24),
+                letterSpacing: scale(isMobile ? -0.2 : -0.24),
               }}
             >
               Our positive reinforcement model fuels you with rewards and social recognition for empowering your friends- keeping them on track
@@ -131,16 +136,17 @@ export function EmpowerSection() {
           </div>
 
           {/* Right column - Three video cards with active states */}
-          <div className="flex flex-col md:flex-row gap-6 md:w-[62%] md:items-center">
+          <div className="flex flex-col md:flex-row gap-6 md:w-[62%] items-center justify-center md:items-center md:justify-start overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none">
             <div 
-              className="rounded-tl-[24px] rounded-tr-[24px] aspect-[9/19.5] transition-all duration-700 ease-out overflow-hidden"
+              className="rounded-tl-[24px] rounded-tr-[24px] aspect-[9/19.5] transition-all duration-700 ease-out overflow-hidden snap-center"
               style={{
                 transform: activeCard === 0 ? 'scale(1.2)' : 'scale(0.85)',
                 opacity: activeCard === 0 ? 1 : 0.4,
-                width: activeCard === 0 ? '32%' : '28%',
+                width: isMobile ? (activeCard === 0 ? '70%' : '60%') : (activeCard === 0 ? '32%' : '28%'),
                 flexShrink: 0,
                 zIndex: activeCard === 0 ? 10 : 1,
-                boxShadow: activeCard === 0 ? '0 12px 40px rgba(0, 0, 0, 0.15)' : 'none'
+                boxShadow: activeCard === 0 ? '0 12px 40px rgba(0, 0, 0, 0.15)' : 'none',
+                scrollSnapAlign: isMobile ? 'center' : 'none',
               }}
             >
               <video 
@@ -153,14 +159,15 @@ export function EmpowerSection() {
               />
             </div>
             <div 
-              className="rounded-tl-[24px] rounded-tr-[24px] aspect-[9/19.5] transition-all duration-700 ease-out overflow-hidden"
+              className="rounded-tl-[24px] rounded-tr-[24px] aspect-[9/19.5] transition-all duration-700 ease-out overflow-hidden snap-center"
               style={{
                 transform: activeCard === 1 ? 'scale(1.2)' : 'scale(0.85)',
                 opacity: activeCard === 1 ? 1 : 0.4,
-                width: activeCard === 1 ? '32%' : '28%',
+                width: isMobile ? (activeCard === 1 ? '70%' : '60%') : (activeCard === 1 ? '32%' : '28%'),
                 flexShrink: 0,
                 zIndex: activeCard === 1 ? 10 : 1,
-                boxShadow: activeCard === 1 ? '0 12px 40px rgba(0, 0, 0, 0.15)' : 'none'
+                boxShadow: activeCard === 1 ? '0 12px 40px rgba(0, 0, 0, 0.15)' : 'none',
+                scrollSnapAlign: isMobile ? 'center' : 'none',
               }}
             >
               <video 
@@ -173,14 +180,15 @@ export function EmpowerSection() {
               />
             </div>
             <div 
-              className="rounded-tl-[24px] rounded-tr-[24px] aspect-[9/19.5] transition-all duration-700 ease-out overflow-hidden"
+              className="rounded-tl-[24px] rounded-tr-[24px] aspect-[9/19.5] transition-all duration-700 ease-out overflow-hidden snap-center"
               style={{
                 transform: activeCard === 2 ? 'scale(1.2)' : 'scale(0.85)',
                 opacity: activeCard === 2 ? 1 : 0.4,
-                width: activeCard === 2 ? '32%' : '28%',
+                width: isMobile ? (activeCard === 2 ? '70%' : '60%') : (activeCard === 2 ? '32%' : '28%'),
                 flexShrink: 0,
                 zIndex: activeCard === 2 ? 10 : 1,
-                boxShadow: activeCard === 2 ? '0 12px 40px rgba(0, 0, 0, 0.15)' : 'none'
+                boxShadow: activeCard === 2 ? '0 12px 40px rgba(0, 0, 0, 0.15)' : 'none',
+                scrollSnapAlign: isMobile ? 'center' : 'none',
               }}
             >
               <video 

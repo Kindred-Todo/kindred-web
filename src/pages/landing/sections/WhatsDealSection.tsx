@@ -1,8 +1,12 @@
-import { scale, columnStart, columns, typography } from '@/lib/design-system'
+import { columnStart, columns, typography } from '@/lib/design-system'
 import { motion } from 'framer-motion'
 import { Parallax } from 'react-scroll-parallax'
+import { useResponsiveScale, useIsMobile } from '@/hooks/useResponsiveScale'
 
 export function WhatsDealSection() {
+  const scale = useResponsiveScale()
+  const isMobile = useIsMobile()
+  
   return (
     <section className="mb-64 md:mb-96 py-32 md:py-48" style={{ paddingLeft: '16px', paddingRight: '16px' }}>
       <Parallax speed={-5}>
@@ -42,8 +46,11 @@ export function WhatsDealSection() {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true, margin: "-100px" }} 
-            className="font-outfit font-light text-[20px] md:text-[1.16vw] tracking-[-0.8px] leading-[1.05] text-black"
-            style={typography.body.desktop}
+            className="font-outfit font-light tracking-[-0.8px] leading-[1.05] text-black"
+            style={{
+              fontSize: scale(isMobile ? 18 : 20),
+              letterSpacing: scale(isMobile ? -0.18 : -0.2),
+            }}
           >
             WHATS THE DEAL?
           </motion.p>
@@ -54,9 +61,9 @@ export function WhatsDealSection() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true, margin: "-100px" }} 
-            className="font-fraunces font-light text-[32px] md:text-[2.78vw] leading-[1.05] text-[#13121f]" 
+            className="font-fraunces font-light leading-[1.05] text-[#13121f]" 
             style={{
-              fontSize: scale(48),
+              fontSize: scale(isMobile ? 32 : 48), // 32px on mobile, 48px on desktop
               lineHeight: '1.05',
               letterSpacing: scale(-0.96),
               fontVariationSettings: "'SOFT' 0, 'WONK' 1",
@@ -81,9 +88,9 @@ export function WhatsDealSection() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
             viewport={{ once: true, margin: "-100px" }} 
-            className="font-fraunces font-light text-[32px] md:text-[2.78vw] leading-[1.05] text-[#13121f] mt-32 md:mt-48" 
+            className="font-fraunces font-light leading-[1.05] text-[#13121f] mt-32 md:mt-48" 
             style={{
-              fontSize: scale(48),
+              fontSize: scale(isMobile ? 32 : 48), // 32px on mobile, 48px on desktop
               lineHeight: '1.05',
               letterSpacing: scale(-0.96),
               fontVariationSettings: "'SOFT' 0, 'WONK' 1",

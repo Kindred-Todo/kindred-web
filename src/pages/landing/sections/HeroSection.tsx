@@ -1,11 +1,12 @@
 import { SheetTrigger } from '@/components/ui/sheet'
-import { columnStart, columns } from '@/lib/design-system'
+import { columnStart, columns, typography } from '@/lib/design-system'
 import { motion } from 'framer-motion'
 import imgImage1 from '@/assets/shapes/image1.png'
-import { useResponsiveScale } from '@/hooks/useResponsiveScale'
+import { useResponsiveScale, useIsMobile } from '@/hooks/useResponsiveScale'
 
 export function HeroSection() {
   const scale = useResponsiveScale()
+  const isMobile = useIsMobile()
   const buttonWidth = columns(2)
   
   return (
@@ -23,9 +24,9 @@ export function HeroSection() {
         viewport={{ once: true, margin: "-100px" }}
       >
         <h1 
-          className="font-fraunces leading-[1.1] md:leading-[1] p-2 bg-white w-[90%] md:w-full md:p-0"
+          className="font-fraunces p-2 bg-white w-[90%] md:w-full md:p-0 leading-[1.1] md:leading-[1]"
           style={{
-            fontSize: scale(86),
+            fontSize: scale(isMobile ? 48 : 86), // 72px on mobile (scales from 402px), 86px on desktop (scales from 1728px)
             letterSpacing: scale(-1.72),
             fontVariationSettings: "'SOFT' 0, 'WONK' 0.78",
           }}
@@ -43,9 +44,9 @@ export function HeroSection() {
         {/* Join the waitlist button */}
         <SheetTrigger asChild>
           <button 
-            className="mt-8 px-6 md:px-8 py-3 md:py-4 bg-[#854dff] text-white rounded-full font-outfit font-medium hover:bg-[#7340e6] transition-all w-full"
+            className="mt-8 px-6 md:px-8 py-3 md:py-4 bg-[#854dff] text-white rounded-full font-outfit font-medium hover:bg-[#7340e6] transition-all w-full md:w-auto"
             style={{
-              maxWidth: buttonWidth,
+              maxWidth: isMobile ? '100%' : buttonWidth,
               fontSize: scale(20),
               boxShadow: '0 0 20px rgba(133, 77, 255, 0.3), 0 0 40px rgba(133, 77, 255, 0.15)',
             }}

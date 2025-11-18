@@ -1,11 +1,15 @@
-import { scaleMobile, scaleDesktop, columnStart, columns, typography } from '@/lib/design-system'
+import { columnStart, columns, typography } from '@/lib/design-system'
 import imgImage7 from '@/assets/image7.png'
 import imgImage8 from '@/assets/image8.png'
 import imgImage9 from '@/assets/image9.png'
 import imgImage10 from '@/assets/image10.png'
 import { motion } from 'framer-motion'
+import { useResponsiveScale, useIsMobile } from '@/hooks/useResponsiveScale'
 
 export function ProductivityRewardingSection() {
+  const scale = useResponsiveScale()
+  const isMobile = useIsMobile()
+  
   return (
     <section 
       className="mb-32 md:mb-48 relative" 
@@ -24,8 +28,8 @@ export function ProductivityRewardingSection() {
           viewport={{ once: true, margin: "-100px" }} 
           className="font-outfit font-normal leading-none text-black"
           style={{
-            fontSize: `clamp(${scaleMobile(36)}, 8vw, ${scaleDesktop(128)})`,
-            letterSpacing: `clamp(${scaleMobile(-1.8)}, -0.2vw, ${scaleDesktop(-6.4)})`,
+            fontSize: scale(isMobile ? 36 : 128),
+            letterSpacing: scale(isMobile ? -1.8 : -6.4),
           }}
         >
           <div>PRODUCTIVITY HAS</div>
@@ -41,9 +45,11 @@ export function ProductivityRewardingSection() {
           viewport={{ once: true, margin: "-100px" }}
         >
           <p 
-            className="font-fraunces font-light text-[28px] md:text-[2.08vw] leading-[1.05] text-black" 
+            className="font-fraunces font-light leading-[1.05] text-black" 
             style={{
-              ...typography.bodyLarge.desktop,
+              fontSize: scale(isMobile ? 24 : 36),
+              letterSpacing: scale(isMobile ? -0.24 : -0.36),
+              lineHeight: '1.05',
             }}
           >
             <span>We're using psychology to boost your </span>
@@ -110,9 +116,10 @@ export function ProductivityRewardingSection() {
             
             {/* Text content */}
             <p 
-              className="font-outfit font-light text-[18px] md:text-[1.16vw] leading-[1.25] text-black flex-1" 
+              className="font-outfit font-light leading-[1.25] text-black flex-1" 
               style={{ 
-                ...typography.body.desktop,
+                fontSize: scale(isMobile ? 18 : 20),
+                letterSpacing: scale(isMobile ? -0.18 : -0.2),
               }}
             >
               <span>leveraging </span>
