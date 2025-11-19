@@ -58,14 +58,14 @@ export default function NewLanding() {
               {/* Productivity Has Never Felt So Rewarding */}
               <ProductivityRewardingSection />
 
-              {/* The Science Section */}
-              <ScienceSection />
-
               {/* Empower Section */}
               <EmpowerSection />
 
               {/* Platform Features Section */}
               <PlatformFeaturesSection />
+
+              {/* The Science Section */}
+              <ScienceSection />
           </div>
 
           {/* Footer */}

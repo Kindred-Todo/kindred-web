@@ -1,6 +1,6 @@
 import { columnStart, columns } from '@/lib/design-system'
 import { useResponsiveScale, useIsMobile } from '@/hooks/useResponsiveScale'
-import logo from '@/assets/logo.svg'
+import checkLogo from '@/assets/check-logo.svg'
 
 export function Footer() {
   const scale = useResponsiveScale()
@@ -18,35 +18,37 @@ export function Footer() {
       }}
     >
       <div 
-        className="flex flex-col max-w-[1600px] mx-auto"
+        className="flex flex-col max-w-[1600px] mx-auto text-white"
         style={{
           gap: scale(isMobile ? 32 : 64),
         }}
       >
         {/* Top row - Logo and Main Links */}
         <div 
-          className="flex flex-col md:flex-row md:justify-between md:items-start"
+          className="flex flex-col md:flex-row md:justify-between md:items-start text-white"
           style={{
             gap: scale(isMobile ? 24 : 48),
           }}
         >
-          {/* Logo */}
-          <div className="flex items-center gap-4">
+          {/* Logo - Centered Wordmark */}
+          <div className="flex flex-row items-center md:items-start gap-4">
             <img 
-              src={logo} 
+              src={checkLogo} 
               alt="Kindred" 
-              className="object-contain"
+              className="object-contain text-white"
               style={{
-                width: scale(isMobile ? 48 : 64),
-                height: scale(isMobile ? 48 : 64),
+                width: scale(isMobile ? 60 : 79.5 * 0.75),
+                height: scale(isMobile ? 48 : 63.9 * 0.75),
+                marginBottom: scale(isMobile ? 8 : 12),
               }}
             />
             <span 
-              className="font-fraunces font-light text-white italic"
+              className="font-fraunces font-normal text-[#854dff]"
               style={{
-                fontSize: scale(isMobile ? 28 : 36),
-                letterSpacing: scale(isMobile ? -0.56 : -0.72),
-                fontVariationSettings: "'SOFT' 0, 'WONK' 0.78, 'opsz' 144",
+                fontSize: scale(isMobile ? 36 : 48),
+                letterSpacing: scale(isMobile ? -1.8 : -2.4),
+                lineHeight: 1.2,
+                fontVariationSettings: "'SOFT' 0, 'WONK' 1, 'opsz' 80",
               }}
             >
               kindred
@@ -54,7 +56,7 @@ export function Footer() {
           </div>
 
           {/* Navigation columns */}
-          <div className="grid grid-cols-2 md:flex md:flex-row gap-8 md:gap-24">
+          <div className="grid grid-cols-2 md:flex md:flex-row gap-8 md:gap-24 justify-center text-white">
             {/* Product */}
             <div className="flex flex-col gap-3">
               <h3 
@@ -221,23 +223,23 @@ export function Footer() {
 
         {/* Bottom row - Copyright and Social */}
         <div 
-          className="flex flex-col md:flex-row md:justify-between md:items-center pt-6 md:pt-8 border-t border-white/10"
+          className="flex flex-col md:flex-row md:justify-center md:items-center pt-6 md:pt-8 border-t border-black/10 w-full"
           style={{
             gap: scale(isMobile ? 16 : 24),
           }}
         >
           <div 
-            className="font-outfit font-light text-white/40"
+            className="font-outfit font-light text-white/40 text-center"
             style={{
               fontSize: scale(isMobile ? 13 : 16),
               letterSpacing: scale(isMobile ? -0.13 : -0.16),
             }}
           >
-            © 2024 Kindred. All rights reserved.
+            © 2025 Kindred. All rights reserved.
           </div>
           
           {/* Social links - disabled for now */}
-          <div className="flex gap-6">
+          <div className="flex gap-6 justify-center">
             <a 
               href="#"
               className="font-outfit font-light text-white/40 cursor-not-allowed"

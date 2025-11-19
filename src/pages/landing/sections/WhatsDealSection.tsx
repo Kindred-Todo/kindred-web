@@ -2,6 +2,7 @@ import { columnStart, columns, typography } from '@/lib/design-system'
 import { motion } from 'framer-motion'
 import { useResponsiveScale, useIsMobile } from '@/hooks/useResponsiveScale'
 import { useParallax } from '@/hooks/useParallax'
+import { Heart, Check } from '@phosphor-icons/react'
 
 export function WhatsDealSection() {
   const scale = useResponsiveScale()
@@ -70,25 +71,26 @@ export function WhatsDealSection() {
             }}
           >
             <p className="mb-8">
-              <span>Productivity tools are </span>
-              <span className="text-[#854dff]">broken</span>
-              <span>, and they solve a legacy problem. the issue isn't organization, or elegance, its </span>
-              <span className="text-[#854dff]">behavior</span>
-              <span>. </span>
+              <span>You've tried every productivity app. You still don't do the things you want to do.</span>
             </p>
-            <p>
-              <span>It needs another innovation. It needs </span>
-              <span className="text-[#854dff]">kindred</span>
+            <p className="mb-8">
+              <span>That's because the problem was never </span>
+              <span className="text-[#854dff]">organization</span>
+              <span> - it was </span>
+              <span className="text-[#854dff]">motivation</span>
+              <span> and </span>
+              <span className="text-[#854dff]">discipline</span>
+              <span>.</span>
             </p>
           </motion.div>
 
           {/* Call to action text */}
-          <motion.p
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
             viewport={{ once: true, margin: "-100px" }} 
-            className="font-fraunces font-light leading-[1.05] text-[#13121f] mt-32 md:mt-48" 
+            className="font-fraunces font-light leading-[1.05] text-[#13121f] mt-32 md:mt-48 flex items-center gap-4" 
             style={{
               fontSize: scale(isMobile ? 32 : 48), // 32px on mobile, 48px on desktop
               lineHeight: '1.05',
@@ -96,8 +98,42 @@ export function WhatsDealSection() {
               fontVariationSettings: "'SOFT' 0, 'WONK' 1",
             }}
           >
-            Its time to finally do all those things you said you would, but didn't
-          </motion.p>
+            <span>It's time to finally fall in love with your todo list</span>
+            <div className="relative flex items-center justify-center" style={{ width: scale(isMobile ? 32 : 48), height: scale(isMobile ? 32 : 48) }}>
+              {/* Checkmark icon */}
+              <Check 
+                size={scale(isMobile ? 32 : 48)}
+                weight="bold" 
+                className="text-[#854dff]"
+              />
+              {/* Burst hearts */}
+              {[0, 1, 2, 3].map((i) => (
+                <motion.div
+                  key={i}
+                  className="absolute inset-0 flex items-center justify-center"
+                  animate={{
+                    opacity: [0, 1, 0],
+                    scale: [0.5, 1.5, 1.8],
+                    x: [0, Math.cos(i * Math.PI / 2) * 30, Math.cos(i * Math.PI / 2) * 50],
+                    y: [0, Math.sin(i * Math.PI / 2) * 30, Math.sin(i * Math.PI / 2) * 50],
+                  }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    repeatDelay: 1,
+                    delay: i * 0.1,
+                    ease: "easeOut"
+                  }}
+                >
+                  <Heart 
+                    size={scale(isMobile ? 20 : 30)}
+                    weight="regular" 
+                    className="text-[#854dff]"
+                  />
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
