@@ -24,15 +24,15 @@ export function HeroSection() {
         } as React.CSSProperties}
       >
         <h1 
-          className="font-fraunces p-2 bg-white w-[90%] md:w-full md:p-0 leading-[1.1] md:leading-[1]"
+          className="font-fraunces text-bold p-2 bg-white w-[90%] md:w-full md:p-0 leading-[1.1] md:leading-[1]"
           style={{
             fontSize: scale(isMobile ? 48 : 86), // 72px on mobile (scales from 402px), 86px on desktop (scales from 1728px)
             letterSpacing: scale(-1.72),
-            fontVariationSettings: "'SOFT' 0, 'WONK' 0.78",
+            fontVariationSettings: "'SOFT' 0, 'WONK' 1, 'opsz' 144 'wght' 400",
           }}
         >
           <span className="text-[#13121f]">Our approach to </span>
-          <span className="text-[#13121f] italic" style={{ fontVariationSettings: "'SOFT' 0, 'WONK' 0.78, 'opsz' 144" }}>
+          <span className="text-[#13121f] italic" style={{ fontVariationSettings: "'SOFT' 0, 'WONK' 1, 'opsz' 144 'wght' 400" }}>
             human centered productivity
           </span>
           <span className="text-[#13121f]"> keeps you </span>
