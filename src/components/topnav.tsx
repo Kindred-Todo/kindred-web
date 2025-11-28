@@ -42,15 +42,17 @@ export default function TopNav() {
       }}
     >
       {/* Logo/Brand - aligned with grid column 1 */}
-      <div 
-        className={cn(
-          "hidden md:block font-outfit font-light leading-normal transition-colors duration-300",
-          isLightMode ? "text-white" : "text-[#13121f]"
-        )}
-        style={typography.body.desktop}
-      >
-        kindred
-      </div>
+      <Link to="/">
+        <div 
+          className={cn(
+            "hidden md:block font-outfit font-light leading-normal transition-colors duration-300 cursor-pointer",
+            isLightMode ? "text-white" : "text-[#13121f]"
+          )}
+          style={typography.body.desktop}
+        >
+          kindred
+        </div>
+      </Link>
       
       {/* Mobile: hide the button */}
       <div className="md:hidden">

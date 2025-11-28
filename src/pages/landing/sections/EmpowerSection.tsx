@@ -133,6 +133,28 @@ export function EmpowerSection() {
             >
               Our positive reinforcement model fuels you with rewards and social recognition for empowering your friends- keeping them on track
             </p>
+
+            {/* Navigation Pills */}
+            <div className="flex p-1 bg-[#F5F5F7] rounded-full w-fit mt-4">
+              {['Posting', 'Encouragements', 'Congratulations'].map((item, index) => (
+                <button
+                  key={item}
+                  onClick={() => {
+                    setActiveCard(index)
+                    // Update scrollProgress to match the active card so scrolling continues from the right place
+                    scrollProgress.current = index * 400 + 100
+                  }}
+                  className={`
+                    px-5 py-2 rounded-full text-sm font-outfit font-medium transition-all duration-300 cursor-pointer
+                    ${activeCard === index 
+                      ? 'bg-[#E8E8ED] text-black shadow-sm' 
+                      : 'text-black/60 hover:text-black hover:bg-black/5'}
+                  `}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Right column - Three video cards with active states */}

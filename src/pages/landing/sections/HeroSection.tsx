@@ -3,6 +3,7 @@ import { useResponsiveScale, useIsMobile } from '@/hooks/useResponsiveScale'
 import videoSrc from '@/assets/landing-video/landing.mp4'
 import wordmarkSrc from '@/assets/wordmark.svg'
 import allShapesSrc from '@/assets/shapes/all-shape.svg'
+import { SheetTrigger, Sheet } from '@/components/ui/sheet'
 
 export function HeroSection() {
   const scale = useResponsiveScale()
@@ -54,13 +55,15 @@ export function HeroSection() {
             <div className="col-span-1 md:col-span-4 flex flex-col md:flex-col justify-end gap-6 md:pb-4">
                 
                 {/* Waitlist Button - Order changed for Mobile */}
-                <motion.button 
-                  className="order-2 md:order-1 mt-8 md:mt-0 px-8 py-3.5 bg-[#854dff] rounded-[12px] md:rounded-full font-outfit text-lg hover:bg-[#7340e6] transition-colors shadow-[0_0_40px_rgba(133,77,255,0.5)] w-full md:w-fit text-white"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Join our Waitlist
-                </motion.button>
+                <SheetTrigger asChild>
+                  <motion.button 
+                    className="order-2 md:order-1 mt-8 md:mt-0 px-8 py-3.5 bg-[#854dff] rounded-[12px] md:rounded-full font-outfit text-lg hover:bg-[#7340e6] transition-colors shadow-[0_0_40px_rgba(133,77,255,0.5)] w-full md:w-fit text-white"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Join our Waitlist
+                  </motion.button>
+                </SheetTrigger>
 
                 <div className="order-1 md:order-2 space-y-4 max-w-2xl">
                   <h2 className="font-outfit text-3xl md:text-[48px] font-light leading-[1] tracking-tight">
