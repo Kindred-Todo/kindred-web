@@ -99,7 +99,7 @@ export function ProductivityRewardingSection() {
             <span>Boost your </span>
             <span className="italic text-[#854dff]">intrinsic </span>
             <span className="italic text-[#854dff]">motivation</span>
-            <span> through psychology to help you naturally </span>
+            <span> through social positive reinforcement to help you naturally </span>
             <span className="italic">accomplish more</span>
             <span>, and </span>
             <span className="italic text-[#854dff]">feel good</span>

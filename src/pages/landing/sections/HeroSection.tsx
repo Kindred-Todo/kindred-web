@@ -1,77 +1,79 @@
-import { columnStart, columns, typography } from '@/lib/design-system'
 import { motion } from 'framer-motion'
-import imgImage1 from '@/assets/shapes/image1.png'
 import { useResponsiveScale, useIsMobile } from '@/hooks/useResponsiveScale'
+import videoSrc from '@/assets/landing-video/landing.mp4'
+import wordmarkSrc from '@/assets/wordmark.svg'
+import allShapesSrc from '@/assets/shapes/all-shape.svg'
 
 export function HeroSection() {
   const scale = useResponsiveScale()
   const isMobile = useIsMobile()
-  const buttonWidth = columns(2)
   
   return (
-    <section 
-      className="relative mb-16 md:mb-48" 
-      style={{ 
-        marginTop: isMobile ? scale(120) : scale(365),
-      }}
-    >
-      {/* Hero text - starts at column 2, spans ~4.5 columns */}
-      <div 
-        className="px-4 md:px-0 md:ml-[var(--col-start-2)] md:max-w-[var(--col-5)] flex flex-col"
-        style={{
-          '--col-start-2': columnStart(2),
-          '--col-5': columns(5),
-        } as React.CSSProperties}
-      >
-        <h1 
-          className="font-fraunces text-bold p-2 bg-white w-[90%] md:w-full md:p-0 leading-[1.1] md:leading-[1]"
-          style={{
-            fontSize: scale(isMobile ? 48 : 86), // 72px on mobile (scales from 402px), 86px on desktop (scales from 1728px)
-            letterSpacing: scale(-1.72),
-            fontVariationSettings: "'SOFT' 0, 'WONK' 1, 'opsz' 144 'wght' 400",
-          }}
+    <section className="relative w-full h-[100dvh] min-h-[600px] overflow-hidden bg-[#13121f] text-white">
+      {/* Video Background */}
+      <div className="absolute inset-0 w-full h-full mix-blend-multiply opacity-60">
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline 
+          className="w-full h-full object-cover"
         >
-          <span className="text-[#13121f]">Our approach to </span>
-          <span className="text-[#13121f] italic" style={{ fontVariationSettings: "'SOFT' 0, 'WONK' 1, 'opsz' 144 'wght' 400" }}>
-            human centered productivity
-          </span>
-          <span className="text-[#13121f]"> keeps you </span>
-          <span className="text-[#854dff]">happy </span>
-          <span className="text-[#13121f]">and </span>
-          <span className="text-[#854dff]">accomplished </span>
-        </h1>
-        
-        {/* Try the iOS beta button */}
-        <a 
-          href="https://testflight.apple.com/join/YtTj9DQJ"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-8 px-6 md:px-8 py-3 md:py-4 bg-[#854dff] text-white rounded-full font-outfit font-medium hover:bg-[#7340e6] transition-all w-full md:w-auto text-center inline-block"
-          style={{
-            maxWidth: isMobile ? '100%' : buttonWidth,
-            fontSize: isMobile ? scale(16) : scale(20),
-            boxShadow: '0 0 20px rgba(133, 77, 255, 0.3), 0 0 40px rgba(133, 77, 255, 0.15)',
-          }}
-        >
-          Download the iOS Beta
-        </a>
+          <source src={videoSrc} type="video/mp4" />
+        </video>
+      </div>
 
-        {/* Bicycle illustration */}
-        <motion.div
-          className="mt-8 w-full max-w-[311px]"
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <img 
-            src={imgImage1} 
-            alt="Connection illustration" 
-            className="w-full h-auto object-cover rounded-lg" 
-          />
-        </motion.div>
+      {/* Content Container using 9-column grid */}
+      <div className="relative z-10 w-full h-full flex flex-col justify-end px-6 md:px-[48px] pb-[48px]">
+        
+        {/* All Shapes SVG Overlay - Precisely positioned */}
+        <div className="absolute inset-0 pointer-events-none z-0 w-full h-full">
+             <img 
+               src={allShapesSrc} 
+               className="w-full h-full object-cover opacity-90"
+               alt=""
+             />
+        </div>
+
+        {/* Grid Layout: 9 Columns */}
+        <div className="grid grid-cols-1 md:grid-cols-9 gap-x-[20px] items-end">
+            
+            {/* Wordmark: Spans 4 columns */}
+            <div className="col-span-1 md:col-span-4 relative flex items-end">
+                 <img 
+                    src={wordmarkSrc} 
+                    alt="Kindred" 
+                    className="w-[70%] md:w-full md:max-w-full h-auto object-contain object-bottom origin-bottom-left"
+                 />
+            </div>
+
+            {/* Spacer: Spans 1 column */}
+            <div className="hidden md:block md:col-span-1" />
+
+            {/* Content: Spans 4 columns */}
+            <div className="col-span-1 md:col-span-4 flex flex-col md:flex-col justify-end gap-6 md:pb-4">
+                
+                {/* Waitlist Button - Order changed for Mobile */}
+                <motion.button 
+                  className="order-2 md:order-1 mt-8 md:mt-0 px-8 py-3.5 bg-[#854dff] rounded-[12px] md:rounded-full font-outfit text-lg hover:bg-[#7340e6] transition-colors shadow-[0_0_40px_rgba(133,77,255,0.5)] w-full md:w-fit text-white"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Join our Waitlist
+                </motion.button>
+
+                <div className="order-1 md:order-2 space-y-4 max-w-2xl">
+                  <h2 className="font-outfit text-3xl md:text-[48px] font-light leading-[1] tracking-tight">
+                    The most rewarding, feel good productivity system.
+                  </h2>
+                  <p className="font-outfit text-lg md:text-xl font-light opacity-90 leading-normal">
+                    Our approach to human centered social productivity keeps you happy and accomplished
+                  </p>
+                </div>
+            </div>
+
+        </div>
       </div>
     </section>
   )
 }
-

@@ -74,7 +74,7 @@ export function ScienceSection() {
           </div>
 
           {/* Right column - Animated chart transition */}
-          <div className="flex flex-1 justify-end items-start">
+          {/* <div className="flex flex-1 justify-end items-start">
             <div className="relative" style={{ width: isMobile ? '100%' : scale(680) }}>
               <AnimatePresence mode="wait">
                 {currentChart === 0 ? (
@@ -100,7 +100,7 @@ export function ScienceSection() {
                 )}
               </AnimatePresence>
             </div>
-          </div>
+          </div> */}
         </div>
 
         {/* Kudos animated element - positioned below */}
