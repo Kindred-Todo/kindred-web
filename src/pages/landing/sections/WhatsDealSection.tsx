@@ -28,7 +28,7 @@ export function WhatsDealSection() {
             <div className="w-2 h-2 bg-[#D9D9D9] rounded-full mt-2.5" />
           </div>
           
-          <div className="font-fraunces text-4xl md:text-[56px] font-light leading-tight tracking-tight gap-0 line-height-[0.8]"
+          <div className="font-fraunces text-4xl md:text-[48px] font-light leading-tight tracking-tight gap-0 line-height-[0.8]"
                style={{ fontVariationSettings: "'SOFT' 0, 'WONK' 1" }}>
             <p className="mb-2 text-[#13121f]">You've tried every productivity app. <br />
             <span className="text-[#854dff]">You never changed.</span>
@@ -38,14 +38,14 @@ export function WhatsDealSection() {
 
         {/* Second Block: Problem Statement */}
         <div className="max-w-2xl mb-48 relative">
-          <p className="font-outfit text-2xl md:text-[28px] font-light leading-[1.2] text-black">
+          <p className="font-outfit text-2xl md:text-[24px] font-light leading-[1.2] text-black">
             That's because the problem was never <span className="text-[#854dff]">organization</span> - it was <span className="text-[#854dff]">motivation</span> and <span className="text-[#854dff]">discipline</span>.
           </p>
         </div>
 
         {/* Third Block: Solution Statement */}
         <div className="relative mt-48 max-w-3xl">
-           <p className="font-outfit mt-24 text-2xl md:text-[28px] font-light leading-[1.2] text-[#13121f]">
+           <p className="font-outfit mt-24 text-2xl md:text-[24px] font-light leading-[1.2] text-[#13121f]">
             Its about time you fall back in 
             <span className="relative mx-2 inline-block text-[#854dff]">
               love

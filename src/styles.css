@@ -268,13 +268,13 @@ button:disabled {
   }
   
   html {
-    scroll-behavior: smooth;
+    /* scroll-behavior: smooth; */ /* Disabled for Lenis */
     overflow-x: hidden;
   }
   
   body {
     @apply bg-background text-foreground;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */ /* Removed to allow sticky positioning to work correctly */
   }
   
   /* Smooth momentum scrolling for a floaty feel */
@@ -282,18 +282,32 @@ button:disabled {
   body {
     -webkit-overflow-scrolling: touch;
   }
-  
-  /* Custom smooth scrolling with easing */
-  @supports (scroll-behavior: smooth) {
-    html {
-      scroll-behavior: smooth;
-    }
+
+  /* Lenis Smooth Scroll recommended styles */
+  html.lenis, html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  .lenis.lenis-scrolling iframe {
+    pointer-events: none;
   }
 }
 
 /* CSS-based parallax effect */
 .parallax-content {
-  transform: translateZ(0);
+  /* transform: translateZ(0); */ /* Disabled to prevent issues with sticky positioning */
   transition: transform 0.1s ease-out;
 }
 

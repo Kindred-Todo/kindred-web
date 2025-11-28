@@ -1,6 +1,7 @@
 import { scale, columnStart, columns, typography } from '@/lib/design-system'
 import { useRef, useEffect, useState } from 'react'
 import { useResponsiveScale, useIsMobile } from '@/hooks/useResponsiveScale'
+import { useScroll, useMotionValueEvent } from 'framer-motion'
 import demo1 from '@/assets/demos/post.MP4'
 import demo2 from '@/assets/demos/encourage.MP4'
 import demo3 from '@/assets/demos/congrats.MP4'
@@ -10,70 +11,27 @@ export function EmpowerSection() {
   const isMobile = useIsMobile()
   const sectionRef = useRef<HTMLElement>(null)
   const [activeCard, setActiveCard] = useState(0)
-  const scrollProgress = useRef(0)
-  const lastScrollTime = useRef(0)
   
   const video1Ref = useRef<HTMLVideoElement>(null)
   const video2Ref = useRef<HTMLVideoElement>(null)
   const video3Ref = useRef<HTMLVideoElement>(null)
-  
-  useEffect(() => {
-    const section = sectionRef.current
-    if (!section) return
 
-    const handleWheel = (e: WheelEvent) => {
-      const rect = section.getBoundingClientRect()
-      
-      console.log('Wheel event fired! rect.top:', rect.top.toFixed(0), 'rect.bottom:', rect.bottom.toFixed(0))
-      
-      // Check if section is in viewport and near the top
-      const isInView = rect.top <= 50 && rect.bottom >= window.innerHeight
-      
-      if (isInView) {
-        // Update progress based on scroll direction
-        scrollProgress.current += e.deltaY * 0.5
-        scrollProgress.current = Math.max(0, Math.min(1200, scrollProgress.current))
-        
-        // Calculate which card (0, 1, or 2)
-        const cardIndex = Math.floor(scrollProgress.current / 400)
-        const newActiveCard = Math.min(2, cardIndex)
-        
-        if (newActiveCard !== activeCard) {
-          setActiveCard(newActiveCard)
-        }
-        
-        console.log('Progress:', scrollProgress.current.toFixed(0), 'Active card:', cardIndex)
-        
-        // Only prevent default if we're NOT at the end or scrolling up
-        const atEnd = scrollProgress.current >= 1150
-        const scrollingDown = e.deltaY > 0
-        const atStart = scrollProgress.current <= 50
-        const scrollingUp = e.deltaY < 0
-        
-        if ((atEnd && scrollingDown) || (atStart && scrollingUp)) {
-          console.log('Allowing scroll through - at boundary')
-          // Don't prevent - allow normal scroll
-        } else {
-          console.log('Preventing scroll - locked in section')
-          e.preventDefault()
-          e.stopPropagation()
-        }
-      } else {
-        // Reset if scrolled back above
-        if (rect.top > 50) {
-          scrollProgress.current = 0
-          setActiveCard(0)
-        }
-      }
+  // Track scroll progress of the container
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"]
+  })
+
+  // Update active card based on scroll progress
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    if (latest < 0.33) {
+      setActiveCard(0)
+    } else if (latest < 0.66) {
+      setActiveCard(1)
+    } else {
+      setActiveCard(2)
     }
-
-    // Attach to document to ensure it catches all events
-    document.addEventListener('wheel', handleWheel, { passive: false })
-
-    return () => {
-      document.removeEventListener('wheel', handleWheel)
-    }
-  }, [activeCard])
+  })
   
   // Control video playback based on active card
   useEffect(() => {
@@ -94,137 +52,145 @@ export function EmpowerSection() {
   return (
     <section 
       ref={sectionRef}
+      className="relative"
       style={{ 
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        paddingLeft: '16px',
-        paddingRight: '16px'
+        height: '300vh', // Tall container for scrolling
       }}
     >
-      <div className="flex flex-col md:flex-row gap-12 md:ml-[var(--col-start-1)] md:max-w-[var(--col-7)]" style={{ '--col-start-1': columnStart(1), '--col-7': columns(7) } as React.CSSProperties}>
-          {/* Left column - Text content */}
-          <div className="flex flex-col gap-8 md:w-[35%]">
-            <div 
-              className="font-fraunces font-light leading-[1.05] text-black" 
-              style={{
-                fontSize: scale(isMobile ? 36 : 48),
-                letterSpacing: scale(isMobile ? -0.72 : -0.96),
-                lineHeight: '1.05',
-              }}
-            >
-              <div>
-                <span>Empower your </span>
-                <span className="italic text-[#854dff]">friends</span>
+      {/* Sticky container */}
+      <div className="sticky top-0 h-screen flex items-center px-4">
+        <div className="flex flex-col md:flex-row gap-12 md:ml-[var(--col-start-1)] md:max-w-[var(--col-7)] w-full" style={{ '--col-start-1': columnStart(1), '--col-7': columns(7) } as React.CSSProperties}>
+            {/* Left column - Text content */}
+            <div className="flex flex-col gap-8 md:w-[35%]">
+              <div 
+                className="font-fraunces font-light leading-[1.05] text-black" 
+                style={{
+                  fontSize: scale(isMobile ? 36 : 48),
+                  letterSpacing: scale(isMobile ? -0.72 : -0.96),
+                  lineHeight: '1.05',
+                }}
+              >
+                <div>
+                  <span>Empower your </span>
+                  <span className="italic text-[#854dff]">friends</span>
+                </div>
+                <div>
+                  <span>Empower </span>
+                  <span className="italic text-[#854dff]">yourself</span>
+                </div>
               </div>
-              <div>
-                <span>Empower </span>
-                <span className="italic text-[#854dff]">yourself</span>
+
+              <p 
+                className="font-outfit font-light leading-[1.25] text-black" 
+                style={{
+                  fontSize: scale(isMobile ? 20 : 24),
+                  lineHeight: '1.25',
+                  letterSpacing: scale(isMobile ? -0.2 : -0.24),
+                }}
+              >
+                Our positive reinforcement model fuels you with rewards and social recognition for empowering your friends- keeping them on track
+              </p>
+
+              {/* Navigation Pills */}
+              <div className="flex p-1 bg-[#F5F5F7] rounded-full w-fit mt-4">
+                {['Posting', 'Encouragements', 'Congratulations'].map((item, index) => (
+                  <button
+                    key={item}
+                    onClick={() => {
+                      // Manual navigation could be tricky with scroll-driven animation. 
+                      // Ideally, clicking these would scroll the page to the right section.
+                      // For now, we'll keep the state update but it will be overridden by scroll if user scrolls.
+                      setActiveCard(index)
+                      
+                      // Optional: Scroll to the corresponding section
+                      if (sectionRef.current) {
+                        const sectionTop = sectionRef.current.offsetTop
+                        const sectionHeight = sectionRef.current.offsetHeight
+                        const targetScroll = sectionTop + (sectionHeight * (index / 3)) + (window.innerHeight / 2)
+                        window.scrollTo({ top: targetScroll, behavior: 'smooth' })
+                      }
+                    }}
+                    className={`
+                      px-5 py-2 rounded-full text-sm font-outfit font-medium transition-all duration-300 cursor-pointer
+                      ${activeCard === index 
+                        ? 'bg-[#E8E8ED] text-black shadow-sm' 
+                        : 'text-black/60 hover:text-black hover:bg-black/5'}
+                    `}
+                  >
+                    {item}
+                  </button>
+                ))}
               </div>
             </div>
 
-            <p 
-              className="font-outfit font-light leading-[1.25] text-black" 
-              style={{
-                fontSize: scale(isMobile ? 20 : 24),
-                lineHeight: '1.25',
-                letterSpacing: scale(isMobile ? -0.2 : -0.24),
-              }}
-            >
-              Our positive reinforcement model fuels you with rewards and social recognition for empowering your friends- keeping them on track
-            </p>
-
-            {/* Navigation Pills */}
-            <div className="flex p-1 bg-[#F5F5F7] rounded-full w-fit mt-4">
-              {['Posting', 'Encouragements', 'Congratulations'].map((item, index) => (
-                <button
-                  key={item}
-                  onClick={() => {
-                    setActiveCard(index)
-                    // Update scrollProgress to match the active card so scrolling continues from the right place
-                    scrollProgress.current = index * 400 + 100
-                  }}
-                  className={`
-                    px-5 py-2 rounded-full text-sm font-outfit font-medium transition-all duration-300 cursor-pointer
-                    ${activeCard === index 
-                      ? 'bg-[#E8E8ED] text-black shadow-sm' 
-                      : 'text-black/60 hover:text-black hover:bg-black/5'}
-                  `}
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
+            {/* Right column - Three video cards with active states */}
+            <div className="flex flex-col md:flex-row gap-6 md:w-[62%] items-center justify-center md:items-center md:justify-start overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none no-scrollbar">
+              <div 
+                className="rounded-tl-[24px] rounded-tr-[24px] aspect-[9/19.5] transition-all duration-700 ease-out overflow-hidden snap-center"
+                style={{
+                  transform: activeCard === 0 ? 'scale(1.2)' : 'scale(0.85)',
+                  opacity: activeCard === 0 ? 1 : 0.4,
+                  width: isMobile ? (activeCard === 0 ? '70%' : '60%') : (activeCard === 0 ? '32%' : '28%'),
+                  flexShrink: 0,
+                  zIndex: activeCard === 0 ? 10 : 1,
+                  boxShadow: activeCard === 0 ? '0 12px 40px rgba(0, 0, 0, 0.15)' : 'none',
+                  scrollSnapAlign: isMobile ? 'center' : 'none',
+                }}
+              >
+                <video 
+                  ref={video1Ref}
+                  src={demo1}
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div 
+                className="rounded-tl-[24px] rounded-tr-[24px] aspect-[9/19.5] transition-all duration-700 ease-out overflow-hidden snap-center"
+                style={{
+                  transform: activeCard === 1 ? 'scale(1.2)' : 'scale(0.85)',
+                  opacity: activeCard === 1 ? 1 : 0.4,
+                  width: isMobile ? (activeCard === 1 ? '70%' : '60%') : (activeCard === 1 ? '32%' : '28%'),
+                  flexShrink: 0,
+                  zIndex: activeCard === 1 ? 10 : 1,
+                  boxShadow: activeCard === 1 ? '0 12px 40px rgba(0, 0, 0, 0.15)' : 'none',
+                  scrollSnapAlign: isMobile ? 'center' : 'none',
+                }}
+              >
+                <video 
+                  ref={video2Ref}
+                  src={demo2}
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div 
+                className="rounded-tl-[24px] rounded-tr-[24px] aspect-[9/19.5] transition-all duration-700 ease-out overflow-hidden snap-center"
+                style={{
+                  transform: activeCard === 2 ? 'scale(1.2)' : 'scale(0.85)',
+                  opacity: activeCard === 2 ? 1 : 0.4,
+                  width: isMobile ? (activeCard === 2 ? '70%' : '60%') : (activeCard === 2 ? '32%' : '28%'),
+                  flexShrink: 0,
+                  zIndex: activeCard === 2 ? 10 : 1,
+                  boxShadow: activeCard === 2 ? '0 12px 40px rgba(0, 0, 0, 0.15)' : 'none',
+                  scrollSnapAlign: isMobile ? 'center' : 'none',
+                }}
+              >
+                <video 
+                  ref={video3Ref}
+                  src={demo3}
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover"
+                />
+              </div>
           </div>
-
-          {/* Right column - Three video cards with active states */}
-          <div className="flex flex-col md:flex-row gap-6 md:w-[62%] items-center justify-center md:items-center md:justify-start overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none">
-            <div 
-              className="rounded-tl-[24px] rounded-tr-[24px] aspect-[9/19.5] transition-all duration-700 ease-out overflow-hidden snap-center"
-              style={{
-                transform: activeCard === 0 ? 'scale(1.2)' : 'scale(0.85)',
-                opacity: activeCard === 0 ? 1 : 0.4,
-                width: isMobile ? (activeCard === 0 ? '70%' : '60%') : (activeCard === 0 ? '32%' : '28%'),
-                flexShrink: 0,
-                zIndex: activeCard === 0 ? 10 : 1,
-                boxShadow: activeCard === 0 ? '0 12px 40px rgba(0, 0, 0, 0.15)' : 'none',
-                scrollSnapAlign: isMobile ? 'center' : 'none',
-              }}
-            >
-              <video 
-                ref={video1Ref}
-                src={demo1}
-                loop
-                muted
-                playsInline
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div 
-              className="rounded-tl-[24px] rounded-tr-[24px] aspect-[9/19.5] transition-all duration-700 ease-out overflow-hidden snap-center"
-              style={{
-                transform: activeCard === 1 ? 'scale(1.2)' : 'scale(0.85)',
-                opacity: activeCard === 1 ? 1 : 0.4,
-                width: isMobile ? (activeCard === 1 ? '70%' : '60%') : (activeCard === 1 ? '32%' : '28%'),
-                flexShrink: 0,
-                zIndex: activeCard === 1 ? 10 : 1,
-                boxShadow: activeCard === 1 ? '0 12px 40px rgba(0, 0, 0, 0.15)' : 'none',
-                scrollSnapAlign: isMobile ? 'center' : 'none',
-              }}
-            >
-              <video 
-                ref={video2Ref}
-                src={demo2}
-                loop
-                muted
-                playsInline
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div 
-              className="rounded-tl-[24px] rounded-tr-[24px] aspect-[9/19.5] transition-all duration-700 ease-out overflow-hidden snap-center"
-              style={{
-                transform: activeCard === 2 ? 'scale(1.2)' : 'scale(0.85)',
-                opacity: activeCard === 2 ? 1 : 0.4,
-                width: isMobile ? (activeCard === 2 ? '70%' : '60%') : (activeCard === 2 ? '32%' : '28%'),
-                flexShrink: 0,
-                zIndex: activeCard === 2 ? 10 : 1,
-                boxShadow: activeCard === 2 ? '0 12px 40px rgba(0, 0, 0, 0.15)' : 'none',
-                scrollSnapAlign: isMobile ? 'center' : 'none',
-              }}
-            >
-              <video 
-                ref={video3Ref}
-                src={demo3}
-                loop
-                muted
-                playsInline
-                className="w-full h-full object-cover"
-              />
-            </div>
         </div>
       </div>
     </section>
   )
 }
-

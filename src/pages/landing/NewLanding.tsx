@@ -11,7 +11,7 @@ import { PlatformFeaturesSection } from './sections/PlatformFeaturesSection'
 import { Footer } from './sections/Footer'
 export default function NewLanding() {
   return (
-    <div className="bg-[#FFFFFF] w-full overflow-x-hidden">
+    <div className="bg-[#FFFFFF] w-full">
       {/* Background decorative shapes */}
       <BackgroundShapes />
 
@@ -51,7 +51,7 @@ export default function NewLanding() {
             zIndex: 20,
             marginTop: '-100vh',
             boxShadow: '0 -30px 60px rgba(0, 0, 0, 0.2)',
-            willChange: 'transform',
+            // willChange: 'transform', // Disabled to prevent issues with sticky positioning
           }}
         >
           <div className="bg-white">
