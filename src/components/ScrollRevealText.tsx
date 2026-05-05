@@ -1,11 +1,13 @@
 import { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform, MotionValue } from 'framer-motion'
 
 interface ScrollRevealTextProps {
   text: string
   className?: string
   containerClassName?: string
   style?: React.CSSProperties
+  /** Pass an external scrollYProgress to drive the reveal (e.g. from a parent sticky container) */
+  scrollYProgress?: MotionValue<number>
 }
 
 export function ScrollRevealText({
@@ -13,13 +15,16 @@ export function ScrollRevealText({
   className = '',
   containerClassName = '',
   style = {},
+  scrollYProgress: externalProgress,
 }: ScrollRevealTextProps) {
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const { scrollYProgress } = useScroll({
+  const { scrollYProgress: localProgress } = useScroll({
     target: containerRef,
     offset: ['start end', 'end start'],
   })
+
+  const scrollYProgress = externalProgress ?? localProgress
 
   const characters = text.split('')
 
@@ -49,7 +54,7 @@ function Character({
   char: string
   index: number
   total: number
-  scrollYProgress: ReturnType<typeof useScroll>['scrollYProgress']
+  scrollYProgress: MotionValue<number>
 }) {
   const threshold = index / total
   const color = useTransform(
