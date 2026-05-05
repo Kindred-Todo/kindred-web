@@ -1,0 +1,23 @@
+src/pages/landing/sections/ScrollRevealSection.tsx
+  7ce747ebb5169c9a 1-71
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.1",
+  "base_commit_sha": "1f4a992fb9efd1bc0597e4979775bb9e78854d27",
+  "prompts": {
+    "7ce747ebb5169c9a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1ac3d936-9551-4a13-8b7a-09e5b9e2db0b",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Abhik Ray",
+      "messages": [],
+      "total_additions": 71,
+      "total_deletions": 0,
+      "accepted_lines": 140,
+      "overriden_lines": 0
+    }
+  }
+}
