@@ -1,0 +1,23 @@
+src/components/ConveyorBelt.tsx
+  7ce747ebb5169c9a 1-41
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.1",
+  "base_commit_sha": "323e42a05b21998708d145322e8c291c4d0cd75d",
+  "prompts": {
+    "7ce747ebb5169c9a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1ac3d936-9551-4a13-8b7a-09e5b9e2db0b",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Abhik Ray",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 144,
+      "overriden_lines": 0
+    }
+  }
+}
