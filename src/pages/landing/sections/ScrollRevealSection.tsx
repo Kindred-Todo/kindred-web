@@ -28,7 +28,7 @@ export function ScrollRevealSection() {
     // Tall container creates scroll runway. The sticky child pins inside it.
     <section
       ref={sectionRef}
-      className="relative w-full bg-dark-bg"
+      className="relative w-full bg-black"
       style={{ height: isMobile ? 'auto' : '300vh' }}
     >
       {/* Sticky container — pins content to viewport center while scrolling through the runway */}
