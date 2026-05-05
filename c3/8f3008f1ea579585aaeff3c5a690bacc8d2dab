@@ -1,0 +1,58 @@
+src/pages/landing/sections/PrivacySection.tsx
+  d477ac56da3280e9 2,9-23,25-42,44
+src/pages/landing/sections/FAQSection.tsx
+  d477ac56da3280e9 12-17,20-21,24,26,31,60-63,66-87,91-108,110
+src/pages/landing/sections/MotivationSection.tsx
+  d477ac56da3280e9 2,26-66,68
+src/pages/landing/sections/Footer.tsx
+  d477ac56da3280e9 10-27,29-37,39-55,57-66,69-135,139-144
+src/pages/landing/sections/CapabilitiesSection.tsx
+  d477ac56da3280e9 27,33-34,36,40-58
+src/pages/landing/sections/ParallaxGallerySection.tsx
+  d477ac56da3280e9 23-29,50,52-54,57-58
+src/components/topnav.tsx
+  d477ac56da3280e9 10,14-15,17,22,30
+src/lib/design-system.ts
+  d477ac56da3280e9 2,7-8,11-13,172-189
+src/pages/landing/sections/EveryoneWinsSection.tsx
+  d477ac56da3280e9 2,11,16-18,22-29,31-41,44-45,49
+src/pages/landing/sections/HeroSection.tsx
+  d477ac56da3280e9 3,60-109,111-114,125-126,131,140,149
+src/components/AutoAccordion.tsx
+  d477ac56da3280e9 94,104
+src/pages/landing/NewLanding.tsx
+  d477ac56da3280e9 16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.1",
+  "base_commit_sha": "c38f3008f1ea579585aaeff3c5a690bacc8d2dab",
+  "prompts": {
+    "7ce747ebb5169c9a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1ac3d936-9551-4a13-8b7a-09e5b9e2db0b",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Abhik Ray",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 34,
+      "overriden_lines": 0
+    },
+    "d477ac56da3280e9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "135b6acd-dda3-4270-9b14-bd1bbc4cc19c",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Abhik Ray",
+      "messages": [],
+      "total_additions": 469,
+      "total_deletions": 220,
+      "accepted_lines": 420,
+      "overriden_lines": 0
+    }
+  }
+}
