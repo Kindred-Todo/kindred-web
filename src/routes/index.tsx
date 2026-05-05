@@ -1,9 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Toaster } from '@/components/ui/sonner'
 import TopNav from '@/components/topnav'
-import { Sheet, SheetContent } from '@/components/ui/sheet'
-import Waitlist from '@/pages/landing/Waitlist'
-import { useMobile } from '@/contexts/MobileContext'
 import NewLanding from '@/pages/landing/NewLanding'
 
 export const Route = createFileRoute('/')({
@@ -11,21 +8,11 @@ export const Route = createFileRoute('/')({
 })
 
 function App() {
-  const { isMobile } = useMobile()
-
   return (
     <div className="w-full min-h-screen">
-      <Sheet>
-        <TopNav />
-        <Toaster />
-        <NewLanding />
-        <SheetContent
-          side={isMobile ? 'bottom' : 'right'}
-          className={`rounded-xl p-12 ${isMobile ? 'h-11/12' : ''}`}
-        >
-          <Waitlist />
-        </SheetContent>
-      </Sheet>
+      <TopNav />
+      <Toaster />
+      <NewLanding />
     </div>
   )
 }
