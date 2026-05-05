@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { useResponsiveScale, useIsMobile } from '@/hooks/useResponsiveScale'
 import { decorativeShapes } from '@/assets/shapes/decorative-shapes'
-import videoSrc from '@/assets/landing-video/landing.mp4'
+import videoSrc from '@/assets/kindred_final_final_4.mp4'
 import wordmarkSrc from '@/assets/wordmark.svg'
 
 export function HeroSection() {
@@ -11,8 +11,8 @@ export function HeroSection() {
   return (
     <section className="relative w-full h-[100dvh] min-h-[600px] overflow-hidden bg-dark-bg text-white">
       {/* Video Background */}
-      <div className="absolute inset-0 w-full h-full mix-blend-multiply opacity-60">
-        <video autoPlay loop muted playsInline className="w-full h-full object-cover">
+      <div className="absolute inset-0 w-full h-full mix-blend-multiply opacity-80">
+        <video autoPlay loop muted playsInline className="w-full h-full object-cover blur-[12px]">
           <source src={videoSrc} type="video/mp4" />
         </video>
       </div>

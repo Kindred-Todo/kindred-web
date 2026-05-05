@@ -1,5 +1,7 @@
+import { motion } from 'framer-motion'
 import { useResponsiveScale, useIsMobile } from '@/hooks/useResponsiveScale'
 import { typography } from '@/lib/design-system'
+import { decorativeShapes } from '@/assets/shapes/decorative-shapes'
 import everyoneWins1 from '@/assets/new-design/everyone-wins-1.png'
 import everyoneWins2 from '@/assets/new-design/everyone-wins-2.png'
 
@@ -9,6 +11,31 @@ export function EveryoneWinsSection() {
 
   return (
     <section className="relative w-full bg-white" style={{ padding: isMobile ? '64px 16px' : `${scale(96)} ${scale(64)}` }}>
+      {/* Decorative shapes */}
+      {!isMobile && (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <motion.div
+            className="absolute"
+            style={{ right: scale(80), top: scale(60), width: scale(40), height: scale(40), opacity: 0.12, filter: 'drop-shadow(0 0 12px rgba(133, 77, 255, 0.4))' }}
+            animate={{ rotate: [0, 360] }}
+            transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
+          >
+            <svg className="block size-full" fill="none" viewBox="0 0 46.0422 43.7887">
+              <path d={decorativeShapes.filledStar} fill="var(--color-primary)" fillOpacity="0.6" stroke="var(--color-primary)" strokeWidth="0.9" />
+            </svg>
+          </motion.div>
+          <motion.div
+            className="absolute"
+            style={{ right: scale(200), bottom: scale(120), width: scale(50), height: scale(50), opacity: 0.08, filter: 'drop-shadow(0 0 14px rgba(133, 77, 255, 0.35))' }}
+            animate={{ rotate: [45, -315] }}
+            transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
+          >
+            <svg className="block size-full" fill="none" viewBox="0 0 65.1557 62.234">
+              <path d={decorativeShapes.dashedStar} stroke="var(--color-primary)" strokeDasharray="18.04 18.04" strokeWidth="1.8" />
+            </svg>
+          </motion.div>
+        </div>
+      )}
       <h2 className="font-outfit font-[350] capitalize leading-[1.25] text-black tracking-[-2.4px]" style={{ fontSize: isMobile ? '32px' : scale(48), maxWidth: isMobile ? '100%' : scale(934) }}>
         On Kindred, everyone wins.
       </h2>

@@ -57,7 +57,7 @@ export function FAQSection() {
   const isMobile = useIsMobile()
 
   return (
-    <section className="relative w-full bg-white" style={{ padding: isMobile ? '64px 16px' : `${scale(96)} ${scale(64)}` }}>
+    <section className="relative w-full bg-white" style={{ padding: isMobile ? '64px 16px' : `${scale(160)} ${scale(64)} ${scale(96)}` }}>
       {isMobile ? (
         <div className="flex flex-col gap-12">
           <p className="font-fraunces font-normal italic leading-none text-black text-shadow-[0px_0px_24px_white] tracking-[-1.92px] text-[40px]" style={{ fontVariationSettings: "'SOFT' 0, 'WONK' 1" }}>

@@ -1,5 +1,7 @@
+import { motion } from 'framer-motion'
 import { useResponsiveScale, useIsMobile } from '@/hooks/useResponsiveScale'
 import { typography } from '@/lib/design-system'
+import { decorativeShapes } from '@/assets/shapes/decorative-shapes'
 
 export function PrivacySection() {
   const scale = useResponsiveScale()
@@ -34,8 +36,29 @@ export function PrivacySection() {
               <span className="text-primary"> visible only to the people you let in.</span>
             </p>
           </div>
-          {/* Empty: columns 5-8 */}
-          <div className="col-span-4" />
+          {/* Empty: columns 5-8 — with a subtle decorative shape */}
+          <div className="col-span-4 relative">
+            <motion.div
+              className="absolute"
+              style={{ left: '30%', top: '20%', width: scale(55), height: scale(55), opacity: 0.1, filter: 'drop-shadow(0 0 14px rgba(133, 77, 255, 0.4))' }}
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 35, repeat: Infinity, ease: 'linear' }}
+            >
+              <svg className="block size-full" fill="none" viewBox="0 0 65.1557 62.234">
+                <path d={decorativeShapes.dashedStar} stroke="var(--color-primary)" strokeDasharray="18.04 18.04" strokeWidth="1.8" />
+              </svg>
+            </motion.div>
+            <motion.div
+              className="absolute"
+              style={{ right: '20%', bottom: '30%', width: scale(30), height: scale(34), opacity: 0.1, filter: 'drop-shadow(0 0 10px rgba(133, 77, 255, 0.35))' }}
+              animate={{ rotate: [-20, 340] }}
+              transition={{ duration: 45, repeat: Infinity, ease: 'linear' }}
+            >
+              <svg className="block size-full" fill="none" viewBox="155 88 52 58">
+                <path d={decorativeShapes.polygon} fill="var(--color-primary)" fillOpacity="0.7" />
+              </svg>
+            </motion.div>
+          </div>
           {/* Image: columns 9-12 */}
           <div className="col-span-4 bg-light-foreground rounded-[8px] overflow-clip flex items-center justify-center" style={{ height: scale(610) }}>
             <p className="font-outfit text-[18px] text-black leading-[1.25]">product photo</p>

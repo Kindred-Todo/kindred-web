@@ -1,5 +1,7 @@
+import { motion } from 'framer-motion'
 import { useResponsiveScale, useIsMobile } from '@/hooks/useResponsiveScale'
 import { typography } from '@/lib/design-system'
+import { decorativeShapes } from '@/assets/shapes/decorative-shapes'
 import { ConveyorBelt } from '@/components/ConveyorBelt'
 import belt1 from '@/assets/new-design/belt-1.png'
 import belt2 from '@/assets/new-design/belt-2.png'
@@ -23,6 +25,19 @@ export function MotivationSection() {
 
   return (
     <section className="relative w-full bg-white overflow-hidden" style={{ padding: isMobile ? '64px 0' : `${scale(96)} 0` }}>
+      {/* Decorative shape */}
+      {!isMobile && (
+        <motion.div
+          className="absolute pointer-events-none"
+          style={{ right: scale(100), top: scale(80), width: scale(45), height: scale(45), opacity: 0.1, filter: 'drop-shadow(0 0 12px rgba(133, 77, 255, 0.4))' }}
+          animate={{ rotate: [30, 390] }}
+          transition={{ duration: 32, repeat: Infinity, ease: 'linear' }}
+        >
+          <svg className="block size-full" fill="none" viewBox="0 0 46.0422 43.7887">
+            <path d={decorativeShapes.filledStar} fill="var(--color-primary)" fillOpacity="0.6" stroke="var(--color-primary)" strokeWidth="0.9" />
+          </svg>
+        </motion.div>
+      )}
       <div style={{ padding: isMobile ? '0 16px' : `0 ${scale(64)}` }}>
         {isMobile ? (
           <>
