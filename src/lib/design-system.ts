@@ -202,15 +202,22 @@ export const spacing = {
  */
 export const colors = {
   primary: '#854dff',
+  primaryGlow: 'rgba(133, 77, 255, 0.5)',
   text: {
     primary: '#13121f',
     secondary: '#adacac',
+    muted: '#525252',
+    dim: '#666666',
+    subtle: '#838383',
     white: '#ffffff',
   },
   background: {
     white: '#ffffff',
+    surface: '#fafafa',
+    dark: '#13121f',
     lightGray: '#eeeeee',
     lightGrayTransparent: 'rgba(238, 238, 238, 0.25)',
   },
+  divider: '#DBDBDB',
 }
 

@@ -19,6 +19,12 @@
   --color-glow: rgba(133, 77, 255, 0.07);
   --color-disabled-button: rgba(61, 37, 120, 1);
   --color-accent-purple: rgba(227, 214, 255, 1);
+  --color-surface: #fafafa;
+  --color-text-muted: #525252;
+  --color-text-dim: #666666;
+  --color-text-subtle: #838383;
+  --color-primary-glow: rgba(133, 77, 255, 0.5);
+  --color-divider: #DBDBDB;
 
   /* System colors - directly exposed for both themes */
   /* Light theme colors */
