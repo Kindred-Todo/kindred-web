@@ -1,0 +1,27 @@
+src/pages/landing/sections/EveryoneWinsSection.tsx
+  7ce747ebb5169c9a 1-33
+src/pages/landing/sections/PrivacySection.tsx
+  7ce747ebb5169c9a 1-25
+src/pages/landing/sections/MotivationSection.tsx
+  7ce747ebb5169c9a 1-53
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.1",
+  "base_commit_sha": "60e83bff2adea88597ce841f433a7c61d72bdc6f",
+  "prompts": {
+    "7ce747ebb5169c9a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1ac3d936-9551-4a13-8b7a-09e5b9e2db0b",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Abhik Ray",
+      "messages": [],
+      "total_additions": 111,
+      "total_deletions": 0,
+      "accepted_lines": 180,
+      "overriden_lines": 0
+    }
+  }
+}
