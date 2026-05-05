@@ -1,0 +1,27 @@
+src/styles.css
+  7ce747ebb5169c9a 22-27
+src/lib/design-system.ts
+  7ce747ebb5169c9a 205,209-211,216-217,221
+src/assets/shapes/decorative-shapes.ts
+  7ce747ebb5169c9a 1-26
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.1",
+  "base_commit_sha": "97b33dce4b8bc84f016dc16ac76b09c0f8afa24e",
+  "prompts": {
+    "7ce747ebb5169c9a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1ac3d936-9551-4a13-8b7a-09e5b9e2db0b",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Abhik Ray",
+      "messages": [],
+      "total_additions": 61352,
+      "total_deletions": 0,
+      "accepted_lines": 61352,
+      "overriden_lines": 0
+    }
+  }
+}
