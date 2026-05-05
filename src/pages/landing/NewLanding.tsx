@@ -13,11 +13,11 @@ export default function NewLanding() {
     <div className="w-full">
       <HeroSection />
       <ScrollRevealSection />
+      <ParallaxGallerySection />
       <CapabilitiesSection />
       <EveryoneWinsSection />
       <PrivacySection />
       <MotivationSection />
-      <ParallaxGallerySection />
       <FAQSection />
       <Footer />
     </div>

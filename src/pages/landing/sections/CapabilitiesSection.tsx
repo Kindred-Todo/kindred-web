@@ -24,25 +24,38 @@ export function CapabilitiesSection() {
           <p className="font-outfit capitalize leading-none text-black tracking-[-0.48px]" style={{ fontSize: isMobile ? '28px' : scale(48) }}>
             not another todo list. an environment that keeps you going with tools and people you'll love
           </p>
-          <p className="font-outfit text-text-muted leading-[1.2] tracking-[-0.2px]" style={{ fontSize: isMobile ? '16px' : scale(20), maxWidth: isMobile ? '100%' : scale(714) }}>
+          <p className="font-outfit text-text-muted leading-[1.2] tracking-[-0.2px]" style={{ fontSize: isMobile ? '16px' : `clamp(16px, ${scale(20)}, 20px)`, maxWidth: isMobile ? '100%' : scale(714) }}>
             Its fun, its a tool with personality. Built for the way you actually want to get things done — with your people by your side.
           </p>
         </div>
 
         {/* Content: Accordion + Product Demo */}
-        <div className="flex flex-col md:flex-row gap-8 mt-16 md:mt-32 w-full" style={{ gap: isMobile ? '32px' : scale(216) }}>
-          <div className="flex-1" style={{ maxWidth: isMobile ? '100%' : scale(736) }}>
+        {isMobile ? (
+          <div className="flex flex-col gap-8 mt-8">
             <AutoAccordion items={CAPABILITIES} autoAdvanceDelay={5000} />
-          </div>
-          <div className="flex-1">
-            <div
-              className="bg-light-foreground rounded-tl-[24px] rounded-tr-[24px] w-full flex items-center justify-center"
-              style={{ height: isMobile ? '300px' : scale(586), maxWidth: isMobile ? '100%' : scale(452) }}
-            >
+            <div className="bg-light-foreground rounded-tl-[24px] rounded-tr-[24px] w-full flex items-center justify-center h-[300px]">
               <p className="font-outfit text-[24px] text-black tracking-[-0.96px] text-center leading-[1.05]">product<br/>demos</p>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="grid grid-cols-12 gap-x-[20px] w-full" style={{ marginTop: scale(64) }}>
+            {/* Accordion: columns 1-7 */}
+            <div className="col-span-7">
+              <AutoAccordion items={CAPABILITIES} autoAdvanceDelay={5000} />
+            </div>
+            {/* Spacer: column 8 */}
+            <div className="col-span-1" />
+            {/* Product Demo: columns 9-12 */}
+            <div className="col-span-4">
+              <div
+                className="bg-light-foreground rounded-tl-[24px] rounded-tr-[24px] w-full flex items-center justify-center"
+                style={{ height: scale(586) }}
+              >
+                <p className="font-outfit text-[24px] text-black tracking-[-0.96px] text-center leading-[1.05]">product<br/>demos</p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   )

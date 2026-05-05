@@ -9,22 +9,26 @@ interface FAQItem {
 }
 
 const FAQ_ITEMS: FAQItem[] = [
-  { question: "Can people see everything I'm doing?", answer: 'No.' },
-  { question: 'Do my friends need to be on the app too?', answer: "They don't have to be, but it's way better when they are. Kindred is built for shared accountability." },
-  { question: 'Is it free?', answer: 'Yes — Kindred is free to download and use.' },
+  { question: "Can people see everything I'm doing?", answer: "Not at all. Your activity on Kindred is private by default. You choose exactly what to share and who to share it with — whether that's a close friend, your whole group, or no one. Your tasks, progress, and personal notes stay yours unless you decide otherwise." },
+  { question: 'Do my friends need to be on the app too?', answer: "They don't have to be, but it's way better when they are. Kindred is built around shared accountability — you can use it solo, but the real magic happens when the people you care about are in it with you. Invite them and watch how much easier it becomes to stay on track." },
+  { question: 'Is it free?', answer: "Yes — Kindred is completely free to download and use. All core features are included from day one, no paywalls or trials. We want everyone to have access to a productivity system that actually works." },
+  { question: 'How is this different from other productivity apps?', answer: "Most productivity apps treat you like a solo machine — just organize harder and you'll get things done. Kindred flips that. It's built around the people in your life. You set goals together, celebrate wins together, and stay accountable to each other. It's not about grinding alone — it's about growing with your people." },
+  { question: 'What are Blueprints?', answer: "Blueprints are ready-made goal templates designed for real life — finals prep, job applications, fitness challenges, passion projects. Instead of building a system from scratch, pick a Blueprint and start immediately. They give you structure without the overhead." },
+  { question: 'Can I use Kindred for work or school?', answer: "Absolutely. Kindred works for anything you want to get done — school projects, career goals, side hustles, personal growth. The accountability model adapts to whatever you're pursuing because the people around you can support all of it." },
 ]
 
-function FAQItemComponent({ item }: { item: FAQItem }) {
-  const [isOpen, setIsOpen] = useState(false)
+function FAQItemComponent({ item, defaultOpen = false }: { item: FAQItem; defaultOpen?: boolean }) {
+  const [isOpen, setIsOpen] = useState(defaultOpen)
   return (
     <div className="w-full">
-      <button className="w-full text-left cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
+      <button className="w-full text-left cursor-pointer flex items-start justify-between gap-4" onClick={() => setIsOpen(!isOpen)}>
         <p className="font-outfit font-normal text-[32px] text-black text-shadow-[0px_0px_24px_white] tracking-[-0.96px] leading-none">{item.question}</p>
+        <span className="font-outfit text-[24px] text-primary leading-none shrink-0 mt-1">{isOpen ? '-' : '+'}</span>
       </button>
       <AnimatePresence>
         {isOpen && (
           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3, ease: 'easeInOut' }} className="overflow-hidden">
-            <p className="font-outfit font-normal text-[18px] text-black leading-[1.25] mt-8">{item.answer}</p>
+            <p className="font-outfit font-normal text-[18px] text-text-muted leading-[1.5] mt-8">{item.answer}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -53,33 +57,57 @@ export function FAQSection() {
   const isMobile = useIsMobile()
 
   return (
-    <section className="relative w-full bg-white" style={{ padding: isMobile ? '64px 16px' : `${scale(96)} ${scale(84)}` }}>
-      <div className="flex flex-col md:flex-row" style={{ gap: isMobile ? '48px' : scale(128) }}>
-        <div className="relative" style={{ width: isMobile ? '100%' : scale(466) }}>
-          <p className="font-fraunces font-normal italic leading-none text-black text-shadow-[0px_0px_24px_white] tracking-[-1.92px]" style={{ fontSize: isMobile ? '40px' : scale(64), fontVariationSettings: "'SOFT' 0, 'WONK' 1" }}>
+    <section className="relative w-full bg-white" style={{ padding: isMobile ? '64px 16px' : `${scale(96)} ${scale(64)}` }}>
+      {isMobile ? (
+        <div className="flex flex-col gap-12">
+          <p className="font-fraunces font-normal italic leading-none text-black text-shadow-[0px_0px_24px_white] tracking-[-1.92px] text-[40px]" style={{ fontVariationSettings: "'SOFT' 0, 'WONK' 1" }}>
             frequently asked questions
           </p>
-          {!isMobile && (
+          <div className="flex flex-col gap-8">
+            {FAQ_ITEMS.map((item, i) => (
+              <div key={i}>
+                <FAQItemComponent item={item} defaultOpen={i === 0} />
+                {i < FAQ_ITEMS.length - 1 && (
+                  <div className="mt-8">
+                    <svg className="block w-full" fill="none" viewBox="0 0 421 1">
+                      <path d="M0 0.5H421" stroke="var(--color-divider)" />
+                    </svg>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-12 gap-x-[20px]">
+          {/* Title + shapes: columns 1-5 */}
+          <div className="col-span-5 relative">
+            <p className="font-fraunces font-normal italic leading-none text-black text-shadow-[0px_0px_24px_white] tracking-[-1.92px]" style={{ fontSize: scale(64), fontVariationSettings: "'SOFT' 0, 'WONK' 1" }}>
+              frequently asked questions
+            </p>
             <div className="mt-8" style={{ width: scale(451), height: scale(594) }}>
               <DecorativeShapes />
             </div>
-          )}
+          </div>
+          {/* Spacer: column 6 */}
+          <div className="col-span-1" />
+          {/* Questions: columns 7-12 */}
+          <div className="col-span-6 flex flex-col gap-8">
+            {FAQ_ITEMS.map((item, i) => (
+              <div key={i}>
+                <FAQItemComponent item={item} defaultOpen={i === 0} />
+                {i < FAQ_ITEMS.length - 1 && (
+                  <div className="mt-8">
+                    <svg className="block w-full" fill="none" viewBox="0 0 421 1">
+                      <path d="M0 0.5H421" stroke="var(--color-divider)" />
+                    </svg>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="flex flex-col gap-8 flex-1" style={{ maxWidth: isMobile ? '100%' : scale(543) }}>
-          {FAQ_ITEMS.map((item, i) => (
-            <div key={i}>
-              <FAQItemComponent item={item} />
-              {i < FAQ_ITEMS.length - 1 && (
-                <div className="mt-8">
-                  <svg className="block w-full" fill="none" viewBox="0 0 421 1" style={{ maxWidth: scale(421) }}>
-                    <path d="M0 0.5H421" stroke="var(--color-divider)" />
-                  </svg>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
+      )}
     </section>
   )
 }

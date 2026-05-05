@@ -20,13 +20,13 @@ interface GalleryImage {
 }
 
 const GALLERY_IMAGES: GalleryImage[] = [
-  { src: parallax1, width: 335, height: 447, rotation: -5.87, speed: 0.08, direction: 'down', left: '0%', top: '0%' },
-  { src: parallax2, width: 375, height: 503, rotation: 11.93, speed: 0.12, direction: 'up', left: '15%', top: '20%' },
-  { src: parallax3, width: 360, height: 450, rotation: -14.93, speed: 0.15, direction: 'down', left: '32%', top: '10%' },
-  { src: parallax4, width: 372, height: 496, rotation: 4.19, speed: 0.1, direction: 'up', left: '50%', top: '25%' },
-  { src: parallax5, width: 301, height: 452, rotation: -5, speed: 0.11, direction: 'down', left: '68%', top: '12%' },
-  { src: parallax6, width: 304, height: 541, rotation: 12.5, speed: 0.13, direction: 'up', left: '80%', top: '24%' },
-  { src: parallax7, width: 339, height: 424, rotation: 11.63, speed: 0.09, direction: 'down', left: '0%', top: '50%' },
+  { src: parallax1, width: 335, height: 447, rotation: -5.87, speed: 0.2, direction: 'down', left: '0%', top: '0%' },
+  { src: parallax2, width: 375, height: 503, rotation: 11.93, speed: 0.3, direction: 'up', left: '15%', top: '20%' },
+  { src: parallax3, width: 360, height: 450, rotation: -14.93, speed: 0.35, direction: 'down', left: '32%', top: '10%' },
+  { src: parallax4, width: 372, height: 496, rotation: 4.19, speed: 0.25, direction: 'up', left: '50%', top: '25%' },
+  { src: parallax5, width: 301, height: 452, rotation: -5, speed: 0.28, direction: 'down', left: '68%', top: '12%' },
+  { src: parallax6, width: 304, height: 541, rotation: 12.5, speed: 0.32, direction: 'up', left: '80%', top: '24%' },
+  { src: parallax7, width: 339, height: 424, rotation: 11.63, speed: 0.22, direction: 'down', left: '0%', top: '50%' },
 ]
 
 export function ParallaxGallerySection() {
@@ -47,15 +47,15 @@ export function ParallaxGallerySection() {
   }
 
   return (
-    <section className="relative w-full overflow-hidden" style={{ height: '900px' }}>
+    <section className="relative w-full overflow-hidden" style={{ height: '900px', marginTop: '-450px' }}>
       {GALLERY_IMAGES.map((img, i) => (
-        <ParallaxWrapper key={i} speed={img.speed} direction={img.direction}>
-          <div className="absolute" style={{ left: img.left, top: img.top, transform: `rotate(${img.rotation}deg)` }}>
-            <div className="overflow-hidden" style={{ width: `${img.width}px`, height: `${img.height}px` }}>
+        <div key={i} className="absolute" style={{ left: img.left, top: img.top }}>
+          <ParallaxWrapper speed={img.speed} direction={img.direction}>
+            <div className="overflow-hidden" style={{ width: `${img.width}px`, height: `${img.height}px`, transform: `rotate(${img.rotation}deg)` }}>
               <img src={img.src} alt="" className="w-full h-full object-cover" />
             </div>
-          </div>
-        </ParallaxWrapper>
+          </ParallaxWrapper>
+        </div>
       ))}
     </section>
   )

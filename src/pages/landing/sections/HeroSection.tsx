@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { useResponsiveScale, useIsMobile } from '@/hooks/useResponsiveScale'
+import { decorativeShapes } from '@/assets/shapes/decorative-shapes'
 import videoSrc from '@/assets/landing-video/landing.mp4'
 import wordmarkSrc from '@/assets/wordmark.svg'
 
@@ -56,11 +57,61 @@ export function HeroSection() {
         </svg>
       </div>
 
+      {/* Decorative shapes */}
+      {!isMobile && (
+        <div className="absolute inset-0 pointer-events-none z-[1]">
+          {/* Filled star - top right area */}
+          <motion.div
+            className="absolute"
+            style={{ right: '12%', top: '14%', width: '50px', height: '50px' }}
+            animate={{ opacity: [0.08, 0.2, 0.08], scale: [0.95, 1.05, 0.95] }}
+            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <svg className="block size-full rotate-[15deg]" fill="none" viewBox="0 0 46.0422 43.7887">
+              <path d={decorativeShapes.filledStar} fill="var(--color-primary)" stroke="var(--color-primary)" strokeWidth="0.9" />
+            </svg>
+          </motion.div>
+          {/* Dashed star - upper left */}
+          <motion.div
+            className="absolute"
+            style={{ left: '8%', top: '22%', width: '60px', height: '60px' }}
+            animate={{ opacity: [0.1, 0.22, 0.1], scale: [1, 1.08, 1] }}
+            transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}
+          >
+            <svg className="block size-full -rotate-[20deg]" fill="none" viewBox="0 0 65.1557 62.234">
+              <path d={decorativeShapes.dashedStar} stroke="var(--color-primary)" strokeDasharray="18.04 18.04" strokeWidth="1.8" />
+            </svg>
+          </motion.div>
+          {/* Small polygon - center right */}
+          <motion.div
+            className="absolute"
+            style={{ right: '22%', top: '45%', width: '36px', height: '40px' }}
+            animate={{ opacity: [0.06, 0.18, 0.06], scale: [0.98, 1.04, 0.98] }}
+            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 2.5 }}
+          >
+            <svg className="block size-full rotate-[30deg]" fill="none" viewBox="0 0 50 56">
+              <path d={decorativeShapes.polygon} fill="var(--color-primary)" transform="translate(-155, -88)" />
+            </svg>
+          </motion.div>
+          {/* Filled star - mid left */}
+          <motion.div
+            className="absolute"
+            style={{ left: '18%', top: '55%', width: '35px', height: '35px' }}
+            animate={{ opacity: [0.1, 0.25, 0.1], scale: [1, 1.06, 1] }}
+            transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
+          >
+            <svg className="block size-full rotate-[45deg]" fill="none" viewBox="0 0 46.0422 43.7887">
+              <path d={decorativeShapes.filledStar} fill="var(--color-primary)" stroke="var(--color-primary)" strokeWidth="0.9" />
+            </svg>
+          </motion.div>
+        </div>
+      )}
+
       {/* Content */}
-      <div className="relative z-10 w-full h-full flex flex-col justify-end px-6 md:px-[48px] pb-[48px]">
-        <div className="grid grid-cols-1 md:grid-cols-9 gap-x-[20px] items-end">
-          {/* Wordmark: Spans 4 columns */}
-          <div className="col-span-1 md:col-span-4 relative flex items-end">
+      <div className="relative z-10 w-full h-full flex flex-col justify-end px-6 md:px-[64px] pb-[48px]">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-x-[20px] items-end">
+          {/* Wordmark: Spans 5 columns */}
+          <div className="col-span-1 md:col-span-5 relative flex items-end">
             <img
               src={wordmarkSrc}
               alt="Kindred"
@@ -71,13 +122,13 @@ export function HeroSection() {
           {/* Spacer: 1 column */}
           <div className="hidden md:block md:col-span-1" />
 
-          {/* Content: 4 columns */}
-          <div className="col-span-1 md:col-span-4 flex flex-col justify-end gap-6 md:pb-4">
+          {/* Content: 6 columns */}
+          <div className="col-span-1 md:col-span-6 flex flex-col justify-end gap-6 md:pb-4">
             {/* Buttons */}
             <div className="order-2 md:order-1 flex gap-2 mt-8 md:mt-0">
               <motion.a
                 href="#"
-                className="px-5 py-3 bg-primary rounded-[12px] font-outfit text-base text-white shadow-[0_0_40px_var(--color-primary-glow)] text-center"
+                className="px-5 py-3 bg-primary rounded-[12px] font-outfit text-base text-white shadow-[0_0_40px_var(--color-primary-glow)] text-center whitespace-nowrap"
                 style={{ width: isMobile ? '100%' : '247px' }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -86,7 +137,7 @@ export function HeroSection() {
               </motion.a>
               <motion.a
                 href="#"
-                className="px-5 py-3 rounded-[12px] font-outfit text-base text-white border border-primary shadow-[0_0_40px_var(--color-primary-glow)] text-center"
+                className="px-5 py-3 rounded-[12px] font-outfit text-base text-white border border-primary shadow-[0_0_40px_var(--color-primary-glow)] text-center whitespace-nowrap"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -95,7 +146,7 @@ export function HeroSection() {
             </div>
 
             {/* Copy */}
-            <div className="order-1 md:order-2 space-y-4 max-w-2xl">
+            <div className="order-1 md:order-2 space-y-4">
               <h2 className="font-outfit text-3xl md:text-[64px] font-normal leading-none tracking-[-1.92px]">
                 The most rewarding, feel good productivity system.
               </h2>

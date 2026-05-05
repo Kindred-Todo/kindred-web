@@ -91,7 +91,7 @@ export function AutoAccordion({ items, autoAdvanceDelay = 5000 }: AutoAccordionP
         return (
           <div
             key={index}
-            className="bg-white rounded-[12px] w-full cursor-pointer border border-dark-foreground transition-all duration-300"
+            className="bg-white rounded-[12px] w-full cursor-pointer border border-black/8 shadow-[0_1px_3px_rgba(0,0,0,0.06)] transition-all duration-300"
             onClick={() => handleClick(index)}
           >
             <div className={`flex flex-col px-[24px] w-full transition-all duration-300 ${
@@ -101,7 +101,7 @@ export function AutoAccordion({ items, autoAdvanceDelay = 5000 }: AutoAccordionP
                 <p className="font-outfit text-[24px] text-black tracking-[-0.24px] leading-[1.2]">
                   {item.title}
                 </p>
-                {isActive ? <CircularProgress progress={progress} /> : <MinusIcon />}
+                {isActive ? <CircularProgress progress={progress} /> : <span className="font-outfit text-[20px] text-primary leading-none">-</span>}
               </div>
               <AnimatePresence>
                 {isActive && (

@@ -7,15 +7,19 @@ export default function TopNav() {
   const location = useLocation()
   const isHome = location.pathname === '/'
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isVisible, setIsVisible] = useState(!isHome)
 
   useEffect(() => {
     const handleScroll = () => {
+      // Hero (100vh) + ScrollReveal (300vh) = 400vh before white sections
+      const darkSectionsEnd = window.innerHeight * 4
       setIsScrolled(window.scrollY > window.innerHeight - 100)
+      setIsVisible(!isHome || window.scrollY > darkSectionsEnd - 100)
     }
     window.addEventListener('scroll', handleScroll, { passive: true })
     handleScroll()
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  }, [isHome])
 
   const isLightMode = isHome && !isScrolled
 
@@ -23,6 +27,7 @@ export default function TopNav() {
     <nav
       className={cn(
         "fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 md:px-0 py-6 md:py-0 transition-all duration-300",
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full pointer-events-none",
         isLightMode
           ? "bg-black/10 backdrop-blur-sm rounded-full mx-[62px] mt-[58px]"
           : "bg-white/60 backdrop-blur-sm border-b border-white/20 shadow-sm supports-[backdrop-filter]:bg-white/30"

@@ -1,16 +1,16 @@
 // Design System for Kindred Landing Page
-// Based on 1728px (MacBook Pro 16") with 7-column grid for desktop
+// Based on 1728px (MacBook Pro 16") with 12-column grid, 20px gutters, 64px margins
 // Based on 402px for mobile
 
 const FIGMA_WIDTH = 1728
 const MOBILE_WIDTH = 402
-const GRID_COLUMNS = 7
-const GRID_MARGIN = 64 // Left and right margins in Figma (NOT 48!)
+const GRID_COLUMNS = 12
+const GRID_MARGIN = 64 // Left and right margins in Figma
 const MOBILE_MARGIN = 16 // Mobile margins
 
-// Calculate column width: (1728 - 64*2) / 7 = 1600 / 7 = 228.57px per column
-export const COLUMN_WIDTH = (FIGMA_WIDTH - GRID_MARGIN * 2) / GRID_COLUMNS
-export const GRID_GAP = 24 // Gap between columns
+// Calculate column width: (1728 - 64*2 - 11*20) / 12 = (1600 - 220) / 12 = 115px per column
+export const COLUMN_WIDTH = (FIGMA_WIDTH - GRID_MARGIN * 2 - 20 * (GRID_COLUMNS - 1)) / GRID_COLUMNS
+export const GRID_GAP = 20 // Gap between columns (gutters)
 
 /**
  * Scale a pixel value from Figma to viewport width (Desktop)
@@ -169,6 +169,24 @@ export const typography = {
     },
   },
   
+  // Section body - descriptive paragraphs within sections (e.g. EveryoneWins, Privacy)
+  sectionBody: {
+    desktop: {
+      fontSize: `clamp(16px, ${scale(24)}, 24px)`,
+      lineHeight: '1.25',
+      letterSpacing: `clamp(-0.3px, ${scale(-1.2)}, -0.1px)`,
+      fontWeight: '350',
+      textTransform: 'capitalize' as const,
+    },
+    mobile: {
+      fontSize: '18px',
+      lineHeight: '1.25',
+      letterSpacing: '-0.18px',
+      fontWeight: '350',
+      textTransform: 'capitalize' as const,
+    },
+  },
+
   // Feature text - for numbered features
   feature: {
     desktop: {
