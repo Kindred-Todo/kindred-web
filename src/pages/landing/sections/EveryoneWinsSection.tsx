@@ -4,6 +4,8 @@ import { typography } from '@/lib/design-system'
 import { decorativeShapes } from '@/assets/shapes/decorative-shapes'
 import everyoneWins1 from '@/assets/new-design/everyone-wins-1.png'
 import everyoneWins2 from '@/assets/new-design/everyone-wins-2.png'
+import taskCardIcecream from '@/assets/new-design/task-card-icecream.png'
+import taskCardPresentation from '@/assets/new-design/task-card-presentation.png'
 
 export function EveryoneWinsSection() {
   const scale = useResponsiveScale()
@@ -46,13 +48,25 @@ export function EveryoneWinsSection() {
             <span className="text-primary">Most productivity apps are built for one person grinding alone. </span>
             <span className="text-black">Kindred is different — when your friends grow, you grow. When you hit a goal, they feel it too. Progress isn't a competition here. It's contagious.</span>
           </p>
-          <div className="flex gap-3">
-            <div className="overflow-hidden w-[48%] h-[300px]">
+          <div className="relative overflow-visible" style={{ height: '380px' }}>
+            <div className="absolute left-0 top-[40px] w-[50%] h-[300px] overflow-hidden">
               <img src={everyoneWins1} alt="" className="w-full h-full object-cover" />
             </div>
-            <div className="overflow-hidden w-[48%] h-[300px]">
+            <div className="absolute left-[48%] top-[40px] w-[52%] h-[300px] overflow-hidden">
               <img src={everyoneWins2} alt="" className="w-full h-full object-cover" />
             </div>
+            <img
+              src={taskCardIcecream}
+              alt="Ice Cream with groupchat"
+              className="absolute"
+              style={{ top: '0', right: '-4%', width: '55%', filter: 'drop-shadow(0px 4px 12px rgba(0,0,0,0.25))', transform: 'rotate(-3.51deg)', zIndex: 10 }}
+            />
+            <img
+              src={taskCardPresentation}
+              alt="Finish up Presentation @ Reunion Cafe"
+              className="absolute"
+              style={{ bottom: '0', left: '-4%', width: '50%', filter: 'drop-shadow(0px 3px 10px rgba(0,0,0,0.25))', transform: 'rotate(4.48deg)', zIndex: 10 }}
+            />
           </div>
         </div>
       ) : (
@@ -64,13 +78,50 @@ export function EveryoneWinsSection() {
               <span className="text-black">Kindred is different — when your friends grow, you grow. When you hit a goal, they feel it too. Progress isn't a competition here. It's contagious.</span>
             </p>
           </div>
-          {/* Image 1: columns 5-8 */}
-          <div className="col-span-4 overflow-hidden" style={{ height: scale(616) }}>
-            <img src={everyoneWins1} alt="" className="w-full h-full object-cover" />
-          </div>
-          {/* Image 2: columns 9-12 */}
-          <div className="col-span-4 overflow-hidden" style={{ height: scale(616) }}>
-            <img src={everyoneWins2} alt="" className="w-full h-full object-cover" />
+          {/* Photos + task cards: columns 5-12 */}
+          <div className="col-span-8 relative overflow-visible" style={{ height: scale(740) }}>
+            {/* Left photo */}
+            <div
+              className="absolute overflow-hidden"
+              style={{ left: '0', top: scale(60), width: '49%', height: scale(616) }}
+            >
+              <img src={everyoneWins1} alt="" className="w-full h-full object-cover" />
+            </div>
+            {/* Right photo */}
+            <div
+              className="absolute overflow-hidden"
+              style={{ left: '51%', top: scale(60), width: '49%', height: scale(617) }}
+            >
+              <img src={everyoneWins2} alt="" className="w-full h-full object-cover" />
+            </div>
+            {/* "Ice Cream with groupchat" task card */}
+            <img
+              src={taskCardIcecream}
+              alt="Ice Cream with groupchat"
+              className="absolute"
+              style={{
+                right: '0',
+                top: '0',
+                width: '42%',
+                filter: 'drop-shadow(0px 6px 18px rgba(0,0,0,0.25))',
+                transform: 'rotate(-3.51deg)',
+                zIndex: 10,
+              }}
+            />
+            {/* "Finish up Presentation" task card */}
+            <img
+              src={taskCardPresentation}
+              alt="Finish up Presentation @ Reunion Cafe"
+              className="absolute"
+              style={{
+                left: '-4%',
+                bottom: scale(50),
+                width: '38%',
+                filter: 'drop-shadow(0px 5px 15px rgba(0,0,0,0.25))',
+                transform: 'rotate(4.48deg)',
+                zIndex: 10,
+              }}
+            />
           </div>
         </div>
       )}

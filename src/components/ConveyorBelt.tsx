@@ -4,9 +4,10 @@ import { motion } from 'framer-motion'
 interface ConveyorBeltProps {
   children: React.ReactNode
   speed?: number // pixels per second
+  reverse?: boolean
 }
 
-export function ConveyorBelt({ children, speed = 50 }: ConveyorBeltProps) {
+export function ConveyorBelt({ children, speed = 50, reverse = false }: ConveyorBeltProps) {
   const contentRef = useRef<HTMLDivElement>(null)
   const [contentWidth, setContentWidth] = useState(0)
 
@@ -22,7 +23,7 @@ export function ConveyorBelt({ children, speed = 50 }: ConveyorBeltProps) {
     <div className="overflow-hidden w-full">
       <motion.div
         className="flex"
-        animate={contentWidth > 0 ? { x: [0, -contentWidth] } : undefined}
+        animate={contentWidth > 0 ? { x: reverse ? [-contentWidth, 0] : [0, -contentWidth] } : undefined}
         transition={{
           x: {
             duration,

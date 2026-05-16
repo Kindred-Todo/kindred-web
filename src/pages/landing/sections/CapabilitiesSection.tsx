@@ -1,5 +1,6 @@
 import { useResponsiveScale, useIsMobile } from '@/hooks/useResponsiveScale'
 import { AutoAccordion } from '@/components/AutoAccordion'
+import voiceDemoSrc from '@/assets/new-design/voice-demo.mp4'
 
 const CAPABILITIES = [
   { title: 'Voice', content: 'Build your todo lists and manage your daily tasks with your voice, no more manual entry in sight' },
@@ -33,8 +34,10 @@ export function CapabilitiesSection() {
         {isMobile ? (
           <div className="flex flex-col gap-8 mt-8">
             <AutoAccordion items={CAPABILITIES} autoAdvanceDelay={5000} />
-            <div className="bg-light-foreground rounded-tl-[24px] rounded-tr-[24px] w-full flex items-center justify-center h-[300px]">
-              <p className="font-outfit text-[24px] text-black tracking-[-0.96px] text-center leading-[1.05]">product<br/>demos</p>
+            <div className="bg-light-foreground rounded-tl-[24px] rounded-tr-[24px] w-full overflow-hidden h-[400px] shadow-[0_4px_24px_rgba(0,0,0,0.08)]">
+              <video autoPlay loop muted playsInline className="w-full h-full object-cover">
+                <source src={voiceDemoSrc} type="video/mp4" />
+              </video>
             </div>
           </div>
         ) : (
@@ -48,10 +51,12 @@ export function CapabilitiesSection() {
             {/* Product Demo: columns 9-12 */}
             <div className="col-span-4">
               <div
-                className="bg-light-foreground rounded-tl-[24px] rounded-tr-[24px] w-full flex items-center justify-center"
-                style={{ height: scale(586) }}
+                className="bg-light-foreground rounded-tl-[24px] rounded-tr-[24px] overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.08)]"
+                style={{ height: scale(780), width: '85%' }}
               >
-                <p className="font-outfit text-[24px] text-black tracking-[-0.96px] text-center leading-[1.05]">product<br/>demos</p>
+                <video autoPlay loop muted playsInline className="w-full h-full object-cover">
+                  <source src={voiceDemoSrc} type="video/mp4" />
+                </video>
               </div>
             </div>
           </div>
