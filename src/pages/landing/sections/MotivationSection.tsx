@@ -30,36 +30,36 @@ interface KudosCard {
 }
 
 const ENCOURAGEMENTS: KudosCard[] = [
-  { avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face', name: 'Sarah', time: '2h ago', category: 'Reading', task: 'Chapter 2 of Red Rising', comment: "im might actually finish the book lol", highlighted: true },
-  { avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face', name: 'Marcus', time: '3h ago', category: 'Listening', task: 'Podcast: The History of Rome', comment: 'Incredible storytelling, highly recommended', highlighted: false },
-  { avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face', name: 'Sophie', time: '5h ago', category: 'Watching', task: 'Episode 5 of Stranger Things', comment: 'Plot twist blew my mind!', highlighted: true },
-  { avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face', name: 'Tyler', time: '6h ago', category: 'Fitness', task: 'Morning 5k Run', comment: 'the sunrise made it worth it', highlighted: false },
-  { avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=80&fit=crop&crop=face', name: 'Priya', time: '7h ago', category: 'Learning', task: 'React Native Tutorial', comment: 'finally clicked after 3 tries', highlighted: true },
-  { avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face', name: 'Jake', time: '8h ago', category: 'Creative', task: 'Sketch new logo concepts', comment: 'version 4 is actually fire', highlighted: false },
-  { avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&h=80&fit=crop&crop=face', name: 'Mia', time: '9h ago', category: 'Writing', task: 'Journal entry for today', comment: 'getting better at this honestly', highlighted: false },
-  { avatar: 'https://images.unsplash.com/photo-1552058544-f2b08422138a?w=80&h=80&fit=crop&crop=face', name: 'Ethan', time: '10h ago', category: 'Music', task: 'Practice guitar 30 min', comment: 'barre chords are clicking', highlighted: true },
+  { avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face', name: 'Sarah', time: '2h ago', category: 'Reading', task: 'Chapter 2 of Red Rising', comment: "you're gonna love where this goes trust me", highlighted: true },
+  { avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face', name: 'Marcus', time: '3h ago', category: 'Listening', task: 'Podcast: The History of Rome', comment: 'yo let me know what you think of episode 4', highlighted: false },
+  { avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face', name: 'Sophie', time: '5h ago', category: 'Watching', task: 'Episode 5 of Stranger Things', comment: 'keep going it gets so much better', highlighted: true },
+  { avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face', name: 'Tyler', time: '6h ago', category: 'Fitness', task: 'Morning 5k Run', comment: 'you got this dude just keep showing up', highlighted: false },
+  { avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=80&fit=crop&crop=face', name: 'Priya', time: '7h ago', category: 'Learning', task: 'React Native Tutorial', comment: 'stick with it!! it clicks eventually', highlighted: true },
+  { avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face', name: 'Jake', time: '8h ago', category: 'Creative', task: 'Sketch new logo concepts', comment: "can't wait to see what you come up with", highlighted: false },
+  { avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&h=80&fit=crop&crop=face', name: 'Mia', time: '9h ago', category: 'Writing', task: 'Journal entry for today', comment: 'proud of you for doing this consistently', highlighted: false },
+  { avatar: 'https://images.unsplash.com/photo-1552058544-f2b08422138a?w=80&h=80&fit=crop&crop=face', name: 'Ethan', time: '10h ago', category: 'Music', task: 'Practice guitar 30 min', comment: 'play something for us next time!!', highlighted: true },
 ]
 
 const CONGRATULATIONS: KudosCard[] = [
   { avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=80&h=80&fit=crop&crop=face', name: 'Jessica', time: '4h ago', category: 'Fitness', task: 'Go to the Gym', comment: 'why is bro kinda huge', highlighted: true },
-  { avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80&h=80&fit=crop&crop=face', name: 'Marco', time: '5h ago', category: 'Fitness', task: 'Go to the Gym', comment: 'truly LOCKED IN', highlighted: false },
-  { avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=80&h=80&fit=crop&crop=face', name: 'Lena', time: '6h ago', category: 'Cooking', task: 'Try a new recipe', comment: 'spicy and flavorful vibes', highlighted: true },
-  { avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=80&h=80&fit=crop&crop=face', name: 'Devon', time: '7h ago', category: 'Travel', task: 'Plan a weekend trip', comment: 'need some fresh air fr', highlighted: false },
-  { avatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=80&h=80&fit=crop&crop=face', name: 'Nina', time: '8h ago', category: 'Productivity', task: 'Clear inbox to zero', comment: 'impossible but she did it', highlighted: true },
-  { avatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=80&h=80&fit=crop&crop=face', name: 'Amir', time: '9h ago', category: 'Wellness', task: 'Meditate for 10 minutes', comment: 'actually felt so calm after', highlighted: false },
-  { avatar: 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=80&h=80&fit=crop&crop=face', name: 'Chloe', time: '10h ago', category: 'Social', task: 'Catch up with old friend', comment: 'we laughed for 2 hours straight', highlighted: false },
-  { avatar: 'https://images.unsplash.com/photo-1463453091185-61582044d556?w=80&h=80&fit=crop&crop=face', name: 'Ray', time: '11h ago', category: 'Study', task: 'Finish problem set 4', comment: 'never thought id say this but it was fun', highlighted: true },
+  { avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80&h=80&fit=crop&crop=face', name: 'Marco', time: '5h ago', category: 'Fitness', task: 'Go to the Gym', comment: 'truly LOCKED IN bro', highlighted: false },
+  { avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=80&h=80&fit=crop&crop=face', name: 'Lena', time: '6h ago', category: 'Cooking', task: 'Try a new recipe', comment: 'ok chef!! save me a plate', highlighted: true },
+  { avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=80&h=80&fit=crop&crop=face', name: 'Devon', time: '7h ago', category: 'Travel', task: 'Plan a weekend trip', comment: 'you deserve this so much', highlighted: false },
+  { avatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=80&h=80&fit=crop&crop=face', name: 'Nina', time: '8h ago', category: 'Productivity', task: 'Clear inbox to zero', comment: 'HOW did you do that teach me', highlighted: true },
+  { avatar: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=80&h=80&fit=crop&crop=face', name: 'Amir', time: '9h ago', category: 'Wellness', task: 'Meditate for 10 minutes', comment: 'love that you did this today', highlighted: false },
+  { avatar: 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=80&h=80&fit=crop&crop=face', name: 'Chloe', time: '10h ago', category: 'Social', task: 'Catch up with old friend', comment: "that's so wholesome i love it", highlighted: false },
+  { avatar: 'https://images.unsplash.com/photo-1463453091185-61582044d556?w=80&h=80&fit=crop&crop=face', name: 'Ray', time: '11h ago', category: 'Study', task: 'Finish problem set 4', comment: 'actual legend for getting through that', highlighted: true },
 ]
 
 function KudosCardComponent({ card }: { card: KudosCard }) {
   return (
     <div
-      className="shrink-0 flex items-center gap-3 transition-opacity duration-500"
+      className="shrink-0 flex items-start gap-3 transition-opacity duration-500"
       style={{ opacity: card.highlighted ? 1 : 0.2 }}
     >
       {/* Avatar + name */}
       <div className="flex flex-col items-center shrink-0" style={{ width: '48px' }}>
-        <div className="w-[56px] h-[56px] rounded-full overflow-hidden">
+        <div className="w-[48px] h-[48px] rounded-full overflow-hidden">
           <img src={card.avatar} alt="" className="w-full h-full object-cover" loading="lazy" />
         </div>
         <span className="font-outfit text-[13px] text-black mt-1 text-center whitespace-nowrap">{card.name}</span>
@@ -85,19 +85,19 @@ function LabeledBelt({ label, children }: { label: string; children: React.React
       {/* Left gradient overlay with label */}
       <div
         className="absolute left-0 top-0 bottom-0 flex items-center z-10 pointer-events-none"
-        style={{ width: '240px' }}
+        style={{ width: '45%' }}
       >
         <div
           className="absolute inset-0"
           style={{
-            background: 'linear-gradient(to right, white 30%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0.5) 75%, transparent 100%)',
-            backdropFilter: 'blur(4px)',
-            WebkitBackdropFilter: 'blur(4px)',
-            maskImage: 'linear-gradient(to right, black 40%, black 60%, transparent 100%)',
-            WebkitMaskImage: 'linear-gradient(to right, black 40%, black 60%, transparent 100%)',
+            background: 'linear-gradient(to right, white 15%, rgba(255,255,255,0.98) 30%, rgba(255,255,255,0.9) 45%, rgba(255,255,255,0.6) 65%, rgba(255,255,255,0.2) 85%, transparent 100%)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
+            maskImage: 'linear-gradient(to right, black 25%, black 45%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to right, black 25%, black 45%, transparent 100%)',
           }}
         />
-        <p className="relative z-10 font-outfit font-medium text-black tracking-[-0.48px] text-[20px] pl-6">
+        <p className="relative z-10 font-outfit font-light text-black tracking-[-0.48px] text-[20px] pl-8">
           {label}
         </p>
       </div>
@@ -105,7 +105,7 @@ function LabeledBelt({ label, children }: { label: string; children: React.React
       <div
         className="absolute right-0 top-0 bottom-0 z-10 pointer-events-none"
         style={{
-          width: '120px',
+          width: '200px',
           background: 'linear-gradient(to left, white 10%, transparent 100%)',
         }}
       />
