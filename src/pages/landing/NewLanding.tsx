@@ -2,6 +2,8 @@ import { HeroSection } from './sections/HeroSection'
 import { ScrollRevealSection } from './sections/ScrollRevealSection'
 import { CapabilitiesSection } from './sections/CapabilitiesSection'
 import { EveryoneWinsSection } from './sections/EveryoneWinsSection'
+import { KudosSection } from './sections/KudosSection'
+import { RingsSection } from './sections/RingsSection'
 import { PrivacySection } from './sections/PrivacySection'
 import { MotivationSection } from './sections/MotivationSection'
 import { ParallaxGallerySection } from './sections/ParallaxGallerySection'
@@ -16,6 +18,8 @@ export default function NewLanding() {
       <ParallaxGallerySection />
       <CapabilitiesSection />
       <EveryoneWinsSection />
+      <KudosSection />
+      <RingsSection />
       <PrivacySection />
       <MotivationSection />
       <FAQSection />
