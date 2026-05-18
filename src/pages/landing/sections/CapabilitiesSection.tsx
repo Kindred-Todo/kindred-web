@@ -34,8 +34,8 @@ export function CapabilitiesSection() {
         {isMobile ? (
           <div className="flex flex-col gap-8 mt-8">
             <AutoAccordion items={CAPABILITIES} autoAdvanceDelay={5000} />
-            <div className="bg-light-foreground rounded-tl-[24px] rounded-tr-[24px] w-full overflow-hidden h-[400px] shadow-[0_4px_24px_rgba(0,0,0,0.08)]">
-              <video autoPlay loop muted playsInline className="w-full h-full object-cover">
+            <div className="bg-light-foreground rounded-tl-[24px] rounded-tr-[24px] w-full overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.08)]">
+              <video autoPlay loop muted playsInline className="w-full h-auto object-contain">
                 <source src={voiceDemoSrc} type="video/mp4" />
               </video>
             </div>

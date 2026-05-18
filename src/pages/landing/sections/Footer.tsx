@@ -17,8 +17,8 @@ export function Footer() {
               <p className="font-outfit font-normal capitalize leading-[1.25] text-white tracking-[-0.72px] mt-4 text-[18px]">
                 Download Kindred and start building the life you actually want — with the people who want it for you too.
               </p>
-              <div className="flex gap-2 mt-6">
-                <motion.a href="#" className="px-5 py-3 bg-primary rounded-[12px] font-outfit text-base text-white shadow-[0_0_16px_var(--color-primary-glow)] text-center whitespace-nowrap w-full" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <div className="flex flex-col gap-3 mt-6">
+                <motion.a href="#" className="px-5 py-3 bg-primary rounded-[12px] font-outfit text-base text-white shadow-[0_0_16px_var(--color-primary-glow)] text-center whitespace-nowrap" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   Join our Waitlist
                 </motion.a>
                 <motion.a href="#" className="px-5 py-3 rounded-[12px] font-outfit text-base text-primary border border-primary text-center whitespace-nowrap" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>

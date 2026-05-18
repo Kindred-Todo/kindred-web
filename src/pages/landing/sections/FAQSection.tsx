@@ -22,13 +22,13 @@ function FAQItemComponent({ item, defaultOpen = false }: { item: FAQItem; defaul
   return (
     <div className="w-full">
       <button className="w-full text-left cursor-pointer flex items-start justify-between gap-4" onClick={() => setIsOpen(!isOpen)}>
-        <p className="font-outfit font-normal text-[32px] text-black text-shadow-[0px_0px_24px_white] tracking-[-0.96px] leading-none">{item.question}</p>
-        <span className="font-outfit text-[24px] text-primary leading-none shrink-0 mt-1">{isOpen ? '-' : '+'}</span>
+        <p className="font-outfit font-normal text-[22px] md:text-[32px] text-black text-shadow-[0px_0px_24px_white] tracking-[-0.96px] leading-[1.2]">{item.question}</p>
+        <span className="font-outfit text-[20px] md:text-[24px] text-primary leading-none shrink-0 mt-1">{isOpen ? '-' : '+'}</span>
       </button>
       <AnimatePresence>
         {isOpen && (
           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3, ease: 'easeInOut' }} className="overflow-hidden">
-            <p className="font-outfit font-normal text-[18px] text-text-muted leading-[1.5] mt-8">{item.answer}</p>
+            <p className="font-outfit font-normal text-[16px] md:text-[18px] text-text-muted leading-[1.5] mt-6 md:mt-8">{item.answer}</p>
           </motion.div>
         )}
       </AnimatePresence>

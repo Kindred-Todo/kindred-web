@@ -19,7 +19,7 @@ export function HeroSection() {
 
       {/* Purple glow blob - bottom left */}
       <div className="absolute pointer-events-none" style={{
-        left: '-155px', top: '722px', width: '364px', height: '395px',
+        left: isMobile ? '-100px' : '-155px', bottom: isMobile ? '40px' : 'auto', top: isMobile ? 'auto' : '722px', width: isMobile ? '250px' : '364px', height: isMobile ? '270px' : '395px',
       }}>
         <svg className="block size-full" fill="none" viewBox="0 0 1764 1795" style={{
           position: 'absolute', inset: '-177% -192%',
@@ -39,7 +39,7 @@ export function HeroSection() {
 
       {/* Purple glow blob - right */}
       <div className="absolute pointer-events-none" style={{
-        left: '1385px', top: '509px', width: '364px', height: '395px',
+        right: isMobile ? '-80px' : 'auto', left: isMobile ? 'auto' : '1385px', top: isMobile ? '30%' : '509px', width: isMobile ? '250px' : '364px', height: isMobile ? '270px' : '395px',
       }}>
         <svg className="block size-full" fill="none" viewBox="0 0 1764 1795" style={{
           position: 'absolute', inset: '-177% -192%',
@@ -147,10 +147,10 @@ export function HeroSection() {
 
             {/* Copy */}
             <div className="order-1 md:order-2 space-y-4">
-              <h2 className="font-outfit text-3xl md:text-[64px] font-normal leading-none tracking-[-1.92px]">
+              <h2 className="font-outfit text-[40px] md:text-[64px] font-normal leading-[1.05] tracking-[-1.92px]">
                 The most rewarding, feel good productivity system.
               </h2>
-              <p className="font-outfit text-lg md:text-[24px] font-normal leading-[1.25] tracking-[-0.72px] opacity-90">
+              <p className="font-outfit text-[18px] md:text-[24px] font-normal leading-[1.25] tracking-[-0.72px] opacity-90">
                 A system that actually feels good to use — because doing it alone never really worked.
               </p>
             </div>

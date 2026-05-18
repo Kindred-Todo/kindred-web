@@ -112,7 +112,7 @@ export function AutoAccordion({ items, autoAdvanceDelay = 5000 }: AutoAccordionP
                     transition={{ duration: 0.3, ease: 'easeInOut' }}
                     className="overflow-hidden"
                   >
-                    <p className="font-outfit text-[18px] text-text-muted tracking-[0.18px] leading-none">
+                    <p className="font-outfit text-[16px] md:text-[18px] text-text-muted tracking-[0.18px] leading-[1.4]">
                       {item.content}
                     </p>
                   </motion.div>

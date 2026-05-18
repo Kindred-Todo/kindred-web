@@ -48,25 +48,29 @@ export function EveryoneWinsSection() {
             <span className="text-primary">Most productivity apps are built for one person grinding alone. </span>
             <span className="text-black">Kindred is different — when your friends grow, you grow. When you hit a goal, they feel it too. Progress isn't a competition here. It's contagious.</span>
           </p>
-          <div className="relative overflow-visible" style={{ height: '380px' }}>
-            <div className="absolute left-0 top-[40px] w-[50%] h-[300px] overflow-hidden">
-              <img src={everyoneWins1} alt="" className="w-full h-full object-cover" />
+          <div className="relative flex flex-col gap-4">
+            <div className="relative">
+              <div className="w-full rounded-[8px] overflow-hidden">
+                <img src={everyoneWins1} alt="" className="w-full h-auto object-cover" />
+              </div>
+              <img
+                src={taskCardIcecream}
+                alt="Ice Cream with groupchat"
+                className="absolute"
+                style={{ top: '-24px', right: '-12px', width: '85%', filter: 'drop-shadow(0px 4px 12px rgba(0,0,0,0.25))', transform: 'rotate(-3.51deg)', zIndex: 10 }}
+              />
             </div>
-            <div className="absolute left-[48%] top-[40px] w-[52%] h-[300px] overflow-hidden">
-              <img src={everyoneWins2} alt="" className="w-full h-full object-cover" />
+            <div className="relative">
+              <div className="w-full rounded-[8px] overflow-hidden">
+                <img src={everyoneWins2} alt="" className="w-full h-auto object-cover" />
+              </div>
+              <img
+                src={taskCardPresentation}
+                alt="Finish up Presentation @ Reunion Cafe"
+                className="absolute"
+                style={{ bottom: '-24px', left: '-12px', width: '85%', filter: 'drop-shadow(0px 3px 10px rgba(0,0,0,0.25))', transform: 'rotate(4.48deg)', zIndex: 10 }}
+              />
             </div>
-            <img
-              src={taskCardIcecream}
-              alt="Ice Cream with groupchat"
-              className="absolute"
-              style={{ top: '0', right: '-4%', width: '55%', filter: 'drop-shadow(0px 4px 12px rgba(0,0,0,0.25))', transform: 'rotate(-3.51deg)', zIndex: 10 }}
-            />
-            <img
-              src={taskCardPresentation}
-              alt="Finish up Presentation @ Reunion Cafe"
-              className="absolute"
-              style={{ bottom: '0', left: '-4%', width: '50%', filter: 'drop-shadow(0px 3px 10px rgba(0,0,0,0.25))', transform: 'rotate(4.48deg)', zIndex: 10 }}
-            />
           </div>
         </div>
       ) : (

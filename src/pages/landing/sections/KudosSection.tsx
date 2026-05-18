@@ -240,10 +240,10 @@ export function KudosSection() {
   if (isMobile) {
     return (
       <section className="relative w-full bg-white overflow-hidden" style={{ padding: '64px 16px' }}>
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col gap-8">
           <h2
             className="font-outfit font-normal text-black text-right tracking-[-3px]"
-            style={{ fontSize: 40, lineHeight: 1 }}
+            style={{ fontSize: 36, lineHeight: 1 }}
           >
             Kudos Before
             <br />
@@ -252,10 +252,33 @@ export function KudosSection() {
           <motion.div
             initial={{ opacity: 0, x: -60 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: '-50px' }}
             transition={{ duration: 0.6 }}
           >
             <MobilePostCard />
+          </motion.div>
+          {/* Comments */}
+          <div className="flex flex-col gap-3">
+            {COMMENTS.map((comment, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-30px' }}
+                transition={{ duration: 0.4, delay: i * 0.1 }}
+              >
+                <CommentCard {...comment} />
+              </motion.div>
+            ))}
+          </div>
+          {/* Activity */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: '-30px' }}
+            transition={{ duration: 0.5 }}
+          >
+            <ActivityCard />
           </motion.div>
         </div>
       </section>

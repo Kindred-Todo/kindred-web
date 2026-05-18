@@ -192,7 +192,10 @@ export function RingsSection() {
     <section
       className="relative w-full bg-white overflow-visible"
       style={{
-        padding: isMobile ? '100px 16px' : `${scaleVal(220)} ${scaleVal(64)}`,
+        padding: isMobile ? '0 16px' : `${scaleVal(220)} ${scaleVal(64)}`,
+        minHeight: isMobile ? '100dvh' : 'auto',
+        display: isMobile ? 'flex' : 'block',
+        alignItems: isMobile ? 'center' : undefined,
         backgroundImage: 'radial-gradient(circle, #d4d4d4 1px, transparent 1px)',
         backgroundSize: isMobile ? '20px 20px' : `${scaleVal(28)} ${scaleVal(28)}`,
       }}
@@ -228,7 +231,7 @@ export function RingsSection() {
       </svg>
 
       {/* Scroll tracking target */}
-      <div ref={sectionRef} className="relative flex flex-col items-center">
+      <div ref={sectionRef} className="relative flex flex-col items-center w-full">
         {/* Title */}
         <h2
           className="font-outfit font-normal text-black text-center"

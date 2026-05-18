@@ -84,8 +84,7 @@ function LabeledBelt({ label, children }: { label: string; children: React.React
       {children}
       {/* Left gradient overlay with label */}
       <div
-        className="absolute left-0 top-0 bottom-0 flex items-center z-10 pointer-events-none"
-        style={{ width: '45%' }}
+        className="absolute left-0 top-0 bottom-0 flex items-center z-10 pointer-events-none w-[35%] md:w-[45%]"
       >
         <div
           className="absolute inset-0"
@@ -97,15 +96,14 @@ function LabeledBelt({ label, children }: { label: string; children: React.React
             WebkitMaskImage: 'linear-gradient(to right, black 25%, black 45%, transparent 100%)',
           }}
         />
-        <p className="relative z-10 font-outfit font-light text-black tracking-[-0.48px] text-[20px] pl-8">
+        <p className="relative z-10 font-outfit font-light text-black tracking-[-0.48px] text-[14px] md:text-[20px] pl-4 md:pl-8">
           {label}
         </p>
       </div>
       {/* Right gradient fade */}
       <div
-        className="absolute right-0 top-0 bottom-0 z-10 pointer-events-none"
+        className="absolute right-0 top-0 bottom-0 z-10 pointer-events-none w-[80px] md:w-[200px]"
         style={{
-          width: '200px',
           background: 'linear-gradient(to left, white 10%, transparent 100%)',
         }}
       />
@@ -176,7 +174,7 @@ export function MotivationSection() {
         {/* Encouragements belt (top) */}
         <LabeledBelt label="Encouragements">
           <ConveyorBelt speed={30}>
-            <div className="flex gap-[28px] items-center px-[260px]">
+            <div className="flex gap-[16px] md:gap-[28px] items-center px-[120px] md:px-[260px]">
               {ENCOURAGEMENTS.map((card, i) => (
                 <KudosCardComponent key={i} card={card} />
               ))}
@@ -186,9 +184,9 @@ export function MotivationSection() {
 
         {/* Original image conveyor belt (middle) */}
         <ConveyorBelt speed={50}>
-          <div className="flex gap-[23px] items-center">
+          <div className="flex gap-[12px] md:gap-[23px] items-center">
             {BELT_IMAGES.map((img, i) => (
-              <div key={i} className="shrink-0 rounded-[8px] overflow-hidden" style={{ width: isMobile ? '200px' : scale(img.width), height: isMobile ? '200px' : scale(img.height) }}>
+              <div key={i} className="shrink-0 rounded-[8px] overflow-hidden" style={{ width: isMobile ? '160px' : scale(img.width), height: isMobile ? '160px' : scale(img.height) }}>
                 <img src={img.src} alt="" className="w-full h-full object-cover" />
               </div>
             ))}
@@ -198,7 +196,7 @@ export function MotivationSection() {
         {/* Congratulations belt (bottom) — reverse */}
         <LabeledBelt label="Congratulations">
           <ConveyorBelt speed={25} reverse>
-            <div className="flex gap-[28px] items-center px-[260px]">
+            <div className="flex gap-[16px] md:gap-[28px] items-center px-[120px] md:px-[260px]">
               {CONGRATULATIONS.map((card, i) => (
                 <KudosCardComponent key={i} card={card} />
               ))}
