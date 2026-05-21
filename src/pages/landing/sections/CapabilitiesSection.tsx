@@ -13,34 +13,24 @@ import kudosDemoSrc from '@/assets/new-design/kudos-demo.mp4'
 
 type Capability = {
   title: string
-  content: string
-  context: string
+  body: string
   videoSrc: string
 }
 
 const CAPABILITIES: Array<Capability> = [
   {
     title: 'Voice',
-    content:
-      'Build your todo lists and manage your daily tasks with your voice, no more manual entry in sight',
-    context:
-      'Speak to build, edit, or manage your tasks. Hands free, friction free.',
+    body: 'Speak to build, edit, or manage your tasks. Hands free, friction free.',
     videoSrc: voiceDemoSrc,
   },
   {
     title: 'Measurable Activity',
-    content:
-      'You never stuck with your habits because you could never see them form. Now you can.',
-    context:
-      'Close your rings, fill your graph, see your habits show up. Progress you can see is progress that becomes real.',
+    body: 'Close your rings, fill your graph, see your habits show up. You never stuck with habits because you could never see them form — now you can.',
     videoSrc: measurableDemoSrc,
   },
   {
     title: 'Kudos',
-    content:
-      'Send and receive recognition when it matters. Nothing beats a friend noticing your progress.',
-    context:
-      'Your friends are on Kindred too. Cheer their streaks, drop a congrats, send a nudge right when it counts.',
+    body: 'Your friends are on Kindred too. Cheer their streaks, drop a congrats, send a nudge right when it counts.',
     videoSrc: kudosDemoSrc,
   },
 ]
@@ -51,13 +41,9 @@ const CARD_POSITIONS = [
   { left: 1086, top: 602 },  // Kudos — bottom right
 ]
 
-// All context blocks share the middle-right position (opposite the phone),
-// so the commentary lives in one consistent, readable spot across sections.
-const CONTEXT_POSITION = { left: 1086, top: 320 }
-
 const REF_WIDTH = 1517
 const REF_HEIGHT = 856
-const CARD_WIDTH = 411
+const CARD_WIDTH = 370
 const PHONE_WIDTH = 539.535
 const PHONE_HEIGHT = 855.982
 const PHONE_INNER_WIDTH = 367.219
@@ -67,27 +53,63 @@ function CapabilityCard({
   capability,
   isActive,
   onActivate,
+  progress,
 }: {
   capability: Capability
   isActive: boolean
   onActivate: () => void
+  progress?: MotionValue<number>
 }) {
   return (
     <div
       onMouseEnter={onActivate}
       onClick={onActivate}
-      className="bg-white rounded-[8px] p-[32px] flex flex-col gap-[16px] items-start justify-center shadow-[0px_0px_24px_0px_rgba(0,0,0,0.05)] transition-all duration-500 ease-out w-full h-full cursor-pointer"
+      className="bg-white rounded-[8px] p-[28px] flex flex-col gap-[14px] items-start justify-center shadow-[0px_0px_24px_0px_rgba(0,0,0,0.05)] transition-all duration-500 ease-out w-full h-full cursor-pointer"
       style={{
         opacity: isActive ? 1 : 0.4,
         filter: isActive ? 'blur(0px)' : 'blur(5px)',
       }}
     >
-      <p className="font-outfit font-medium text-[24px] text-black tracking-[-0.48px] leading-[1.05] whitespace-nowrap">
+      <p className="font-outfit font-medium text-[24px] text-black tracking-[-0.02em] leading-[1.05] whitespace-nowrap">
         {capability.title}
       </p>
-      <p className="font-outfit text-[18px] text-black tracking-[-0.18px] leading-[1.5]">
-        {capability.content}
-      </p>
+      {progress ? (
+        <RevealText
+          text={capability.body}
+          progress={progress}
+          className="font-outfit text-[18px] leading-[1.45]"
+        />
+      ) : (
+        <p className="font-outfit text-[18px] leading-[1.45] text-primary">
+          {capability.body}
+        </p>
+      )}
+    </div>
+  )
+}
+
+function MobileCapabilityCard({
+  capability,
+  isActive,
+  onActivate,
+}: {
+  capability: Capability
+  isActive: boolean
+  onActivate: () => void
+}) {
+  const ref = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start 0.85', 'start 0.35'],
+  })
+  return (
+    <div ref={ref} className="w-full">
+      <CapabilityCard
+        capability={capability}
+        isActive={isActive}
+        onActivate={onActivate}
+        progress={scrollYProgress}
+      />
     </div>
   )
 }
@@ -160,7 +182,7 @@ function PhoneDemo({
       style={{
         bottom: 0,
         left: '50%',
-        height: '100%',
+        height: '90%',
         aspectRatio: PHONE_WIDTH / PHONE_HEIGHT,
         transform: 'translateX(-50%)',
         filter: 'drop-shadow(0px 0px 12px rgba(0,0,0,0.16))',
@@ -288,17 +310,17 @@ export function CapabilitiesSection() {
           className="flex flex-col items-center gap-8 text-center mx-auto"
           style={{ maxWidth: isMobile ? '100%' : scale(1086) }}
         >
-          <p className="font-outfit text-primary text-xs tracking-[-0.12px] uppercase">
+          <p className="font-outfit text-primary text-xs uppercase">
             01 - Capabilities
           </p>
           <p
-            className="font-outfit leading-none text-black tracking-[-0.48px] capitalize"
+            className="font-outfit font-normal leading-none text-black tracking-[-0.02em] capitalize"
             style={{ fontSize: isMobile ? '28px' : scale(48) }}
           >
             Not Another Todo List. An Environment That Keeps You Going with Tools and People You'll Love
           </p>
           <p
-            className="font-outfit text-text-muted leading-[1.2] tracking-[-0.2px]"
+            className="font-outfit font-[350] text-text-muted leading-[1.2] tracking-[-0.01em]"
             style={{
               fontSize: isMobile ? '16px' : `clamp(16px, ${scale(20)}, 20px)`,
               maxWidth: isMobile ? '100%' : scale(714),
@@ -330,16 +352,12 @@ export function CapabilitiesSection() {
             </div>
             <div className="flex flex-col gap-4 w-full">
               {CAPABILITIES.map((capability, index) => (
-                <div key={capability.title} className="w-full">
-                  <CapabilityCard
-                    capability={capability}
-                    isActive={activeIndex === index}
-                    onActivate={() => setActiveIndex(index)}
-                  />
-                  <p className="font-outfit text-[16px] text-text-muted leading-[1.5] mt-3 px-2">
-                    {capability.context}
-                  </p>
-                </div>
+                <MobileCapabilityCard
+                  key={capability.title}
+                  capability={capability}
+                  isActive={activeIndex === index}
+                  onActivate={() => setActiveIndex(index)}
+                />
               ))}
             </div>
           </div>
@@ -351,7 +369,7 @@ export function CapabilitiesSection() {
             ref={pinContainerRef}
             style={{
               marginTop: scale(64),
-              height: '900vh',
+              height: '720vh',
             }}
           >
             {/* Sticky child — pins 64px below viewport top once the phone reaches that line */}
@@ -378,30 +396,7 @@ export function CapabilitiesSection() {
                         capability={capability}
                         isActive={activeIndex === index}
                         onActivate={() => setActiveIndex(index)}
-                      />
-                    </div>
-                  )
-                })}
-
-                {/* Reveal-text context panels — all share the middle-right spot,
-                    only the active one is visible */}
-                {CAPABILITIES.map((capability, index) => {
-                  const isActive = activeIndex === index
-                  return (
-                    <div
-                      key={`${capability.title}-context`}
-                      className="absolute transition-opacity duration-500 ease-out pointer-events-none"
-                      style={{
-                        left: `${(CONTEXT_POSITION.left / REF_WIDTH) * 100}%`,
-                        top: `${(CONTEXT_POSITION.top / REF_HEIGHT) * 100}%`,
-                        width: `${(CARD_WIDTH / REF_WIDTH) * 100}%`,
-                        opacity: isActive ? 1 : 0,
-                      }}
-                    >
-                      <RevealText
-                        text={capability.context}
                         progress={sectionProgress[index]}
-                        className="font-outfit font-medium text-[24px] tracking-[-0.24px] leading-[1.35]"
                       />
                     </div>
                   )
