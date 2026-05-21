@@ -155,15 +155,15 @@ function ActivityCard() {
           <div className="flex flex-col gap-3">
             <div className="flex gap-2 items-center">
               <span className="font-outfit font-normal text-[16px] text-[#854dff] tracking-[-0.16px]">
-                Watching
+                Music
               </span>
               <span className="inline-block rounded-full bg-[#854dff] size-1" />
               <span className="font-outfit font-normal text-[16px] text-[#13121f] tracking-[-0.16px]">
-                Episode 5 of Stranger Things
+                Practice guitar 30 min
               </span>
             </div>
             <p className="font-outfit font-light text-[16px] text-[#13121f]">
-              Plot twist blew my mind!
+              That chorus is finally starting to sound clean.
             </p>
           </div>
         </div>
@@ -184,10 +184,10 @@ function SparkleIcon() {
 }
 
 const COMMENTS = [
-  { name: 'Sophia', time: '1hr', text: "This is so good, you're killing it!", avatar: avatarSophia },
-  { name: 'Marcus', time: '45m', text: 'Need to hear this, share a clip!', avatar: avatarMarcus },
-  { name: 'Priya', time: '30m', text: "You've gotten so much better at this", avatar: avatarPriya },
-  { name: 'Jordan', time: '15m', text: 'Inspiring me to pick mine up again', avatar: avatarJordan },
+  { name: 'Sophia', time: '1hr', text: 'That chorus is sounding so clean.', avatar: avatarSophia },
+  { name: 'Marcus', time: '45m', text: 'Drop the clip, I need to hear this one.', avatar: avatarMarcus },
+  { name: 'Priya', time: '30m', text: 'You can hear the practice paying off.', avatar: avatarPriya },
+  { name: 'Jordan', time: '15m', text: 'This makes me want to pick mine up again.', avatar: avatarJordan },
 ] as const
 
 export function KudosSection() {
@@ -206,33 +206,33 @@ export function KudosSection() {
   const cardOp = useTransform(scrollYProgress, [0.0, 0.1], [0, 1])
 
   // ── Comments: staggered fade in ──
-  const c1Op = useTransform(scrollYProgress, [0.15, 0.22], [0, 1])
-  const c2Op = useTransform(scrollYProgress, [0.20, 0.27], [0, 1])
-  const c3Op = useTransform(scrollYProgress, [0.25, 0.32], [0, 1])
-  const c4Op = useTransform(scrollYProgress, [0.30, 0.37], [0, 1])
+  const c1Op = useTransform(scrollYProgress, [0.18, 0.26], [0, 1])
+  const c2Op = useTransform(scrollYProgress, [0.25, 0.33], [0, 1])
+  const c3Op = useTransform(scrollYProgress, [0.32, 0.40], [0, 1])
+  const c4Op = useTransform(scrollYProgress, [0.39, 0.47], [0, 1])
   const commentOps = [c1Op, c2Op, c3Op, c4Op]
 
   // ── Reaction pills in post: scale pop ──
-  const pillsScale = useTransform(scrollYProgress, [0.34, 0.44], [0, 1])
+  const pillsScale = useTransform(scrollYProgress, [0.46, 0.57], [0, 1])
 
   // ── Floating pills: staggered scale pop ──
-  const fp1Scale = useTransform(scrollYProgress, [0.38, 0.44], [0, 1])
-  const fp2Scale = useTransform(scrollYProgress, [0.40, 0.46], [0, 1])
-  const fp3Scale = useTransform(scrollYProgress, [0.42, 0.48], [0, 1])
-  const fp4Scale = useTransform(scrollYProgress, [0.44, 0.50], [0, 1])
+  const fp1Scale = useTransform(scrollYProgress, [0.51, 0.59], [0, 1])
+  const fp2Scale = useTransform(scrollYProgress, [0.54, 0.62], [0, 1])
+  const fp3Scale = useTransform(scrollYProgress, [0.57, 0.65], [0, 1])
+  const fp4Scale = useTransform(scrollYProgress, [0.60, 0.68], [0, 1])
   const fpScales = [fp1Scale, fp2Scale, fp3Scale, fp4Scale]
 
   // ── Animated counts ──
-  const count1 = useTransform(scrollYProgress, [0.34, 0.48], [0, 4])
-  const count2 = useTransform(scrollYProgress, [0.36, 0.50], [0, 3])
-  const count3 = useTransform(scrollYProgress, [0.38, 0.52], [0, 1])
-  const fCount = useTransform(scrollYProgress, [0.40, 0.52], [0, 4])
+  const count1 = useTransform(scrollYProgress, [0.48, 0.70], [0, 4])
+  const count2 = useTransform(scrollYProgress, [0.50, 0.70], [0, 3])
+  const count3 = useTransform(scrollYProgress, [0.52, 0.70], [0, 1])
+  const fCount = useTransform(scrollYProgress, [0.54, 0.70], [0, 4])
 
   // ── Activity cards: pop in ──
-  const act1Op = useTransform(scrollYProgress, [0.50, 0.57], [0, 1])
-  const act1Scale = useTransform(scrollYProgress, [0.50, 0.57], [0.8, 1])
-  const act2Op = useTransform(scrollYProgress, [0.55, 0.62], [0, 1])
-  const act2Scale = useTransform(scrollYProgress, [0.55, 0.62], [0.8, 1])
+  const act1Op = useTransform(scrollYProgress, [0.68, 0.78], [0, 1])
+  const act1Scale = useTransform(scrollYProgress, [0.68, 0.78], [0.8, 1])
+  const act2Op = useTransform(scrollYProgress, [0.74, 0.84], [0, 1])
+  const act2Scale = useTransform(scrollYProgress, [0.74, 0.84], [0.8, 1])
 
   // ── Heading: always visible (no animation) ──
 
@@ -288,7 +288,7 @@ export function KudosSection() {
   // ── Medium (768–1199): scroll-locked, simplified two-column ──
   if (!isLargeDesktop) {
     return (
-      <section ref={sectionRef} className="relative w-full bg-white" style={{ height: '250vh' }}>
+      <section ref={sectionRef} className="relative w-full bg-white" style={{ height: '220vh' }}>
         <div
           className="sticky top-0 w-full h-screen overflow-hidden flex items-center"
           style={{ padding: `0 ${scale(64)}` }}
@@ -339,7 +339,7 @@ export function KudosSection() {
   ]
 
   return (
-    <section ref={sectionRef} className="relative w-full bg-white" style={{ height: '400vh' }}>
+    <section ref={sectionRef} className="relative w-full bg-white" style={{ height: '300vh' }}>
       <div
         className="sticky top-0 w-full h-screen overflow-hidden flex items-center"
         style={{ padding: `0 ${scale(64)}` }}
@@ -399,7 +399,7 @@ export function KudosSection() {
               {/* Bottom section */}
               <div className="flex flex-col gap-4 shrink-0" style={{ padding: `0 ${scale(20)}` }}>
                 <p className="font-outfit font-normal text-[#13121f]" style={{ fontSize: scale(16) }}>
-                  Lowkey just finished jamming on my guitar, learned a few new songs too
+                  Finally got through today's guitar practice. The chorus is starting to sound clean.
                 </p>
 
                 {/* Animated reaction pills */}
@@ -540,7 +540,7 @@ function MobilePostCard() {
       </div>
       <div className="flex flex-col gap-4 px-5">
         <p className="font-outfit font-normal text-[16px] text-[#13121f]">
-          Lowkey just finished jamming on my guitar, learned a few new songs too
+          Finally got through today's guitar practice. The chorus is starting to sound clean.
         </p>
         <div className="flex gap-2 items-center flex-wrap">
           <ReactionPill emoji="🔥" count={4} active />

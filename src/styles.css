@@ -328,3 +328,56 @@ button:disabled {
     }
   }
 }
+
+/* liquid-glass-react leaves `.glass` with no fill, no border, and a very heavy
+   drop shadow. On a uniform light desktop hero that means backdrop-filter has
+   nothing to blur and the pill disappears. Give it explicit glass cues —
+   subtle tint, inner edge highlight, top sheen, soft drop — so the frosted
+   look reads on any background. */
+.glass {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+  /* Keep the drop shadow LIGHT — the SVG displacement filter samples pixels
+     from outside the pill, and a heavy shadow below the pill gets refracted
+     back into the bottom of the glass as a dark gradient. */
+  box-shadow:
+    0 3px 8px rgba(19, 18, 31, 0.05),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.65) !important;
+  transition:
+    background-color 0.36s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.36s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+/* Expanded state — keep the SAME light tint as the closed pill (a darker
+   white tint over a near-white desktop hero just reads as a gray block).
+   Only the edge ring / top sheen get a touch stronger so the menu items
+   feel contained without the whole pill turning gray. */
+[data-pill-expanded='true'] .glass {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+  box-shadow:
+    0 4px 12px rgba(19, 18, 31, 0.06),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75) !important;
+}
+
+/* The library applies a heavy `text-shadow: 0 2px 12px rgba(0,0,0,0.4)` to the
+   content wrapper inside `.glass`. Soften it so the nav text reads cleanly. */
+.glass > div {
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Smooth the backdrop-filter change when the pill expands and we bump the
+   blurAmount prop — without this the frost would snap. */
+.glass__warp {
+  transition: backdrop-filter 0.36s cubic-bezier(0.22, 1, 0.36, 1),
+              -webkit-backdrop-filter 0.36s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+/* The library renders two sibling <span> sheen layers next to the
+   GlassContainer that use `mask-composite: exclude` to appear as hollow
+   rings. Several desktop browsers ignore the mask and render the FULL 135°
+   white-gradient span, which reads as a metallic silver vertical gradient
+   over the pill. Hide them — the inner highlight on `.glass` already
+   provides enough edge definition. */
+[data-pill-expanded] > span {
+  display: none !important;
+}

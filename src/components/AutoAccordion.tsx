@@ -1,5 +1,5 @@
-import { useEffect, useState, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useCallback, useEffect, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 
 interface AccordionItem {
   title: string
@@ -7,8 +7,8 @@ interface AccordionItem {
 }
 
 interface AutoAccordionProps {
-  items: AccordionItem[]
-  autoAdvanceDelay?: number
+  items: Array<AccordionItem>
+  autoAdvanceDelay?: number | null
 }
 
 function CircularProgress({ progress }: { progress: number }) {
@@ -55,11 +55,17 @@ function MinusIcon() {
   )
 }
 
-export function AutoAccordion({ items, autoAdvanceDelay = 5000 }: AutoAccordionProps) {
+export function AutoAccordion({ items, autoAdvanceDelay }: AutoAccordionProps) {
   const [activeIndex, setActiveIndex] = useState(0)
   const [progress, setProgress] = useState(0)
+  const shouldAutoAdvance = typeof autoAdvanceDelay === 'number' && autoAdvanceDelay > 0
 
   useEffect(() => {
+    if (!shouldAutoAdvance) {
+      setProgress(0)
+      return
+    }
+
     const startTime = Date.now()
     let animationFrame: number
 
@@ -77,7 +83,7 @@ export function AutoAccordion({ items, autoAdvanceDelay = 5000 }: AutoAccordionP
 
     animationFrame = requestAnimationFrame(updateProgress)
     return () => cancelAnimationFrame(animationFrame)
-  }, [activeIndex, autoAdvanceDelay, items.length])
+  }, [activeIndex, autoAdvanceDelay, items.length, shouldAutoAdvance])
 
   const handleClick = useCallback((index: number) => {
     setActiveIndex(index)
@@ -101,7 +107,11 @@ export function AutoAccordion({ items, autoAdvanceDelay = 5000 }: AutoAccordionP
                 <p className="font-outfit text-[24px] text-black tracking-[-0.24px] leading-[1.2]">
                   {item.title}
                 </p>
-                {isActive ? <CircularProgress progress={progress} /> : <span className="font-outfit text-[20px] text-primary leading-none">-</span>}
+                {isActive ? (
+                  shouldAutoAdvance ? <CircularProgress progress={progress} /> : <MinusIcon />
+                ) : (
+                  <span className="font-outfit text-[20px] text-primary leading-none">-</span>
+                )}
               </div>
               <AnimatePresence>
                 {isActive && (

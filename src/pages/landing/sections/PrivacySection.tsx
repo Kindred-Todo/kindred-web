@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { useResponsiveScale, useIsMobile } from '@/hooks/useResponsiveScale'
+import { useIsMobile, useResponsiveScale } from '@/hooks/useResponsiveScale'
 import { typography } from '@/lib/design-system'
 import { decorativeShapes } from '@/assets/shapes/decorative-shapes'
 import activityImg from '@/assets/new-design/privacy-activity.png'
@@ -13,8 +13,8 @@ export function PrivacySection() {
       {isMobile ? (
         <div className="flex flex-col gap-8">
           <div>
-            <h2 className="font-outfit font-[350] capitalize leading-[1.25] text-black tracking-[-1px] text-[32px]">
-              Your Record, Private by default, shared by choice.
+            <h2 className="font-outfit font-[350] leading-[1.25] text-black tracking-[-1px] text-[32px]">
+              Your record, private by default, shared by choice.
             </h2>
             <p className="font-outfit text-black mt-4" style={typography.sectionBody.mobile}>
               Prefer privacy? Kindred is your private journal of everything you've done: every task, every photo, every win —
@@ -27,8 +27,8 @@ export function PrivacySection() {
         <div className="grid grid-cols-12 gap-x-[20px] items-start">
           {/* Text: columns 1-4 */}
           <div className="col-span-4">
-            <h2 className="font-outfit font-[350] capitalize leading-[1.25] text-black tracking-[-1px]" style={{ fontSize: scale(48) }}>
-              Your Record, Private by default, shared by choice.
+            <h2 className="font-outfit font-[350] leading-[1.25] text-black tracking-[-1px]" style={{ fontSize: scale(48) }}>
+              Your record, private by default, shared by choice.
             </h2>
             <p className="font-outfit text-black" style={{ ...typography.sectionBody.desktop, marginTop: scale(24) }}>
               Prefer privacy? Kindred is your private journal of everything you've done: every task, every photo, every win —

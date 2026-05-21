@@ -39,15 +39,42 @@ function FAQItemComponent({ item, defaultOpen = false }: { item: FAQItem; defaul
 function DecorativeShapes() {
   return (
     <svg className="block w-full h-full" fill="none" viewBox="0 0 450.746 594.346">
-      <path d={decorativeShapes.faqStar1} fill="var(--color-primary)" fillOpacity="0.6" stroke="var(--color-primary)" strokeWidth="0.9" />
-      <path d={decorativeShapes.faqDashedStar1} stroke="var(--color-primary)" strokeDasharray="18.04 18.04" strokeWidth="1.8" />
-      <path d={decorativeShapes.faqPolygon1} fill="var(--color-primary)" />
-      <path d={decorativeShapes.faqStar2} fill="var(--color-primary)" fillOpacity="0.6" stroke="var(--color-primary)" strokeWidth="0.9" />
-      <path d={decorativeShapes.faqDashedStar2} stroke="var(--color-primary)" strokeDasharray="18.04 18.04" strokeWidth="1.8" />
-      <path d={decorativeShapes.faqPolygon2} fill="var(--color-primary)" />
-      <path d={decorativeShapes.faqStar3} fill="var(--color-primary)" fillOpacity="0.6" stroke="var(--color-primary)" strokeWidth="0.9" />
-      <path d={decorativeShapes.faqDashedStar3} stroke="var(--color-primary)" strokeDasharray="18.04 18.04" strokeWidth="1.8" />
-      <path d={decorativeShapes.faqPolygon3} fill="var(--color-primary)" />
+      {/* Small filled star — top */}
+      <path
+        d={decorativeShapes.faqStar1}
+        fill="var(--color-primary)"
+        fillOpacity="0.7"
+        stroke="var(--color-primary)"
+        strokeWidth="0.9"
+        transform="translate(-40 -10) scale(0.85)"
+        style={{ transformOrigin: '293px 35px' }}
+      />
+      {/* Triangle — upper, larger */}
+      <path
+        d={decorativeShapes.faqPolygon1}
+        fill="var(--color-primary)"
+        transform="translate(-80 60) scale(1.15) rotate(-12)"
+        style={{ transformOrigin: '180px 116px' }}
+      />
+      {/* Dashed outline star — middle, prominent */}
+      <path
+        d={decorativeShapes.faqDashedStar2}
+        stroke="var(--color-primary)"
+        strokeDasharray="18.04 18.04"
+        strokeWidth="1.8"
+        transform="translate(20 -80) scale(1.05) rotate(8)"
+        style={{ transformOrigin: '141px 485px' }}
+      />
+      {/* Small filled star — lower right, tilted */}
+      <path
+        d={decorativeShapes.faqStar3}
+        fill="var(--color-primary)"
+        fillOpacity="0.55"
+        stroke="var(--color-primary)"
+        strokeWidth="0.9"
+        transform="translate(-20 -20) scale(0.7) rotate(22)"
+        style={{ transformOrigin: '411px 355px' }}
+      />
     </svg>
   )
 }

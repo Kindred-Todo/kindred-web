@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { useResponsiveScale, useIsMobile } from '@/hooks/useResponsiveScale'
+import { useIsMobile, useResponsiveScale } from '@/hooks/useResponsiveScale'
 import { typography } from '@/lib/design-system'
 import { decorativeShapes } from '@/assets/shapes/decorative-shapes'
 import { ConveyorBelt } from '@/components/ConveyorBelt'
@@ -29,7 +29,7 @@ interface KudosCard {
   highlighted?: boolean
 }
 
-const ENCOURAGEMENTS: KudosCard[] = [
+const ENCOURAGEMENTS: Array<KudosCard> = [
   { avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face', name: 'Sarah', time: '2h ago', category: 'Reading', task: 'Chapter 2 of Red Rising', comment: "you're gonna love where this goes trust me", highlighted: true },
   { avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face', name: 'Marcus', time: '3h ago', category: 'Listening', task: 'Podcast: The History of Rome', comment: 'yo let me know what you think of episode 4', highlighted: false },
   { avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop&crop=face', name: 'Sophie', time: '5h ago', category: 'Watching', task: 'Episode 5 of Stranger Things', comment: 'keep going it gets so much better', highlighted: true },
@@ -40,7 +40,7 @@ const ENCOURAGEMENTS: KudosCard[] = [
   { avatar: 'https://images.unsplash.com/photo-1552058544-f2b08422138a?w=80&h=80&fit=crop&crop=face', name: 'Ethan', time: '10h ago', category: 'Music', task: 'Practice guitar 30 min', comment: 'play something for us next time!!', highlighted: true },
 ]
 
-const CONGRATULATIONS: KudosCard[] = [
+const CONGRATULATIONS: Array<KudosCard> = [
   { avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=80&h=80&fit=crop&crop=face', name: 'Jessica', time: '4h ago', category: 'Fitness', task: 'Go to the Gym', comment: 'why is bro kinda huge', highlighted: true },
   { avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80&h=80&fit=crop&crop=face', name: 'Marco', time: '5h ago', category: 'Fitness', task: 'Go to the Gym', comment: 'truly LOCKED IN bro', highlighted: false },
   { avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=80&h=80&fit=crop&crop=face', name: 'Lena', time: '6h ago', category: 'Cooking', task: 'Try a new recipe', comment: 'ok chef!! save me a plate', highlighted: true },
@@ -134,12 +134,21 @@ export function MotivationSection() {
         {isMobile ? (
           <>
             <div>
-              <p className="font-outfit font-normal capitalize leading-[1.25] text-black tracking-[-0.48px] text-[28px]">
+              <p className="font-outfit font-normal leading-[1.25] text-black tracking-[-0.48px] text-[28px]">
                 You've tried every productivity app.
               </p>
-              <p className="font-outfit font-normal capitalize leading-[1.25] tracking-[-0.48px] text-[28px]">
-                <span className="text-black">You never changed. </span>
-                <span className="text-text-subtle">its not because organization was the problem. Its because of motivation and accountability</span>
+              <p className="font-outfit font-normal leading-[1.25] tracking-[-0.48px] text-[28px]">
+                <span className="text-black">
+                  You{' '}
+                  <span
+                    className="font-fraunces italic text-primary"
+                    style={{ fontVariationSettings: "'SOFT' 0, 'WONK' 1" }}
+                  >
+                    never changed
+                  </span>.
+                </span>
+                {' '}
+                <span className="text-text-subtle">It's not because organization was the problem. It's because of motivation and accountability</span>
               </p>
             </div>
             <div className="bg-primary" style={{ height: '3px', width: '150px', marginTop: '24px' }} />
@@ -150,12 +159,21 @@ export function MotivationSection() {
         ) : (
           <div className="grid grid-cols-12 gap-x-[20px]">
             <div className="col-span-7">
-              <p className="font-outfit font-normal capitalize leading-[1.25] text-black tracking-[-0.48px]" style={{ fontSize: scale(48) }}>
+              <p className="font-outfit font-normal leading-[1.25] text-black tracking-[-0.48px]" style={{ fontSize: scale(48) }}>
                 You've tried every productivity app.
               </p>
-              <p className="font-outfit font-normal capitalize leading-[1.25] tracking-[-0.48px]" style={{ fontSize: scale(48) }}>
-                <span className="text-black">You never changed. </span>
-                <span className="text-text-subtle">its not because organization was the problem. Its because of motivation and accountability</span>
+              <p className="font-outfit font-normal leading-[1.25] tracking-[-0.48px]" style={{ fontSize: scale(48) }}>
+                <span className="text-black">
+                  You{' '}
+                  <span
+                    className="font-fraunces italic text-primary"
+                    style={{ fontVariationSettings: "'SOFT' 0, 'WONK' 1" }}
+                  >
+                    never changed
+                  </span>.
+                </span>
+                {' '}
+                <span className="text-text-subtle">It's not because organization was the problem. It's because of motivation and accountability</span>
               </p>
               <div className="bg-primary" style={{ height: '3px', width: scale(200), marginTop: scale(24) }} />
             </div>
@@ -170,11 +188,11 @@ export function MotivationSection() {
         )}
       </div>
 
-      <div className="flex flex-col" style={{ marginTop: isMobile ? '40px' : scale(120), gap: isMobile ? '16px' : scale(20) }}>
+      <div className="flex flex-col" style={{ marginTop: isMobile ? '48px' : scale(136), gap: isMobile ? '24px' : scale(36) }}>
         {/* Encouragements belt (top) */}
         <LabeledBelt label="Encouragements">
           <ConveyorBelt speed={30}>
-            <div className="flex gap-[16px] md:gap-[28px] items-center px-[120px] md:px-[260px]">
+            <div className="flex gap-[22px] md:gap-[36px] items-center px-[136px] md:px-[300px]">
               {ENCOURAGEMENTS.map((card, i) => (
                 <KudosCardComponent key={i} card={card} />
               ))}
@@ -184,7 +202,7 @@ export function MotivationSection() {
 
         {/* Original image conveyor belt (middle) */}
         <ConveyorBelt speed={50}>
-          <div className="flex gap-[12px] md:gap-[23px] items-center">
+          <div className="flex gap-[18px] md:gap-[32px] items-center">
             {BELT_IMAGES.map((img, i) => (
               <div key={i} className="shrink-0 rounded-[8px] overflow-hidden" style={{ width: isMobile ? '160px' : scale(img.width), height: isMobile ? '160px' : scale(img.height) }}>
                 <img src={img.src} alt="" className="w-full h-full object-cover" />
@@ -196,7 +214,7 @@ export function MotivationSection() {
         {/* Congratulations belt (bottom) — reverse */}
         <LabeledBelt label="Congratulations">
           <ConveyorBelt speed={25} reverse>
-            <div className="flex gap-[16px] md:gap-[28px] items-center px-[120px] md:px-[260px]">
+            <div className="flex gap-[22px] md:gap-[36px] items-center px-[136px] md:px-[300px]">
               {CONGRATULATIONS.map((card, i) => (
                 <KudosCardComponent key={i} card={card} />
               ))}

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { useResponsiveScale, useIsMobile } from '@/hooks/useResponsiveScale'
+import { useIsMobile, useResponsiveScale } from '@/hooks/useResponsiveScale'
 import { typography } from '@/lib/design-system'
 import { decorativeShapes } from '@/assets/shapes/decorative-shapes'
 import everyoneWins1 from '@/assets/new-design/everyone-wins-1.png'
@@ -38,7 +38,7 @@ export function EveryoneWinsSection() {
           </motion.div>
         </div>
       )}
-      <h2 className="font-outfit font-[350] capitalize leading-[1.25] text-black tracking-[-2.4px]" style={{ fontSize: isMobile ? '32px' : scale(48), maxWidth: isMobile ? '100%' : scale(934) }}>
+      <h2 className="font-outfit font-[350] leading-[1.25] text-black tracking-[-2.4px]" style={{ fontSize: isMobile ? '32px' : scale(48), maxWidth: isMobile ? '100%' : scale(934) }}>
         On Kindred, everyone wins.
       </h2>
       <div className="bg-primary" style={{ height: '3px', width: isMobile ? '150px' : scale(234), marginTop: isMobile ? '16px' : scale(16), marginLeft: isMobile ? '0' : scale(262) }} />
@@ -46,7 +46,7 @@ export function EveryoneWinsSection() {
         <div className="flex flex-col mt-8 gap-8">
           <p className="font-outfit" style={typography.sectionBody.mobile}>
             <span className="text-primary">Most productivity apps are built for one person grinding alone. </span>
-            <span className="text-black">Kindred is different — when your friends grow, you grow. When you hit a goal, they feel it too. Progress isn't a competition here. It's contagious.</span>
+            <span className="text-black">Kindred makes progress feel shared: friends can cheer each other on, celebrate completed goals, and turn one person's momentum into motivation for the whole group.</span>
           </p>
           <div className="relative flex flex-col gap-4">
             <div className="relative">
@@ -79,7 +79,7 @@ export function EveryoneWinsSection() {
           <div className="col-span-4">
             <p className="font-outfit" style={typography.sectionBody.desktop}>
               <span className="text-primary">Most productivity apps are built for one person grinding alone. </span>
-              <span className="text-black">Kindred is different — when your friends grow, you grow. When you hit a goal, they feel it too. Progress isn't a competition here. It's contagious.</span>
+              <span className="text-black">Kindred makes progress feel shared: friends can cheer each other on, celebrate completed goals, and turn one person's momentum into motivation for the whole group.</span>
             </p>
           </div>
           {/* Photos + task cards: columns 5-12 */}

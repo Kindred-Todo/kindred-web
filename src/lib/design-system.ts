@@ -176,14 +176,12 @@ export const typography = {
       lineHeight: '1.25',
       letterSpacing: `clamp(-0.3px, ${scale(-1.2)}, -0.1px)`,
       fontWeight: '350',
-      textTransform: 'capitalize' as const,
     },
     mobile: {
       fontSize: '18px',
       lineHeight: '1.25',
       letterSpacing: '-0.18px',
       fontWeight: '350',
-      textTransform: 'capitalize' as const,
     },
   },
 
@@ -238,4 +236,3 @@ export const colors = {
   },
   divider: '#DBDBDB',
 }
-
