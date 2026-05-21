@@ -141,6 +141,12 @@ function RevealText({
 // Phone rotates per active section: Voice → +5°, Measurable → -5°, Kudos → +5°.
 const PHONE_ROTATIONS = [5, -5, 5]
 
+// Scrub easing for the demo videos: scroll → video time isn't linear.
+// Smoothstep eases the playhead at the start and end of each section's
+// scroll window (so the first/last frames linger and read clearly) and
+// runs ~1.5× linear through the middle.
+const smoothstep = (t: number) => t * t * (3 - 2 * t)
+
 function PhoneDemo({
   activeIndex,
   videoRefs,
@@ -206,6 +212,11 @@ export function CapabilitiesSection() {
   const [activeIndex, setActiveIndex] = useState(0)
   const pinContainerRef = useRef<HTMLDivElement>(null)
   const videoRefs = useRef<Array<HTMLVideoElement | null>>([])
+  // Coalesce scroll-driven currentTime writes to one per animation frame.
+  // Without this, useMotionValueEvent fires faster than the video element can
+  // service seeks, which queues redundant work and causes scrub jank.
+  const pendingScrub = useRef<{ index: number; local: number } | null>(null)
+  const rafScheduled = useRef(false)
 
   const { scrollYProgress } = useScroll({
     target: pinContainerRef,
@@ -233,8 +244,6 @@ export function CapabilitiesSection() {
     const next = progress < 1 / 3 ? 0 : progress < 2 / 3 ? 1 : 2
     setActiveIndex((prev) => (prev === next ? prev : next))
 
-    // Scrub each video to its section-local progress so the demo plays
-    // through fully within its scroll window.
     const local =
       next === 0
         ? Math.min(1, progress * 3)
@@ -242,13 +251,25 @@ export function CapabilitiesSection() {
           ? Math.min(1, (progress - 1 / 3) * 3)
           : Math.min(1, (progress - 2 / 3) * 3)
 
-    const video = videoRefs.current[next]
-    if (video && video.duration && !isNaN(video.duration)) {
-      video.currentTime = Math.max(
+    pendingScrub.current = { index: next, local }
+    if (rafScheduled.current) return
+    rafScheduled.current = true
+    requestAnimationFrame(() => {
+      rafScheduled.current = false
+      const target = pendingScrub.current
+      if (!target) return
+      pendingScrub.current = null
+      const video = videoRefs.current[target.index]
+      if (!video || !video.duration || isNaN(video.duration)) return
+      const eased = smoothstep(target.local)
+      const t = Math.max(
         0,
-        Math.min(local * video.duration, video.duration - 0.01),
+        Math.min(eased * video.duration, video.duration - 0.01),
       )
-    }
+      if (Math.abs(video.currentTime - t) > 1 / 60) {
+        video.currentTime = t
+      }
+    })
   })
 
   return (
@@ -323,12 +344,14 @@ export function CapabilitiesSection() {
             </div>
           </div>
         ) : (
-          // Pin container — taller so each of the 3 sections gets its own scroll window
+          // Pin container — taller so each of the 3 sections gets its own scroll window.
+          // 900vh = 300vh per section, slow enough to read each video's detail
+          // without fast-forwarding through the demo.
           <div
             ref={pinContainerRef}
             style={{
               marginTop: scale(64),
-              height: '450vh',
+              height: '900vh',
             }}
           >
             {/* Sticky child — pins 64px below viewport top once the phone reaches that line */}
