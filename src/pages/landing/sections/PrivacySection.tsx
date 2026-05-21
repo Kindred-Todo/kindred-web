@@ -13,7 +13,7 @@ export function PrivacySection() {
       {isMobile ? (
         <div className="flex flex-col gap-8">
           <div>
-            <h2 className="font-outfit font-[350] leading-[1.25] text-black tracking-[-1px] text-[32px]">
+            <h2 className="font-outfit font-normal leading-[1.25] text-black tracking-[-0.02em] text-[32px]">
               Your record, private by default, shared by choice.
             </h2>
             <p className="font-outfit text-black mt-4" style={typography.sectionBody.mobile}>
@@ -27,7 +27,7 @@ export function PrivacySection() {
         <div className="grid grid-cols-12 gap-x-[20px] items-start">
           {/* Text: columns 1-4 */}
           <div className="col-span-4">
-            <h2 className="font-outfit font-[350] leading-[1.25] text-black tracking-[-1px]" style={{ fontSize: scale(48) }}>
+            <h2 className="font-outfit font-normal leading-[1.25] text-black tracking-[-0.02em]" style={{ fontSize: scale(48) }}>
               Your record, private by default, shared by choice.
             </h2>
             <p className="font-outfit text-black" style={{ ...typography.sectionBody.desktop, marginTop: scale(24) }}>

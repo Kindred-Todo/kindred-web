@@ -121,7 +121,7 @@ export function ScrollRevealSection() {
         {/* Centered content block */}
         <div className="flex flex-col items-center justify-center gap-8">
           <p
-            className="text-center font-outfit font-normal text-white tracking-[-0.15px] whitespace-nowrap"
+            className="text-center font-outfit font-normal text-white whitespace-nowrap"
             style={{ fontSize: isMobile ? '12px' : scale(15) }}
           >
             WHAT IS IT?
@@ -129,7 +129,7 @@ export function ScrollRevealSection() {
 
           <ScrollRevealText
             text="Kindred is the platform for you and your friends to pursue your ambitions. "
-            className="font-fraunces font-normal leading-[1.1] text-center tracking-[-1.28px]"
+            className="font-fraunces font-normal leading-[1.1] text-center tracking-[-0.03em]"
             containerClassName=""
             scrollYProgress={revealProgress}
             style={{

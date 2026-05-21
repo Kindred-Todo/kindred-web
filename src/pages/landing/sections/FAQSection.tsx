@@ -22,13 +22,13 @@ function FAQItemComponent({ item, defaultOpen = false }: { item: FAQItem; defaul
   return (
     <div className="w-full">
       <button className="w-full text-left cursor-pointer flex items-start justify-between gap-4" onClick={() => setIsOpen(!isOpen)}>
-        <p className="font-outfit font-normal text-[22px] md:text-[32px] text-black text-shadow-[0px_0px_24px_white] tracking-[-0.96px] leading-[1.2]">{item.question}</p>
+        <p className="font-outfit font-normal text-[22px] md:text-[32px] text-black text-shadow-[0px_0px_24px_white] tracking-[-0.02em] leading-[1.2]">{item.question}</p>
         <span className="font-outfit text-[20px] md:text-[24px] text-primary leading-none shrink-0 mt-1">{isOpen ? '-' : '+'}</span>
       </button>
       <AnimatePresence>
         {isOpen && (
           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3, ease: 'easeInOut' }} className="overflow-hidden">
-            <p className="font-outfit font-normal text-[16px] md:text-[18px] text-text-muted leading-[1.5] mt-6 md:mt-8">{item.answer}</p>
+            <p className="font-outfit font-[350] text-[16px] md:text-[18px] text-text-muted leading-[1.5] mt-6 md:mt-8">{item.answer}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -87,8 +87,8 @@ export function FAQSection() {
     <section className="relative w-full bg-white" style={{ padding: isMobile ? '64px 16px' : `${scale(160)} ${scale(64)} ${scale(96)}` }}>
       {isMobile ? (
         <div className="flex flex-col gap-12">
-          <p className="font-fraunces font-normal italic leading-none text-black text-shadow-[0px_0px_24px_white] tracking-[-1.92px] text-[40px]" style={{ fontVariationSettings: "'SOFT' 0, 'WONK' 1" }}>
-            frequently asked questions
+          <p className="font-outfit font-normal leading-[1.05] text-black text-shadow-[0px_0px_24px_white] tracking-[-0.03em] text-[40px]">
+            Frequently Asked Questions
           </p>
           <div className="flex flex-col gap-8">
             {FAQ_ITEMS.map((item, i) => (
@@ -109,8 +109,8 @@ export function FAQSection() {
         <div className="grid grid-cols-12 gap-x-[20px]">
           {/* Title + shapes: columns 1-5 */}
           <div className="col-span-5 relative">
-            <p className="font-fraunces font-normal italic leading-none text-black text-shadow-[0px_0px_24px_white] tracking-[-1.92px]" style={{ fontSize: scale(64), fontVariationSettings: "'SOFT' 0, 'WONK' 1" }}>
-              frequently asked questions
+            <p className="font-outfit font-normal leading-[1.05] text-black text-shadow-[0px_0px_24px_white] tracking-[-0.03em]" style={{ fontSize: scale(64) }}>
+              Frequently Asked Questions
             </p>
             <div className="mt-8" style={{ width: scale(451), height: scale(594) }}>
               <DecorativeShapes />

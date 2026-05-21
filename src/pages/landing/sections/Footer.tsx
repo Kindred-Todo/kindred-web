@@ -23,8 +23,8 @@ export function Footer() {
           {isMobile ? (
             <div className="flex flex-col gap-10">
               <div>
-                <h2 className="font-outfit font-medium leading-[1.25] text-white tracking-[-1.92px] text-[36px]">Lets lock in</h2>
-                <p className="font-outfit font-normal leading-[1.25] text-white tracking-[-0.72px] mt-4 text-[18px]">
+                <h2 className="font-outfit font-normal leading-[1.25] text-white tracking-[-0.03em] text-[36px]">Lets lock in</h2>
+                <p className="font-outfit font-[350] leading-[1.25] text-white tracking-[-0.01em] mt-4 text-[18px]">
                   Download Kindred and start building the life you actually want — with the people who want it for you too.
                 </p>
                 <div className="flex flex-row gap-3 mt-6">
@@ -51,8 +51,8 @@ export function Footer() {
             <div className="grid grid-cols-12 gap-x-[20px]">
               {/* CTA: columns 1-7 */}
               <div className="col-span-7">
-                <h2 className="font-outfit font-medium leading-[1.25] text-white tracking-[-1.92px]" style={{ fontSize: scale(64) }}>Lets lock in</h2>
-                <p className="font-outfit font-normal leading-[1.25] text-white tracking-[-0.72px] mt-4" style={{ fontSize: scale(24) }}>
+                <h2 className="font-outfit font-normal leading-[1.25] text-white tracking-[-0.03em]" style={{ fontSize: scale(64) }}>Lets lock in</h2>
+                <p className="font-outfit font-[350] leading-[1.25] text-white tracking-[-0.01em] mt-4" style={{ fontSize: scale(24) }}>
                   Download Kindred and start building the life you actually want — with the people who want it for you too.
                 </p>
                 <div className="flex gap-2 mt-6">
@@ -84,7 +84,7 @@ export function Footer() {
               <div className="flex flex-col gap-4">
                 <div className="flex flex-row items-center gap-4">
                   <img src={checkLogo} alt="Kindred" className="object-contain" style={{ width: '40px', height: '32px' }} />
-                  <span className="font-fraunces font-normal text-primary text-[28px]" style={{ letterSpacing: '-1.4px', lineHeight: 1.2, fontVariationSettings: "'SOFT' 0, 'WONK' 1, 'opsz' 80" }}>kindred</span>
+                  <span className="font-fraunces font-normal text-primary text-[28px]" style={{ letterSpacing: '-0.03em', lineHeight: 1.2, fontVariationSettings: "'SOFT' 0, 'WONK' 1, 'opsz' 80" }}>kindred</span>
                 </div>
                 <div className="font-outfit font-light text-white/40 text-[13px]">&copy; 2025 Kindred. All rights reserved.</div>
               </div>
@@ -92,7 +92,7 @@ export function Footer() {
               <div className="flex items-center justify-between">
                 <div className="flex flex-row items-center gap-4">
                   <img src={checkLogo} alt="Kindred" className="object-contain" style={{ width: scale(48), height: scale(38) }} />
-                  <span className="font-fraunces font-normal text-primary" style={{ fontSize: scale(36), letterSpacing: scale(-1.8), lineHeight: 1.2, fontVariationSettings: "'SOFT' 0, 'WONK' 1, 'opsz' 80" }}>kindred</span>
+                  <span className="font-fraunces font-normal text-primary" style={{ fontSize: scale(36), letterSpacing: '-0.03em', lineHeight: 1.2, fontVariationSettings: "'SOFT' 0, 'WONK' 1, 'opsz' 80" }}>kindred</span>
                 </div>
                 <div className="font-outfit font-light text-white/40 text-[13px]">&copy; 2025 Kindred. All rights reserved.</div>
               </div>

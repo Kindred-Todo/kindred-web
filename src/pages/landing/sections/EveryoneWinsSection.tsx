@@ -38,7 +38,7 @@ export function EveryoneWinsSection() {
           </motion.div>
         </div>
       )}
-      <h2 className="font-outfit font-[350] leading-[1.25] text-black tracking-[-2.4px]" style={{ fontSize: isMobile ? '32px' : scale(48), maxWidth: isMobile ? '100%' : scale(934) }}>
+      <h2 className="font-outfit font-normal leading-[1.25] text-black tracking-[-0.02em]" style={{ fontSize: isMobile ? '32px' : scale(48), maxWidth: isMobile ? '100%' : scale(934) }}>
         On Kindred, everyone wins.
       </h2>
       <div className="bg-primary" style={{ height: '3px', width: isMobile ? '150px' : scale(234), marginTop: isMobile ? '16px' : scale(16), marginLeft: isMobile ? '0' : scale(262) }} />

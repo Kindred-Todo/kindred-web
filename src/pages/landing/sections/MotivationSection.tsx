@@ -96,7 +96,7 @@ function LabeledBelt({ label, children }: { label: string; children: React.React
             WebkitMaskImage: 'linear-gradient(to right, black 25%, black 45%, transparent 100%)',
           }}
         />
-        <p className="relative z-10 font-outfit font-light text-black tracking-[-0.48px] text-[14px] md:text-[20px] pl-4 md:pl-8">
+        <p className="relative z-10 font-outfit font-light text-black tracking-[-0.01em] text-[14px] md:text-[20px] pl-4 md:pl-8">
           {label}
         </p>
       </div>
@@ -134,21 +134,21 @@ export function MotivationSection() {
         {isMobile ? (
           <>
             <div>
-              <p className="font-outfit font-normal leading-[1.25] text-black tracking-[-0.48px] text-[28px]">
-                You've tried every productivity app.
+              <p className="font-outfit font-normal leading-[1.25] text-black tracking-[-0.02em] text-[28px]">
+                You've Tried Every Productivity App.
               </p>
-              <p className="font-outfit font-normal leading-[1.25] tracking-[-0.48px] text-[28px]">
+              <p className="font-outfit font-normal leading-[1.25] tracking-[-0.02em] text-[28px]">
                 <span className="text-black">
                   You{' '}
                   <span
                     className="font-fraunces italic text-primary"
                     style={{ fontVariationSettings: "'SOFT' 0, 'WONK' 1" }}
                   >
-                    never changed
+                    Never Changed
                   </span>.
                 </span>
                 {' '}
-                <span className="text-text-subtle">It's not because organization was the problem. It's because of motivation and accountability</span>
+                <span className="text-text-subtle">It's Not Because Organization Was the Problem. It's Because of Motivation and Accountability</span>
               </p>
             </div>
             <div className="bg-primary" style={{ height: '3px', width: '150px', marginTop: '24px' }} />
@@ -159,21 +159,21 @@ export function MotivationSection() {
         ) : (
           <div className="grid grid-cols-12 gap-x-[20px]">
             <div className="col-span-7">
-              <p className="font-outfit font-normal leading-[1.25] text-black tracking-[-0.48px]" style={{ fontSize: scale(48) }}>
-                You've tried every productivity app.
+              <p className="font-outfit font-normal leading-[1.25] text-black tracking-[-0.02em]" style={{ fontSize: scale(48) }}>
+                You've Tried Every Productivity App.
               </p>
-              <p className="font-outfit font-normal leading-[1.25] tracking-[-0.48px]" style={{ fontSize: scale(48) }}>
+              <p className="font-outfit font-normal leading-[1.25] tracking-[-0.02em]" style={{ fontSize: scale(48) }}>
                 <span className="text-black">
                   You{' '}
                   <span
                     className="font-fraunces italic text-primary"
                     style={{ fontVariationSettings: "'SOFT' 0, 'WONK' 1" }}
                   >
-                    never changed
+                    Never Changed
                   </span>.
                 </span>
                 {' '}
-                <span className="text-text-subtle">It's not because organization was the problem. It's because of motivation and accountability</span>
+                <span className="text-text-subtle">It's Not Because Organization Was the Problem. It's Because of Motivation and Accountability</span>
               </p>
               <div className="bg-primary" style={{ height: '3px', width: scale(200), marginTop: scale(24) }} />
             </div>

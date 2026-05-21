@@ -160,7 +160,7 @@ function ScrollRing({
         className="font-outfit font-normal text-black text-center uppercase"
         style={{
           fontSize: isMobile ? '14px' : scale(20),
-          letterSpacing: '2px',
+          letterSpacing: '0.1em',
         }}
       >
         {label}
@@ -239,7 +239,7 @@ export function RingsSection() {
           className="font-outfit font-normal text-black text-center"
           style={{
             fontSize: isMobile ? '32px' : scaleVal(48),
-            letterSpacing: '-1px',
+            letterSpacing: '-0.02em',
           }}
         >
           Say{' '}

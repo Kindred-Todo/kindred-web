@@ -147,10 +147,10 @@ export function HeroSection() {
 
             {/* Copy */}
             <div className="order-1 md:order-2 space-y-4">
-              <h2 className="font-outfit text-[40px] md:text-[64px] font-normal leading-[1.05] tracking-[-1.92px]">
+              <h2 className="font-outfit text-[40px] md:text-[64px] font-normal leading-[1.05] tracking-[-0.03em]">
                 The most rewarding, feel good productivity system.
               </h2>
-              <p className="font-outfit text-[18px] md:text-[24px] font-normal leading-[1.25] tracking-[-0.72px] opacity-90">
+              <p className="font-outfit text-[18px] md:text-[24px] font-[350] leading-[1.25] tracking-[-0.01em] opacity-90">
                 A system that actually feels good to use — because doing it alone never really worked.
               </p>
             </div>

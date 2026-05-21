@@ -154,11 +154,11 @@ function ActivityCard() {
         >
           <div className="flex flex-col gap-3">
             <div className="flex gap-2 items-center">
-              <span className="font-outfit font-normal text-[16px] text-[#854dff] tracking-[-0.16px]">
+              <span className="font-outfit font-normal text-[16px] text-[#854dff] tracking-[-0.01em]">
                 Music
               </span>
               <span className="inline-block rounded-full bg-[#854dff] size-1" />
-              <span className="font-outfit font-normal text-[16px] text-[#13121f] tracking-[-0.16px]">
+              <span className="font-outfit font-normal text-[16px] text-[#13121f] tracking-[-0.01em]">
                 Practice guitar 30 min
               </span>
             </div>
@@ -242,7 +242,7 @@ export function KudosSection() {
       <section className="relative w-full bg-white overflow-hidden" style={{ padding: '64px 16px' }}>
         <div className="flex flex-col gap-8">
           <h2
-            className="font-outfit font-normal text-black text-right tracking-[-3px]"
+            className="font-outfit font-normal text-black text-right tracking-[-0.03em]"
             style={{ fontSize: 36, lineHeight: 1 }}
           >
             Kudos Before
@@ -299,7 +299,7 @@ export function KudosSection() {
             </motion.div>
             <div className="flex-1 flex flex-col items-end gap-8">
               <h2
-                className="font-outfit font-normal text-black text-right tracking-[-3px]"
+                className="font-outfit font-normal text-black text-right tracking-[-0.03em]"
                 style={{
                   fontSize: 'clamp(36px, 4vw, 64px)',
                   lineHeight: 1,
@@ -385,13 +385,13 @@ export function KudosSection() {
                 {/* Categories & congratulate */}
                 <div className="flex items-center justify-between shrink-0" style={{ padding: `0 ${scale(20)}` }}>
                   <div className="flex gap-2 items-center">
-                    <span className="font-outfit font-normal text-[#854dff] tracking-[-0.16px]" style={{ fontSize: scale(16) }}>Music</span>
+                    <span className="font-outfit font-normal text-[#854dff] tracking-[-0.01em]" style={{ fontSize: scale(16) }}>Music</span>
                     <span className="inline-block rounded-full bg-[#854dff]" style={{ width: scale(4), height: scale(4) }} />
-                    <span className="font-outfit font-normal text-[#13121f] tracking-[-0.16px]" style={{ fontSize: scale(16) }}>Daily Practice</span>
+                    <span className="font-outfit font-normal text-[#13121f] tracking-[-0.01em]" style={{ fontSize: scale(16) }}>Daily Practice</span>
                   </div>
                   <div className="flex gap-3 items-center">
                     <SparkleIcon />
-                    <span className="font-outfit font-normal text-[#13121f] tracking-[-0.14px]" style={{ fontSize: scale(14) }}>Congratulate</span>
+                    <span className="font-outfit font-normal text-[#13121f]" style={{ fontSize: scale(14) }}>Congratulate</span>
                   </div>
                 </div>
               </div>
@@ -485,7 +485,7 @@ export function KudosSection() {
 
           {/* ── Heading ── */}
           <div
-            className="absolute font-outfit font-normal text-black text-right tracking-[-3px]"
+            className="absolute font-outfit font-normal text-black text-right tracking-[-0.03em]"
             style={{
               right: scale(64),
               top: '50%',
@@ -529,13 +529,13 @@ function MobilePostCard() {
       </div>
       <div className="flex items-center justify-between px-5">
         <div className="flex gap-2 items-center">
-          <span className="font-outfit font-normal text-[16px] text-[#854dff] tracking-[-0.16px]">Music</span>
+          <span className="font-outfit font-normal text-[16px] text-[#854dff] tracking-[-0.01em]">Music</span>
           <span className="inline-block rounded-full bg-[#854dff] size-1" />
-          <span className="font-outfit font-normal text-[16px] text-[#13121f] tracking-[-0.16px]">Daily Practice</span>
+          <span className="font-outfit font-normal text-[16px] text-[#13121f] tracking-[-0.01em]">Daily Practice</span>
         </div>
         <div className="flex gap-3 items-center">
           <SparkleIcon />
-          <span className="font-outfit font-normal text-[14px] text-[#13121f] tracking-[-0.14px]">Congratulate</span>
+          <span className="font-outfit font-normal text-[14px] text-[#13121f]">Congratulate</span>
         </div>
       </div>
       <div className="flex flex-col gap-4 px-5">
