@@ -275,12 +275,15 @@ button:disabled {
   
   html {
     /* scroll-behavior: smooth; */ /* Disabled for Lenis */
-    overflow-x: hidden;
+    overflow-x: clip;
   }
-  
+
   body {
     @apply bg-background text-foreground;
-    /* overflow-x: hidden; */ /* Removed to allow sticky positioning to work correctly */
+    /* `clip` (not `hidden`) so position: sticky descendants keep working —
+       `overflow-x: hidden` makes body a scroll container which breaks sticky.
+       This enforces no horizontal scroll site-wide on desktop and mobile. */
+    overflow-x: clip;
   }
   
   /* Smooth momentum scrolling for a floaty feel */
