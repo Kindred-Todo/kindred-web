@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   motion,
   useScroll,
@@ -7,31 +7,46 @@ import {
   MotionValue,
 } from 'framer-motion'
 import { useIsMobile, useResponsiveScale } from '@/hooks/useResponsiveScale'
-import voiceDemoSrc from '@/assets/new-design/voice-demo.mp4'
-import measurableDemoSrc from '@/assets/new-design/measurable-demo.mp4'
-import kudosDemoSrc from '@/assets/new-design/kudos-demo.mp4'
+import voice01 from '@/assets/new-design/demo-voice-01.png'
+import voice02 from '@/assets/new-design/demo-voice-02.png'
+import voice03 from '@/assets/new-design/demo-voice-03.png'
+import voice04 from '@/assets/new-design/demo-voice-04.png'
+import voice05 from '@/assets/new-design/demo-voice-05.png'
+import voice06 from '@/assets/new-design/demo-voice-06.png'
+import voice07 from '@/assets/new-design/demo-voice-07.png'
+import voice08 from '@/assets/new-design/demo-voice-08.png'
+import activity01 from '@/assets/new-design/demo-activity-01.png'
+import activity02 from '@/assets/new-design/demo-activity-02.png'
+import activity03 from '@/assets/new-design/demo-activity-03.png'
+import activity04 from '@/assets/new-design/demo-activity-04.png'
+import kudos01 from '@/assets/new-design/demo-kudos-01.png'
+import kudos02 from '@/assets/new-design/demo-kudos-02.png'
+import kudos03 from '@/assets/new-design/demo-kudos-03.png'
+import kudos04 from '@/assets/new-design/demo-kudos-04.png'
+import kudos05 from '@/assets/new-design/demo-kudos-05.png'
+import kudos06 from '@/assets/new-design/demo-kudos-06.png'
 
 type Capability = {
   title: string
   body: string
-  videoSrc: string
+  frames: Array<string>
 }
 
 const CAPABILITIES: Array<Capability> = [
   {
     title: 'Voice',
     body: 'Speak to build, edit, or manage your tasks. Hands free, friction free.',
-    videoSrc: voiceDemoSrc,
+    frames: [voice01, voice02, voice03, voice04, voice05, voice06, voice07, voice08],
   },
   {
     title: 'Measurable Activity',
     body: 'Close your rings, fill your graph, see your habits show up. You never stuck with habits because you could never see them form — now you can.',
-    videoSrc: measurableDemoSrc,
+    frames: [activity01, activity02, activity03, activity04],
   },
   {
     title: 'Kudos',
     body: 'Your friends are on Kindred too. Cheer their streaks, drop a congrats, send a nudge right when it counts.',
-    videoSrc: kudosDemoSrc,
+    frames: [kudos01, kudos02, kudos03, kudos04, kudos05, kudos06],
   },
 ]
 
@@ -64,7 +79,7 @@ function CapabilityCard({
     <div
       onMouseEnter={onActivate}
       onClick={onActivate}
-      className="bg-white rounded-[8px] p-[28px] flex flex-col gap-[14px] items-start justify-center shadow-[0px_0px_24px_0px_rgba(0,0,0,0.05)] transition-all duration-500 ease-out w-full h-full cursor-pointer"
+      className="bg-white rounded-[8px] p-[24px] flex flex-col gap-[12px] items-start justify-center shadow-[0px_0px_24px_0px_rgba(0,0,0,0.05)] transition-all duration-500 ease-out w-full h-full cursor-pointer"
       style={{
         opacity: isActive ? 1 : 0.4,
         filter: isActive ? 'blur(0px)' : 'blur(5px)',
@@ -130,7 +145,7 @@ function RevealCharacter({
   const color = useTransform(
     progress,
     [threshold, end],
-    ['#A8A3B8', 'rgba(133, 77, 255, 1)'],
+    ['#A8A3B8', 'rgba(92, 52, 184, 1)'],
   )
   return <motion.span style={{ color }}>{char}</motion.span>
 }
@@ -163,28 +178,60 @@ function RevealText({
 // Phone rotates per active section: Voice → +5°, Measurable → -5°, Kudos → +5°.
 const PHONE_ROTATIONS = [5, -5, 5]
 
-// Scrub easing for the demo videos: scroll → video time isn't linear.
-// Smoothstep eases the playhead at the start and end of each section's
-// scroll window (so the first/last frames linger and read clearly) and
-// runs ~1.5× linear through the middle.
-const smoothstep = (t: number) => t * t * (3 - 2 * t)
+// Map a section's 0→1 progress to the active frame index. Each frame holds
+// for the slice [i / N, (i + 1) / N], with the final slice extending to 1
+// so the last screenshot reads cleanly at the end of the scroll window.
+function frameIndexForProgress(progress: number, frameCount: number) {
+  if (frameCount <= 1) return 0
+  const idx = Math.floor(progress * frameCount)
+  return Math.min(frameCount - 1, Math.max(0, idx))
+}
+
+function FrameStack({
+  frames,
+  activeFrame,
+  isActiveSection,
+}: {
+  frames: Array<string>
+  activeFrame: number
+  isActiveSection: boolean
+}) {
+  // Crossfade rule: every frame with index <= activeFrame stays at opacity 1.
+  // Later-index frames are rendered later in the DOM, so they sit on top.
+  // - Going forward (active N → N+1): frame N+1 fades 0→1 *on top of* frame N (already at 1).
+  // - Going backward (active N+1 → N): frame N+1 fades 1→0, revealing frame N (still at 1) beneath.
+  // The underlying layer always stays opaque, so we never fade through the black phone screen.
+  return (
+    <>
+      {frames.map((src, i) => (
+        <img
+          key={src}
+          src={src}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[500ms] ease-linear"
+          style={{ opacity: isActiveSection && i <= activeFrame ? 1 : 0 }}
+        />
+      ))}
+    </>
+  )
+}
 
 function PhoneDemo({
   activeIndex,
-  videoRefs,
+  activeFrames,
 }: {
   activeIndex: number
-  videoRefs: React.MutableRefObject<Array<HTMLVideoElement | null>>
+  activeFrames: Array<number>
 }) {
   return (
     <div
       className="absolute"
       style={{
-        bottom: 0,
+        top: '50%',
         left: '50%',
-        height: '90%',
+        height: '81%',
         aspectRatio: PHONE_WIDTH / PHONE_HEIGHT,
-        transform: 'translateX(-50%)',
+        transform: 'translate(-50%, -50%)',
         filter: 'drop-shadow(0px 0px 12px rgba(0,0,0,0.16))',
       }}
     >
@@ -208,19 +255,12 @@ function PhoneDemo({
           }}
         >
           {CAPABILITIES.map((capability, index) => (
-            <video
+            <FrameStack
               key={capability.title}
-              ref={(el) => {
-                videoRefs.current[index] = el
-              }}
-              muted
-              playsInline
-              preload="auto"
-              className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-out"
-              style={{ opacity: activeIndex === index ? 1 : 0 }}
-            >
-              <source src={capability.videoSrc} type="video/mp4" />
-            </video>
+              frames={capability.frames}
+              activeFrame={activeFrames[index] ?? 0}
+              isActiveSection={activeIndex === index}
+            />
           ))}
         </div>
       </motion.div>
@@ -228,17 +268,17 @@ function PhoneDemo({
   )
 }
 
+// Mobile auto-cycles each capability's frames once it's the active section.
+const MOBILE_FRAME_INTERVAL_MS = 2800
+
 export function CapabilitiesSection() {
   const scale = useResponsiveScale()
   const isMobile = useIsMobile()
   const [activeIndex, setActiveIndex] = useState(0)
+  const [activeFrames, setActiveFrames] = useState<Array<number>>(() =>
+    CAPABILITIES.map(() => 0),
+  )
   const pinContainerRef = useRef<HTMLDivElement>(null)
-  const videoRefs = useRef<Array<HTMLVideoElement | null>>([])
-  // Coalesce scroll-driven currentTime writes to one per animation frame.
-  // Without this, useMotionValueEvent fires faster than the video element can
-  // service seeks, which queues redundant work and causes scrub jank.
-  const pendingScrub = useRef<{ index: number; local: number } | null>(null)
-  const rafScheduled = useRef(false)
 
   const { scrollYProgress } = useScroll({
     target: pinContainerRef,
@@ -273,29 +313,31 @@ export function CapabilitiesSection() {
           ? Math.min(1, (progress - 1 / 3) * 3)
           : Math.min(1, (progress - 2 / 3) * 3)
 
-    pendingScrub.current = { index: next, local }
-    if (rafScheduled.current) return
-    rafScheduled.current = true
-    requestAnimationFrame(() => {
-      rafScheduled.current = false
-      const target = pendingScrub.current
-      if (!target) return
-      pendingScrub.current = null
-      const video = videoRefs.current[target.index]
-      if (!video || !video.duration || isNaN(video.duration)) return
-      const eased = smoothstep(target.local)
-      const t = Math.max(
-        0,
-        Math.min(eased * video.duration, video.duration - 0.01),
-      )
-      if (Math.abs(video.currentTime - t) > 1 / 60) {
-        video.currentTime = t
-      }
-    })
+    const frameCount = CAPABILITIES[next].frames.length
+    const frame = frameIndexForProgress(local, frameCount)
+    setActiveFrames((prev) =>
+      prev[next] === frame ? prev : prev.map((v, i) => (i === next ? frame : v)),
+    )
   })
+
+  // Mobile: auto-advance the active section's frames on a timer.
+  useEffect(() => {
+    if (!isMobile) return
+    const frameCount = CAPABILITIES[activeIndex].frames.length
+    if (frameCount <= 1) return
+    const id = window.setInterval(() => {
+      setActiveFrames((prev) =>
+        prev.map((v, i) =>
+          i === activeIndex ? (v + 1) % frameCount : v,
+        ),
+      )
+    }, MOBILE_FRAME_INTERVAL_MS)
+    return () => window.clearInterval(id)
+  }, [isMobile, activeIndex])
 
   return (
     <section
+      id="capabilities-section"
       className="relative w-full bg-white"
       style={{ padding: isMobile ? '40px 16px' : `0 ${scale(64)}` }}
     >
@@ -311,7 +353,7 @@ export function CapabilitiesSection() {
           style={{ maxWidth: isMobile ? '100%' : scale(1086) }}
         >
           <p className="font-outfit text-primary text-xs uppercase">
-            01 - Capabilities
+            Capabilities
           </p>
           <p
             className="font-outfit font-normal leading-none text-black tracking-[-0.02em] capitalize"
@@ -336,17 +378,12 @@ export function CapabilitiesSection() {
             <div className="w-[260px] aspect-[367/789] relative">
               <div className="absolute inset-0 border-[10px] border-white rounded-[28px] overflow-hidden bg-black shadow-[0_8px_32px_rgba(0,0,0,0.15)]">
                 {CAPABILITIES.map((capability, index) => (
-                  <video
+                  <FrameStack
                     key={capability.title}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-out"
-                    style={{ opacity: activeIndex === index ? 1 : 0 }}
-                  >
-                    <source src={capability.videoSrc} type="video/mp4" />
-                  </video>
+                    frames={capability.frames}
+                    activeFrame={activeFrames[index] ?? 0}
+                    isActiveSection={activeIndex === index}
+                  />
                 ))}
               </div>
             </div>
@@ -363,13 +400,14 @@ export function CapabilitiesSection() {
           </div>
         ) : (
           // Pin container — taller so each of the 3 sections gets its own scroll window.
-          // 900vh = 300vh per section, slow enough to read each video's detail
-          // without fast-forwarding through the demo.
+          // 1200vh = 400vh per section. Voice has the most frames (8), so at this
+          // height each frame still holds for ~50vh — slow enough to read before
+          // the next crossfade begins.
           <div
             ref={pinContainerRef}
             style={{
               marginTop: scale(64),
-              height: '720vh',
+              height: '1200vh',
             }}
           >
             {/* Sticky child — pins 64px below viewport top once the phone reaches that line */}
@@ -378,7 +416,7 @@ export function CapabilitiesSection() {
                 className="relative mx-auto w-full"
                 style={{ height: 'min(90vh, 1100px)' }}
               >
-                <PhoneDemo activeIndex={activeIndex} videoRefs={videoRefs} />
+                <PhoneDemo activeIndex={activeIndex} activeFrames={activeFrames} />
 
                 {CAPABILITIES.map((capability, index) => {
                   const position = CARD_POSITIONS[index]
