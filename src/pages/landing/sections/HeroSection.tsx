@@ -127,7 +127,7 @@ export function HeroSection() {
             {/* Buttons */}
             <div className="order-2 md:order-1 flex gap-2 mt-8 md:mt-0">
               <motion.a
-                href="#"
+                href="https://apps.apple.com/us/app/kindred-todo/id6744142764"
                 className="px-5 py-3 bg-primary rounded-[12px] font-outfit text-base text-white shadow-[0_0_40px_var(--color-primary-glow)] text-center whitespace-nowrap"
                 style={{ width: isMobile ? '100%' : '247px' }}
                 whileHover={{ scale: 1.05 }}
