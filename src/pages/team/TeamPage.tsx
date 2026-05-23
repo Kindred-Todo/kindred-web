@@ -1,342 +1,307 @@
-import { scale, columnStart, columns } from '@/lib/design-system'
 import { motion } from 'framer-motion'
-import { useResponsiveScale } from '@/hooks/useResponsiveScale'
-import logo from '@/assets/logo.svg'
+import { useIsMobile, useResponsiveScale } from '@/hooks/useResponsiveScale'
+import { decorativeShapes } from '@/assets/shapes/decorative-shapes'
 import beakPhoto from '@/assets/beak.png'
 import lokyePhoto from '@/assets/lokye.png'
 import mongoLogo from '@/mongo.png'
 import klaviyoLogo from '@/assets/klaviyo.png'
 import microsoftLogo from '@/assets/microsoft.png'
 
-// Decorative shapes component
-function DecorativeShapes() {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {/* Stars */}
-      <motion.div
-        className="absolute"
-        style={{ top: '8%', left: '15%', width: scale(40), height: scale(40) }}
-        animate={{ 
-          rotate: [0, 360],
-          scale: [1, 1.2, 1]
-        }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <svg viewBox="0 0 100 100" fill="#C4B5FD" opacity="0.6">
-          <polygon points="50,10 61,40 92,40 67,59 78,89 50,70 22,89 33,59 8,40 39,40" />
-        </svg>
-      </motion.div>
+type LogoChip = { src: string; alt: string }
 
-      <motion.div
-        className="absolute"
-        style={{ top: '15%', right: '10%', width: scale(50), height: scale(50) }}
-        animate={{ 
-          rotate: [0, -360],
-          scale: [1, 1.1, 1]
-        }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <svg viewBox="0 0 100 100" fill="#C4B5FD" opacity="0.5">
-          <polygon points="50,10 61,40 92,40 67,59 78,89 50,70 22,89 33,59 8,40 39,40" />
-        </svg>
-      </motion.div>
-
-      <motion.div
-        className="absolute"
-        style={{ bottom: '20%', left: '8%', width: scale(35), height: scale(35) }}
-        animate={{ 
-          rotate: [0, 360],
-          scale: [1, 1.15, 1]
-        }}
-        transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <svg viewBox="0 0 100 100" fill="#C4B5FD" opacity="0.4">
-          <polygon points="50,10 61,40 92,40 67,59 78,89 50,70 22,89 33,59 8,40 39,40" />
-        </svg>
-      </motion.div>
-
-      {/* Triangles */}
-      <motion.div
-        className="absolute"
-        style={{ top: '25%', right: '18%', width: scale(60), height: scale(60) }}
-        animate={{ 
-          x: [0, 10, 0],
-          y: [0, -10, 0]
-        }}
-        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <svg viewBox="0 0 100 100" fill="#854dff" opacity="0.7">
-          <polygon points="50,10 90,80 10,80" />
-        </svg>
-      </motion.div>
-
-      <motion.div
-        className="absolute"
-        style={{ bottom: '30%', right: '12%', width: scale(70), height: scale(70) }}
-        animate={{ 
-          x: [0, -15, 0],
-          y: [0, 10, 0]
-        }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <svg viewBox="0 0 100 100" fill="#854dff" opacity="0.6">
-          <polygon points="50,10 90,80 10,80" />
-        </svg>
-      </motion.div>
-
-      {/* Squiggles */}
-      <motion.div
-        className="absolute"
-        style={{ top: '35%', left: '12%', width: scale(80), height: scale(40) }}
-        animate={{ 
-          rotate: [0, 5, -5, 0]
-        }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <svg viewBox="0 0 100 50" fill="none" stroke="#C4B5FD" strokeWidth="2" opacity="0.4">
-          <path d="M 10 25 Q 25 10, 40 25 T 70 25 T 90 25" />
-        </svg>
-      </motion.div>
-
-      <motion.div
-        className="absolute"
-        style={{ bottom: '15%', right: '20%', width: scale(60), height: scale(30) }}
-        animate={{ 
-          rotate: [0, -5, 5, 0]
-        }}
-        transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <svg viewBox="0 0 100 50" fill="none" stroke="#C4B5FD" strokeWidth="2" opacity="0.3">
-          <path d="M 10 25 Q 25 40, 40 25 T 70 25 T 90 25" />
-        </svg>
-      </motion.div>
-
-      {/* Circles/Dots */}
-      <motion.div
-        className="absolute"
-        style={{ top: '50%', left: '5%', width: scale(30), height: scale(30) }}
-        animate={{ 
-          scale: [1, 1.3, 1],
-          opacity: [0.3, 0.5, 0.3]
-        }}
-        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <svg viewBox="0 0 100 100" fill="none" stroke="#854dff" strokeWidth="3" opacity="0.4">
-          <circle cx="50" cy="50" r="40" />
-        </svg>
-      </motion.div>
-    </div>
-  )
-}
-
-interface TeamMemberProps {
+type TeamMember = {
   name: string
   photo: string
-  title: string
-  experience: string[]
-  education: string
+  role: string
+  bio: Array<string>
   funFact?: string
-  companyLogos?: string[]
-  delay?: number
+  logos: Array<LogoChip>
 }
 
-function TeamMember({ name, photo, title, experience, education, funFact, companyLogos, delay = 0 }: TeamMemberProps) {
-  const scale = useResponsiveScale()
-  
-  return (
-    <motion.div 
-      className="flex flex-col md:flex-row gap-8 md:gap-12"
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay }}
-      viewport={{ once: true, margin: "-100px" }}
-    >
-      {/* Photo */}
-      <motion.div 
-        className="flex-shrink-0 w-full md:w-auto"
-        whileHover={{ scale: 1.05 }}
-        transition={{ duration: 0.3 }}
-      >
-        <img 
-          src={photo} 
-          alt={name}
-          className="w-full md:w-auto md:h-[280px] object-cover rounded-lg shadow-lg"
-          style={{ maxWidth: '100%' }}
-        />
-      </motion.div>
+const TEAM: Array<TeamMember> = [
+  {
+    name: 'Abhik Ray',
+    photo: beakPhoto,
+    role: 'SWE · MongoDB',
+    bio: [
+      'Previously a founder building consumer apps.',
+      'Director at Generate, Northeastern’s student-run product studio.',
+      'CS × Interaction Design — Northeastern University.',
+    ],
+    funFact: 'Part-time DJ.',
+    logos: [
+      { src: mongoLogo, alt: 'MongoDB' },
+      { src: klaviyoLogo, alt: 'Klaviyo' },
+    ],
+  },
+  {
+    name: 'Lok Ye Young',
+    photo: lokyePhoto,
+    role: 'SWE · Microsoft',
+    bio: [
+      'Two years designing consumer interfaces.',
+      'Software Designer at Generate, Northeastern’s student-run product studio.',
+      'CS × Human-Centered Computing — Northeastern University.',
+    ],
+    logos: [{ src: microsoftLogo, alt: 'Microsoft' }],
+  },
+]
 
-      {/* Info */}
-      <div className="flex-1 flex flex-col gap-6">
-        <h3 
-          className="font-outfit font-semibold text-black"
+function TeamMemberCard({
+  member,
+  index,
+  isMobile,
+  scale,
+}: {
+  member: TeamMember
+  index: number
+  isMobile: boolean
+  scale: (value: number) => string
+}) {
+  const reversed = index % 2 === 1
+
+  return (
+    <motion.article
+      className="bg-white overflow-hidden shadow-[0px_0px_24px_0px_rgba(0,0,0,0.05)]"
+      style={{ borderRadius: isMobile ? 20 : 28 }}
+      initial={{ opacity: 0, y: 32 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, margin: '-80px' }}
+    >
+      <div
+        className={
+          isMobile
+            ? 'flex flex-col'
+            : `flex ${reversed ? 'flex-row-reverse' : ''}`
+        }
+      >
+        {/* Photo */}
+        <div
+          className={
+            isMobile
+              ? 'w-full overflow-hidden'
+              : 'overflow-hidden flex-shrink-0'
+          }
           style={{
-            fontSize: scale(40),
-            letterSpacing: scale(-0.8),
-            lineHeight: '1.1',
+            aspectRatio: isMobile ? '4 / 3' : undefined,
+            width: isMobile ? '100%' : 260,
           }}
         >
-          {name}
-        </h3>
-
-        <div className="flex flex-col gap-3">
-          <p 
-            className="font-outfit font-medium text-black"
-            style={{
-              fontSize: scale(24),
-              letterSpacing: scale(-0.24),
-              lineHeight: '1.2',
-            }}
-          >
-            {title}
-          </p>
-
-          {experience.map((exp, idx) => (
-            <p 
-              key={idx}
-              className="font-outfit font-light text-black/80"
-              style={{
-                fontSize: scale(20),
-                letterSpacing: scale(-0.2),
-                lineHeight: '1.3',
-              }}
-            >
-              {exp}
-            </p>
-          ))}
-
-          <p 
-            className="font-outfit font-light text-black/80"
-            style={{
-              fontSize: scale(20),
-              letterSpacing: scale(-0.2),
-              lineHeight: '1.3',
-            }}
-          >
-            {education}
-          </p>
-
-          {funFact && (
-            <p 
-              className="font-outfit font-light text-black/70 italic mt-2"
-              style={{
-                fontSize: scale(20),
-                letterSpacing: scale(-0.2),
-                lineHeight: '1.3',
-              }}
-            >
-              {funFact}
-            </p>
-          )}
+          <img
+            src={member.photo}
+            alt={member.name}
+            className="w-full h-full object-cover"
+          />
         </div>
 
-        {companyLogos && companyLogos.length > 0 && (
-          <div className="mt-4 flex items-center gap-6 flex-wrap">
-            {companyLogos.map((logo, idx) => (
-              <img 
-                key={idx}
-                src={logo} 
-                alt="Company logo" 
-                className="h-10 md:h-14 w-auto object-contain"
+        {/* Body */}
+        <div
+          className={
+            isMobile
+              ? 'flex flex-col gap-5'
+              : 'flex-1 flex flex-col justify-center gap-6'
+          }
+          style={{
+            padding: isMobile ? '32px 24px 36px' : '52px 56px',
+          }}
+        >
+          <div className="flex flex-col gap-3">
+            <p className="font-outfit text-primary text-xs uppercase">
+              {member.role}
+            </p>
+            <h2
+              className="font-outfit font-normal text-black leading-none tracking-[-0.02em]"
+              style={{ fontSize: isMobile ? 32 : 36 }}
+            >
+              {member.name}
+            </h2>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            {member.bio.map((line) => (
+              <p
+                key={line}
+                className="font-outfit font-[350] text-text-muted leading-[1.5] tracking-[-0.01em]"
+                style={{ fontSize: isMobile ? 16 : `clamp(16px, ${scale(18)}, 18px)` }}
+              >
+                {line}
+              </p>
+            ))}
+          </div>
+
+          {member.funFact && (
+            <p
+              className="font-outfit font-[350] text-primary leading-[1.4]"
+              style={{ fontSize: isMobile ? 16 : `clamp(16px, ${scale(18)}, 18px)` }}
+            >
+              {member.funFact}
+            </p>
+          )}
+
+          <div className="flex items-center flex-wrap gap-x-6 gap-y-3 mt-2 pt-5 border-t border-black/10">
+            {member.logos.map((logo) => (
+              <img
+                key={logo.alt}
+                src={logo.src}
+                alt={logo.alt}
+                className="object-contain"
+                style={{
+                  height: isMobile ? 28 : 36,
+                  width: 'auto',
+                }}
               />
             ))}
           </div>
-        )}
+        </div>
       </div>
-    </motion.div>
+    </motion.article>
   )
 }
 
 export default function TeamPage() {
   const scale = useResponsiveScale()
+  const isMobile = useIsMobile()
 
   return (
-    <div className="bg-[#FFFFFF] relative w-full min-h-screen">
-      {/* Decorative shapes */}
-      <DecorativeShapes />
-
-      {/* Main content */}
-      <div className="relative z-10 px-4 md:px-16 py-32">
-        <div 
-          className="max-w-7xl mx-auto"
+    <div className="w-full bg-white">
+      {/* Hero */}
+      <section
+        className="relative w-full bg-white"
+        style={{ padding: isMobile ? '96px 16px 40px' : `${scale(160)} ${scale(64)} ${scale(48)}` }}
+      >
+        <div
+          className="relative bg-surface rounded-[56px] w-full max-w-[1600px] mx-auto overflow-hidden"
           style={{
-            paddingLeft: '16px',
-            paddingRight: '16px',
+            padding: isMobile ? '64px 24px' : `${scale(120)} ${scale(64)}`,
           }}
         >
-          {/* Header */}
-          <motion.div
-            className="mb-24 md:mb-32"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 
-              className="font-fraunces italic text-[#854dff] mb-8"
+          {/* Decorative dashed star */}
+          {!isMobile && (
+            <motion.div
+              className="absolute pointer-events-none"
               style={{
-                fontSize: scale(86),
-                lineHeight: '1',
-                letterSpacing: scale(-1.72),
-                fontVariationSettings: "'SOFT' 0, 'WONK' 0.78",
+                top: scale(72),
+                right: scale(96),
+                width: scale(56),
+                height: scale(56),
+                opacity: 0.12,
+                filter: 'drop-shadow(0 0 14px rgba(133, 77, 255, 0.4))',
               }}
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 38, repeat: Infinity, ease: 'linear' }}
             >
-              the team
-            </h1>
-          </motion.div>
+              <svg className="block size-full" fill="none" viewBox="0 0 65.1557 62.234">
+                <path
+                  d={decorativeShapes.dashedStar}
+                  stroke="var(--color-primary)"
+                  strokeDasharray="18.04 18.04"
+                  strokeWidth="1.8"
+                />
+              </svg>
+            </motion.div>
+          )}
 
-          {/* Team members */}
-          <div className="flex flex-col gap-24 md:gap-32">
-            <TeamMember
-              name="Abhik Ray"
-              photo={beakPhoto}
-              title="MongoDB Software Engineer"
-              experience={[
-                "Previous Founder",
-                "Generate Software Director",
-                "CS x Interaction Design @ Northeastern University",
-              ]}
-              education=""
-              funFact="Part Time DJ"
-              companyLogos={[mongoLogo, klaviyoLogo]}
-              delay={0}
-            />
+          <div
+            className="flex flex-col items-center gap-8 text-center mx-auto"
+            style={{ maxWidth: isMobile ? '100%' : scale(1086) }}
+          >
+            <motion.p
+              className="font-outfit text-primary text-xs uppercase"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              The Team
+            </motion.p>
 
-            <TeamMember
-              name="Lok Ye Young"
-              photo={lokyePhoto}
-              title="Incoming Microsoft SWE"
-              experience={[
-                "2 Years Design Experience",
-                "Generate Software Designer",
-                "CS & Human Centered Computing @ Northeastern University",
-              ]}
-              education=""
-              companyLogos={[microsoftLogo]}
-              delay={0.2}
-            />
+            <motion.h1
+              className="font-outfit font-normal leading-none text-black tracking-[-0.02em]"
+              style={{ fontSize: isMobile ? 40 : scale(64) }}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
+            >
+              Two builders making the productivity app they actually wanted.
+            </motion.h1>
+
+            <motion.p
+              className="font-outfit font-[350] text-text-muted leading-[1.2] tracking-[-0.01em]"
+              style={{
+                fontSize: isMobile ? 16 : `clamp(16px, ${scale(20)}, 20px)`,
+                maxWidth: isMobile ? '100%' : scale(720),
+              }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.7, delay: 0.15 }}
+            >
+              Kindred is built by a small team of friends who got tired of todo lists that
+              didn’t care if you actually finished anything. Here’s who’s behind it.
+            </motion.p>
           </div>
-
-          {/* Footer with logo and website */}
-          <motion.div 
-            className="mt-32 pt-16 border-t border-black/10 flex items-center gap-8"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <img src={logo} alt="Kindred" className="w-12 h-12 md:w-16 md:h-16" />
-            <p 
-              className="font-outfit text-black"
-              style={{
-                fontSize: scale(24),
-                letterSpacing: scale(-0.24),
-              }}
-            >
-              kindredtodo.com
-            </p>
-          </motion.div>
         </div>
-      </div>
+      </section>
+
+      {/* Team grid */}
+      <section
+        className="relative w-full bg-white"
+        style={{
+          padding: isMobile ? '24px 16px 80px' : `${scale(24)} ${scale(64)} ${scale(120)}`,
+        }}
+      >
+        <div
+          className="w-full max-w-[960px] mx-auto flex flex-col"
+          style={{ gap: isMobile ? 24 : 32 }}
+        >
+          {TEAM.map((member, index) => (
+            <TeamMemberCard
+              key={member.name}
+              member={member}
+              index={index}
+              isMobile={isMobile}
+              scale={scale}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* Outro */}
+      <section
+        className="relative w-full bg-white"
+        style={{ padding: isMobile ? '32px 16px 96px' : `${scale(24)} ${scale(64)} ${scale(160)}` }}
+      >
+        <div
+          className="relative bg-surface rounded-[40px] w-full max-w-[1600px] mx-auto overflow-hidden text-center"
+          style={{
+            padding: isMobile ? '48px 24px' : `${scale(96)} ${scale(64)}`,
+          }}
+        >
+          <p className="font-outfit text-primary text-xs uppercase">
+            Say hi
+          </p>
+          <p
+            className="font-outfit font-normal leading-none text-black tracking-[-0.02em] mx-auto"
+            style={{
+              fontSize: isMobile ? 28 : scale(48),
+              marginTop: isMobile ? 16 : scale(20),
+              maxWidth: isMobile ? '100%' : scale(840),
+            }}
+          >
+            Building this with us, or just want to chat? We read every email.
+          </p>
+          <a
+            href="mailto:kindred@kindredtodo.com"
+            className="inline-block font-outfit text-primary underline underline-offset-4"
+            style={{
+              fontSize: isMobile ? 18 : `clamp(18px, ${scale(22)}, 22px)`,
+              marginTop: isMobile ? 24 : scale(32),
+              letterSpacing: '-0.01em',
+            }}
+          >
+            kindred@kindredtodo.com
+          </a>
+        </div>
+      </section>
     </div>
   )
 }
-
