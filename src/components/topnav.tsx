@@ -47,10 +47,15 @@ export default function TopNav() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Hero (100vh) + ScrollReveal (300vh) = 400vh before white sections
-      const darkSectionsEnd = window.innerHeight * 4
+      // Reveal the nav once the user has scrolled past the capabilities
+      // section. Fall back to the old dark-sections threshold if the section
+      // can't be found (e.g. another page that re-uses TopNav).
+      const capabilitiesEl = document.getElementById('capabilities-section')
+      const threshold = capabilitiesEl
+        ? capabilitiesEl.offsetTop + capabilitiesEl.offsetHeight - 100
+        : window.innerHeight * 4 - 100
       setIsScrolled(window.scrollY > window.innerHeight - 100)
-      setIsVisible(!isHome || window.scrollY > darkSectionsEnd - 100)
+      setIsVisible(!isHome || window.scrollY > threshold)
     }
     window.addEventListener('scroll', handleScroll, { passive: true })
     handleScroll()
