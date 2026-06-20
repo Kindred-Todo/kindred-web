@@ -11,14 +11,28 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as TermsImport } from './routes/terms'
 import { Route as TeamImport } from './routes/team'
+import { Route as PrivacyImport } from './routes/privacy'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
 
+const TermsRoute = TermsImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const TeamRoute = TeamImport.update({
   id: '/team',
   path: '/team',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PrivacyRoute = PrivacyImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -39,11 +53,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyImport
+      parentRoute: typeof rootRoute
+    }
     '/team': {
       id: '/team'
       path: '/team'
       fullPath: '/team'
       preLoaderRoute: typeof TeamImport
+      parentRoute: typeof rootRoute
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsImport
       parentRoute: typeof rootRoute
     }
   }
@@ -53,37 +81,47 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/privacy': typeof PrivacyRoute
   '/team': typeof TeamRoute
+  '/terms': typeof TermsRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/privacy': typeof PrivacyRoute
   '/team': typeof TeamRoute
+  '/terms': typeof TermsRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/privacy': typeof PrivacyRoute
   '/team': typeof TeamRoute
+  '/terms': typeof TermsRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/team'
+  fullPaths: '/' | '/privacy' | '/team' | '/terms'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/team'
-  id: '__root__' | '/' | '/team'
+  to: '/' | '/privacy' | '/team' | '/terms'
+  id: '__root__' | '/' | '/privacy' | '/team' | '/terms'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  PrivacyRoute: typeof PrivacyRoute
   TeamRoute: typeof TeamRoute
+  TermsRoute: typeof TermsRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  PrivacyRoute: PrivacyRoute,
   TeamRoute: TeamRoute,
+  TermsRoute: TermsRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,14 +135,22 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/team"
+        "/privacy",
+        "/team",
+        "/terms"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
+    "/privacy": {
+      "filePath": "privacy.tsx"
+    },
     "/team": {
       "filePath": "team.tsx"
+    },
+    "/terms": {
+      "filePath": "terms.tsx"
     }
   }
 }

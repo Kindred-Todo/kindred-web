@@ -1,6 +1,10 @@
 import { motion } from 'framer-motion'
+import { Link } from '@tanstack/react-router'
 import { useIsMobile, useResponsiveScale } from '@/hooks/useResponsiveScale'
 import checkLogo from '@/assets/check-logo.svg'
+
+const legalLinkClass =
+  'font-outfit font-light text-white/40 text-[13px] hover:text-white/70 transition-colors'
 
 export function Footer() {
   const scale = useResponsiveScale()
@@ -39,7 +43,7 @@ export function Footer() {
               <div className="flex gap-8">
                 <div className="flex flex-col gap-2">
                   <p className="font-outfit text-[14px] text-white/50">FOLLOW</p>
-                  <a href="#" className="font-outfit text-[16px] underline">@kindredtodo</a>
+                  <a href="https://www.instagram.com/kindred.todo" target="_blank" rel="noopener noreferrer" className="font-outfit text-[16px] underline">@kindred.todo</a>
                 </div>
                 <div className="flex flex-col gap-2">
                   <p className="font-outfit text-[14px] text-white/50">EMAIL</p>
@@ -68,7 +72,7 @@ export function Footer() {
               <div className="col-span-3 col-start-10 flex flex-col justify-end gap-6">
                 <div className="flex flex-col gap-2">
                   <p className="font-outfit text-[14px] text-white/50">FOLLOW</p>
-                  <a href="#" className="font-outfit text-[16px] underline">@kindredtodo</a>
+                  <a href="https://www.instagram.com/kindred.todo" target="_blank" rel="noopener noreferrer" className="font-outfit text-[16px] underline">@kindred.todo</a>
                 </div>
                 <div className="flex flex-col gap-2">
                   <p className="font-outfit text-[14px] text-white/50">EMAIL</p>
@@ -86,6 +90,10 @@ export function Footer() {
                   <img src={checkLogo} alt="Kindred" className="object-contain" style={{ width: '40px', height: '32px' }} />
                   <span className="font-fraunces font-normal text-primary text-[28px]" style={{ letterSpacing: '-0.03em', lineHeight: 1.2, fontVariationSettings: "'SOFT' 0, 'WONK' 1, 'opsz' 80" }}>kindred</span>
                 </div>
+                <div className="flex flex-row gap-4">
+                  <Link to="/privacy" className={legalLinkClass}>Privacy Policy</Link>
+                  <Link to="/terms" className={legalLinkClass}>Terms of Service</Link>
+                </div>
                 <div className="font-outfit font-light text-white/40 text-[13px]">&copy; 2025 Kindred. All rights reserved.</div>
               </div>
             ) : (
@@ -94,7 +102,11 @@ export function Footer() {
                   <img src={checkLogo} alt="Kindred" className="object-contain" style={{ width: scale(48), height: scale(38) }} />
                   <span className="font-fraunces font-normal text-primary" style={{ fontSize: scale(36), letterSpacing: '-0.03em', lineHeight: 1.2, fontVariationSettings: "'SOFT' 0, 'WONK' 1, 'opsz' 80" }}>kindred</span>
                 </div>
-                <div className="font-outfit font-light text-white/40 text-[13px]">&copy; 2025 Kindred. All rights reserved.</div>
+                <div className="flex items-center gap-6">
+                  <Link to="/privacy" className={legalLinkClass}>Privacy Policy</Link>
+                  <Link to="/terms" className={legalLinkClass}>Terms of Service</Link>
+                  <div className="font-outfit font-light text-white/40 text-[13px]">&copy; 2025 Kindred. All rights reserved.</div>
+                </div>
               </div>
             )}
           </div>

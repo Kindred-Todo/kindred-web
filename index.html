@@ -4,16 +4,144 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="/favicon.ico" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Join the waitlist for Kindred: A socialized todo list"
-    />
     <link rel="apple-touch-icon" href="/logo192.png" />
     <link rel="manifest" href="/manifest.json" />
-    <title>Kindred</title>
+    <meta name="theme-color" content="#13121f" />
+
+    <title>Kindred — A social productivity app</title>
+    <meta
+      name="description"
+      content="Kindred is a social productivity app that makes goals and everyday tasks feel motivating, fun, and accountable with friends — think Strava, BeReal, and Apple Health for getting things done."
+    />
+    <link rel="canonical" href="https://kindredtodo.com/" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Kindred" />
+    <meta property="og:title" content="Kindred — A social productivity app" />
+    <meta
+      property="og:description"
+      content="Productivity works better when it feels human. Kindred makes following through on your goals social, motivating, and rewarding — with the friends who want it for you too."
+    />
+    <meta property="og:url" content="https://kindredtodo.com/" />
+    <meta property="og:image" content="https://kindredtodo.com/logo512.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Kindred — A social productivity app" />
+    <meta
+      name="twitter:description"
+      content="Productivity works better when it feels human. Kindred makes following through on your goals social, motivating, and rewarding — with friends."
+    />
+    <meta name="twitter:image" content="https://kindredtodo.com/logo512.png" />
+
+    <!-- Structured data for search + answer engines. FAQ entries mirror
+         src/pages/landing/sections/FAQSection.tsx — keep them in sync. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://kindredtodo.com/#org",
+            "name": "Kindred",
+            "url": "https://kindredtodo.com/",
+            "logo": "https://kindredtodo.com/logo512.png",
+            "email": "kindred@kindredtodo.com",
+            "sameAs": ["https://www.instagram.com/kindred.todo"]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://kindredtodo.com/#website",
+            "url": "https://kindredtodo.com/",
+            "name": "Kindred",
+            "publisher": { "@id": "https://kindredtodo.com/#org" }
+          },
+          {
+            "@type": "MobileApplication",
+            "name": "Kindred",
+            "operatingSystem": "iOS",
+            "applicationCategory": "LifestyleApplication",
+            "applicationSubCategory": "Productivity",
+            "description": "Kindred is a social productivity app designed to tackle the behavioral side of productivity. Most tools help you organize what you want to do; the harder part is following through. Inspired by Strava, BeReal, and Apple Health, Kindred makes goals and everyday tasks feel motivating, fun, and accountable with friends — and over time helps people build lasting behavior change.",
+            "url": "https://kindredtodo.com/",
+            "downloadUrl": "https://apps.apple.com/us/app/kindred-todo/id6744142764",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "publisher": { "@id": "https://kindredtodo.com/#org" }
+          },
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Can people see everything I'm doing?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Not at all. Your activity on Kindred is private by default. You choose exactly what to share and who to share it with — whether that's a close friend, your whole group, or no one. Your tasks, progress, and personal notes stay yours unless you decide otherwise."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Do my friends need to be on the app too?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "They don't have to be, but it's way better when they are. Kindred is built around shared accountability — you can use it solo, but the real magic happens when the people you care about are in it with you. Invite them and watch how much easier it becomes to stay on track."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is it free?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes — Kindred is completely free to download and use. All core features are included from day one, no paywalls or trials. We want everyone to have access to a productivity system that actually works."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How is this different from other productivity apps?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Most productivity apps treat you like a solo machine — just organize harder and you'll get things done. Kindred flips that. It's built around the people in your life. You set goals together, celebrate wins together, and stay accountable to each other. It's not about grinding alone — it's about growing with your people."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What are Blueprints?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Blueprints are ready-made goal templates designed for real life — finals prep, job applications, fitness challenges, passion projects. Instead of building a system from scratch, pick a Blueprint and start immediately. They give you structure without the overhead."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I use Kindred for work or school?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Absolutely. Kindred works for anything you want to get done — school projects, career goals, side hustles, personal growth. The accountability model adapts to whatever you're pursuing because the people around you can support all of it."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
+    <!-- Crawlable fallback for agents that don't execute JS (e.g. OAuth brand
+         verification). Real users get the full React app rendered into #app. -->
+    <noscript>
+      <h1>Kindred — A social productivity app</h1>
+      <p>
+        Kindred is a social productivity app that makes goals and everyday tasks
+        feel motivating, fun, and accountable with friends. Inspired by Strava,
+        BeReal, and Apple Health, it's designed to help you actually follow
+        through — and build lasting behavior change with the people who want it
+        for you too.
+      </p>
+      <p><a href="https://apps.apple.com/us/app/kindred-todo/id6744142764">Download Kindred on the App Store</a></p>
+      <p><a href="/privacy">Privacy Policy</a> · <a href="/terms">Terms of Service</a></p>
+    </noscript>
     <div id="app"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
