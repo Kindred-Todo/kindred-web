@@ -151,7 +151,7 @@ export function HeroSection() {
                 The most rewarding, feel good productivity system.
               </h2>
               <p className="font-outfit text-[18px] md:text-[24px] font-[350] leading-[1.25] tracking-[-0.01em] opacity-90">
-                A system that actually feels good to use — because doing it alone never really worked.
+                Kindred is a social productivity app that makes your goals and everyday tasks feel good to do — because doing it alone never really worked.
               </p>
             </div>
           </div>
