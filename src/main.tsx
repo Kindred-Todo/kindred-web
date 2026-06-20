@@ -30,7 +30,9 @@ declare module '@tanstack/react-router' {
 
 // Render the app
 const rootElement = document.getElementById('app')
-if (rootElement && !rootElement.innerHTML) {
+// No `!innerHTML` guard: #app ships with a prerendered content fallback (see
+// scripts/prerender.ts), and createRoot replaces it on mount.
+if (rootElement) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
     <StrictMode>

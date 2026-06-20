@@ -128,20 +128,9 @@
     </script>
   </head>
   <body>
-    <!-- Crawlable fallback for agents that don't execute JS (e.g. OAuth brand
-         verification). Real users get the full React app rendered into #app. -->
-    <noscript>
-      <h1>Kindred — A social productivity app</h1>
-      <p>
-        Kindred is a social productivity app that makes goals and everyday tasks
-        feel motivating, fun, and accountable with friends. Inspired by Strava,
-        BeReal, and Apple Health, it's designed to help you actually follow
-        through — and build lasting behavior change with the people who want it
-        for you too.
-      </p>
-      <p><a href="https://apps.apple.com/us/app/kindred-todo/id6744142764">Download Kindred on the App Store</a></p>
-      <p><a href="/privacy">Privacy Policy</a> · <a href="/terms">Terms of Service</a></p>
-    </noscript>
+    <!-- #app gets a real, visible content fallback injected at build time
+         (scripts/prerender.ts) so the served HTML explains the app + names it
+         without JS. React replaces it on mount. -->
     <div id="app"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
