@@ -110,14 +110,17 @@ export function HeroSection() {
       {/* Content */}
       <div className="relative z-10 w-full h-full flex flex-col justify-end px-6 md:px-[64px] pb-[48px]">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-x-[20px] items-end">
-          {/* Wordmark: Spans 5 columns */}
-          <div className="col-span-1 md:col-span-5 relative flex items-end">
+          {/* Wordmark: Spans 5 columns. Real <h1> text (sr-only) so crawlers
+              and brand verification read the exact app name "Kindred", not just
+              the wordmark image's alt. */}
+          <h1 className="col-span-1 md:col-span-5 relative m-0 flex items-end">
+            <span className="sr-only">Kindred</span>
             <img
               src={wordmarkSrc}
               alt="Kindred"
               className="w-[70%] md:w-full md:max-w-full h-auto object-contain object-bottom origin-bottom-left"
             />
-          </div>
+          </h1>
 
           {/* Spacer: 1 column */}
           <div className="hidden md:block md:col-span-1" />
