@@ -16,8 +16,8 @@ export function Footer() {
         className="bg-dark-bg"
         style={{
           borderRadius: isMobile ? '16px' : '24px',
-          paddingTop: scale(isMobile ? 64 : 96),
-          paddingBottom: scale(isMobile ? 40 : 48),
+          paddingTop: isMobile ? '44px' : scale(96),
+          paddingBottom: isMobile ? '36px' : scale(48),
           paddingLeft: isMobile ? '16px' : scale(64),
           paddingRight: isMobile ? '16px' : scale(64),
         }}
@@ -25,14 +25,14 @@ export function Footer() {
         <div className="flex flex-col max-w-[1600px] mx-auto text-white" style={{ gap: scale(isMobile ? 48 : 64) }}>
           {/* CTA + right rail */}
           {isMobile ? (
-            <div className="flex flex-col gap-10">
+            <div className="flex flex-col gap-8">
               <div>
                 <h2 className="font-outfit font-normal leading-[1.25] text-white tracking-[-0.03em] text-[36px]">Lets lock in</h2>
                 <p className="font-outfit font-[350] leading-[1.25] text-white tracking-[-0.01em] mt-4 text-[18px]">
                   Download Kindred and start building the life you actually want — with the people who want it for you too.
                 </p>
                 <div className="flex flex-row gap-3 mt-6">
-                  <motion.a href="https://apps.apple.com/us/app/kindred-todo/id6744142764" className="flex-1 px-5 py-3 bg-primary rounded-[12px] font-outfit text-base text-white shadow-[0_0_16px_var(--color-primary-glow)] text-center whitespace-nowrap" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <motion.a href="https://apps.apple.com/us/app/kindred-todo/id6744142764" className="flex-1 px-5 py-3 bg-primary rounded-[12px] font-outfit text-base text-white shadow-[0_0_20px_rgba(133,77,255,0.22)] text-center whitespace-nowrap" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                     Download Free
                   </motion.a>
                   <motion.a href="mailto:kindred@kindredtodo.com" className="flex-1 px-5 py-3 rounded-[12px] font-outfit text-base text-primary border border-primary text-center whitespace-nowrap" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>

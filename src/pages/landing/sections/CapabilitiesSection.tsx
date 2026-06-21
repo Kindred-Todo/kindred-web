@@ -352,19 +352,19 @@ export function CapabilitiesSection() {
           className="flex flex-col items-center gap-8 text-center mx-auto"
           style={{ maxWidth: isMobile ? '100%' : scale(1086) }}
         >
-          <p className="font-outfit text-primary text-xs uppercase">
+          <p className={`font-outfit text-primary uppercase ${isMobile ? 'text-[13px] tracking-[0.16em]' : 'text-xs'}`}>
             Capabilities
           </p>
           <p
             className="font-outfit font-normal leading-none text-black tracking-[-0.02em] capitalize"
-            style={{ fontSize: isMobile ? '28px' : scale(48) }}
+            style={{ fontSize: isMobile ? '34px' : scale(48), lineHeight: isMobile ? 1.08 : undefined }}
           >
             Not Another Todo List. An Environment That Keeps You Going with Tools and People You'll Love
           </p>
           <p
             className="font-outfit font-[350] text-text-muted leading-[1.2] tracking-[-0.01em]"
             style={{
-              fontSize: isMobile ? '16px' : `clamp(16px, ${scale(20)}, 20px)`,
+              fontSize: isMobile ? '18px' : `clamp(16px, ${scale(20)}, 20px)`,
               maxWidth: isMobile ? '100%' : scale(714),
             }}
           >

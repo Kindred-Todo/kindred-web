@@ -10,12 +10,27 @@ export function HeroSection() {
 
   return (
     <section className="relative w-full h-[100dvh] min-h-[600px] overflow-hidden bg-dark-bg text-white">
-      {/* Video Background */}
-      <div className="absolute inset-0 w-full h-full mix-blend-multiply opacity-80">
-        <video autoPlay loop muted playsInline className="w-full h-full object-cover blur-[12px]">
+      {/* Video Background. On mobile the multiply blend against the near-black
+          bg erased the video, leaving a dead void above the bottom-anchored
+          copy — so on mobile we let the (blurred) video show as atmosphere and
+          rely on the scrim below for text contrast. */}
+      <div className={`absolute inset-0 w-full h-full ${isMobile ? 'opacity-90' : 'mix-blend-multiply opacity-80'}`}>
+        <video autoPlay loop muted playsInline className={`w-full h-full object-cover ${isMobile ? 'blur-[10px]' : 'blur-[12px]'}`}>
           <source src={videoSrc} type="video/mp4" />
         </video>
       </div>
+
+      {/* Mobile legibility scrim: keeps the bottom-anchored copy readable while
+          the top of the frame shows the video instead of dead black. */}
+      {isMobile && (
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              'linear-gradient(to top, rgba(19,18,31,1) 0%, rgba(19,18,31,0.85) 35%, rgba(19,18,31,0.3) 70%, rgba(19,18,31,0.1) 100%)',
+          }}
+        />
+      )}
 
       {/* Purple glow blob - bottom left */}
       <div className="absolute pointer-events-none" style={{
@@ -107,6 +122,43 @@ export function HeroSection() {
         </div>
       )}
 
+      {/* Decorative shapes — mobile. Fewer and slightly bolder than desktop,
+          placed in the upper third so they fill the space the copy doesn't. */}
+      {isMobile && (
+        <div className="absolute inset-0 pointer-events-none z-[1]">
+          <motion.div
+            className="absolute"
+            style={{ right: '10%', top: '13%', width: '34px', height: '34px' }}
+            animate={{ opacity: [0.18, 0.4, 0.18], scale: [0.95, 1.05, 0.95] }}
+            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <svg className="block size-full rotate-[15deg]" fill="none" viewBox="0 0 46.0422 43.7887">
+              <path d={decorativeShapes.filledStar} fill="var(--color-primary)" stroke="var(--color-primary)" strokeWidth="0.9" />
+            </svg>
+          </motion.div>
+          <motion.div
+            className="absolute"
+            style={{ left: '8%', top: '21%', width: '44px', height: '44px' }}
+            animate={{ opacity: [0.16, 0.34, 0.16], scale: [1, 1.08, 1] }}
+            transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}
+          >
+            <svg className="block size-full -rotate-[20deg]" fill="none" viewBox="0 0 65.1557 62.234">
+              <path d={decorativeShapes.dashedStar} stroke="var(--color-primary)" strokeDasharray="18.04 18.04" strokeWidth="1.8" />
+            </svg>
+          </motion.div>
+          <motion.div
+            className="absolute"
+            style={{ right: '26%', top: '31%', width: '26px', height: '28px' }}
+            animate={{ opacity: [0.12, 0.26, 0.12], scale: [0.98, 1.04, 0.98] }}
+            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 2.5 }}
+          >
+            <svg className="block size-full rotate-[30deg]" fill="none" viewBox="0 0 50 56">
+              <path d={decorativeShapes.polygon} fill="var(--color-primary)" transform="translate(-155, -88)" />
+            </svg>
+          </motion.div>
+        </div>
+      )}
+
       {/* Content */}
       <div className="relative z-10 w-full h-full flex flex-col justify-end px-6 md:px-[64px] pb-[48px]">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-x-[20px] items-end">
@@ -118,7 +170,7 @@ export function HeroSection() {
             <img
               src={wordmarkSrc}
               alt="Kindred"
-              className="w-[70%] md:w-full md:max-w-full h-auto object-contain object-bottom origin-bottom-left"
+              className="w-[86%] md:w-full md:max-w-full h-auto object-contain object-bottom origin-bottom-left"
             />
           </h1>
 
@@ -128,10 +180,10 @@ export function HeroSection() {
           {/* Content: 6 columns */}
           <div className="col-span-1 md:col-span-6 flex flex-col justify-end gap-6 md:pb-4">
             {/* Buttons */}
-            <div className="order-2 md:order-1 flex gap-2 mt-8 md:mt-0">
+            <div className="order-2 md:order-1 flex flex-col md:flex-row gap-3 md:gap-2 mt-8 md:mt-0">
               <motion.a
                 href="https://apps.apple.com/us/app/kindred-todo/id6744142764"
-                className="px-5 py-3 bg-primary rounded-[12px] font-outfit text-base text-white shadow-[0_0_40px_var(--color-primary-glow)] text-center whitespace-nowrap"
+                className="px-5 py-3 bg-primary rounded-[12px] font-outfit text-base text-white shadow-[0_0_22px_rgba(133,77,255,0.28)] md:shadow-[0_0_40px_var(--color-primary-glow)] text-center whitespace-nowrap"
                 style={{ width: isMobile ? '100%' : '247px' }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -140,7 +192,7 @@ export function HeroSection() {
               </motion.a>
               <motion.a
                 href="#"
-                className="px-5 py-3 rounded-[12px] font-outfit text-base text-white border border-primary shadow-[0_0_40px_var(--color-primary-glow)] text-center whitespace-nowrap"
+                className="px-5 py-3 rounded-[12px] font-outfit text-base text-white border border-primary shadow-none md:shadow-[0_0_40px_var(--color-primary-glow)] text-center whitespace-nowrap"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >

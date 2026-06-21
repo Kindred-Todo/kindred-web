@@ -33,13 +33,32 @@ export function ParallaxGallerySection() {
   const isMobile = useIsMobile()
 
   if (isMobile) {
+    // Two columns that parallax in opposite directions: as the section scrolls
+    // they slide against each other, recreating the desktop scatter's depth in
+    // portrait. Tilt is dampened and the right column is staggered down so the
+    // photos read as a tossed collage rather than grid cells.
+    const clampTilt = (r: number) => Math.max(-3, Math.min(3, r))
+    const columns: Array<{ imgs: GalleryImage[]; direction: 'up' | 'down'; offset: string }> = [
+      { imgs: GALLERY_IMAGES.filter((_, i) => i % 2 === 0), direction: 'down', offset: '' },
+      { imgs: GALLERY_IMAGES.filter((_, i) => i % 2 === 1), direction: 'up', offset: 'mt-12' },
+    ]
     return (
-      <section className="w-full py-16 px-4">
-        <div className="grid grid-cols-2 gap-4">
-          {GALLERY_IMAGES.slice(0, 6).map((img, i) => (
-            <div key={i} className="rounded-[8px] overflow-hidden" style={{ transform: `rotate(${img.rotation}deg)` }}>
-              <img src={img.src} alt="" className="w-full h-auto object-cover" />
-            </div>
+      <section className="w-full overflow-hidden px-4 py-16">
+        <div className="grid grid-cols-2 gap-3 items-start">
+          {columns.map((col, c) => (
+            <ParallaxWrapper key={c} speed={0.18} direction={col.direction}>
+              <div className={`flex flex-col gap-4 ${col.offset}`}>
+                {col.imgs.map((img, i) => (
+                  <div
+                    key={i}
+                    className="overflow-hidden rounded-xl shadow-[0_12px_30px_rgba(19,18,31,0.12)]"
+                    style={{ transform: `rotate(${clampTilt(img.rotation)}deg)` }}
+                  >
+                    <img src={img.src} alt="" className="w-full h-auto object-cover" loading="lazy" />
+                  </div>
+                ))}
+              </div>
+            </ParallaxWrapper>
           ))}
         </div>
       </section>

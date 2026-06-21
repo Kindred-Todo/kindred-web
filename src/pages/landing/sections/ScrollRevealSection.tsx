@@ -44,6 +44,15 @@ const SHAPES: ShapeConfig[] = [
   { type: 'dashedStar', x: '72%',  y: '88%',  size: 35,  rotateFrom: 60,   rotateTo: -300,  duration: 33, scrollRange: [0.35, 0.48, 0.78, 0.92] },
 ]
 
+// Mobile: a handful of shapes on the right edge so they frame the now
+// left-aligned text instead of crowding it, and still fade in/out with scroll.
+const MOBILE_SHAPES: ShapeConfig[] = [
+  { type: 'dashedStar', x: '76%', y: '12%', size: 46, rotateFrom: -60, rotateTo: -420, duration: 26, scrollRange: [0.0, 0.1, 0.55, 0.75] },
+  { type: 'filledStar', x: '86%', y: '32%', size: 30, rotateFrom: 0,   rotateTo: 360,  duration: 22, scrollRange: [0.1, 0.22, 0.6, 0.8] },
+  { type: 'polygon',    x: '72%', y: '70%', size: 28, rotateFrom: 10,  rotateTo: 370,  duration: 35, scrollRange: [0.25, 0.4, 0.75, 0.9] },
+  { type: 'filledStar', x: '88%', y: '84%', size: 38, rotateFrom: 45,  rotateTo: 405,  duration: 24, scrollRange: [0.3, 0.45, 0.8, 0.95] },
+]
+
 const GLOW_FILTER = 'drop-shadow(0 0 24px rgba(133, 77, 255, 0.9)) drop-shadow(0 0 48px rgba(133, 77, 255, 0.5))'
 const GLOW_FILTER_SMALL = 'drop-shadow(0 0 16px rgba(133, 77, 255, 0.8)) drop-shadow(0 0 36px rgba(133, 77, 255, 0.4))'
 
@@ -106,48 +115,62 @@ export function ScrollRevealSection() {
     <section
       ref={sectionRef}
       className="relative w-full bg-black"
-      style={{ height: isMobile ? 'auto' : '300vh' }}
+      style={{ height: isMobile ? '260vh' : '300vh' }}
     >
-      {/* Sticky container */}
+      {/* Sticky container — sticky on mobile too, so there's scroll distance to
+          drive the gradual character reveal. A non-sticky 100vh block has no
+          travel and the reveal completes instantly. */}
       <div
-        className="w-full flex items-center justify-center"
+        className="w-full flex items-center"
         style={{
-          position: isMobile ? 'relative' : 'sticky',
+          position: 'sticky',
           top: 0,
           height: '100vh',
-          padding: isMobile ? '80px 24px' : '0',
+          padding: isMobile ? '0 24px' : '0',
+          justifyContent: isMobile ? 'flex-start' : 'center',
         }}
       >
-        {/* Centered content block */}
-        <div className="flex flex-col items-center justify-center gap-8">
+        {/* Content block — left-aligned on mobile, centered on desktop */}
+        <div
+          className="flex flex-col"
+          style={{
+            alignItems: isMobile ? 'flex-start' : 'center',
+            gap: isMobile ? '20px' : '32px',
+            width: isMobile ? '100%' : 'auto',
+          }}
+        >
           <p
-            className="text-center font-outfit font-normal text-white whitespace-nowrap"
-            style={{ fontSize: isMobile ? '12px' : scale(15) }}
+            className="font-outfit font-normal uppercase"
+            style={{
+              fontSize: isMobile ? '12px' : scale(15),
+              letterSpacing: isMobile ? '0.22em' : '0.04em',
+              color: isMobile ? 'var(--color-primary)' : '#fff',
+              textAlign: isMobile ? 'left' : 'center',
+            }}
           >
             WHAT IS IT?
           </p>
 
           <ScrollRevealText
             text="Kindred is the platform for you and your friends to pursue your ambitions. "
-            className="font-fraunces font-normal leading-[1.1] text-center tracking-[-0.03em]"
+            className={`font-fraunces font-normal leading-[1.05] tracking-[-0.03em] ${isMobile ? 'text-left' : 'text-center'}`}
             containerClassName=""
             scrollYProgress={revealProgress}
             style={{
-              fontSize: isMobile ? '32px' : scale(64),
-              width: isMobile ? '90vw' : scale(1196),
+              fontSize: isMobile ? '48px' : scale(64),
+              width: isMobile ? '100%' : scale(1196),
               fontVariationSettings: "'SOFT' 0, 'WONK' 1",
             }}
           />
         </div>
 
-        {/* Decorative shapes — each fades in/out at different scroll positions */}
-        {!isMobile && (
-          <div className="absolute inset-0 pointer-events-none">
-            {SHAPES.map((shape, i) => (
-              <ShapeElement key={i} shape={shape} scrollYProgress={scrollYProgress} scaleVal={scale} />
-            ))}
-          </div>
-        )}
+        {/* Decorative shapes — fade in/out with scroll. Fewer on mobile, kept to
+            the right edge so they frame the left-aligned text. */}
+        <div className="absolute inset-0 pointer-events-none">
+          {(isMobile ? MOBILE_SHAPES : SHAPES).map((shape, i) => (
+            <ShapeElement key={i} shape={shape} scrollYProgress={scrollYProgress} scaleVal={scale} />
+          ))}
+        </div>
       </div>
     </section>
   )
