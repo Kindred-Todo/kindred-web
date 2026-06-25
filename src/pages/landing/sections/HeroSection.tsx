@@ -14,7 +14,7 @@ export function HeroSection() {
           bg erased the video, leaving a dead void above the bottom-anchored
           copy — so on mobile we let the (blurred) video show as atmosphere and
           rely on the scrim below for text contrast. */}
-      <div className={`absolute inset-0 w-full h-full ${isMobile ? 'opacity-90' : 'mix-blend-multiply opacity-80'}`}>
+      <div className={`absolute inset-0 w-full h-full ${isMobile ? 'opacity-70' : 'mix-blend-multiply opacity-80'}`}>
         <video autoPlay loop muted playsInline className={`w-full h-full object-cover ${isMobile ? 'blur-[10px]' : 'blur-[12px]'}`}>
           <source src={videoSrc} type="video/mp4" />
         </video>
@@ -27,7 +27,7 @@ export function HeroSection() {
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              'linear-gradient(to top, rgba(19,18,31,1) 0%, rgba(19,18,31,0.85) 35%, rgba(19,18,31,0.3) 70%, rgba(19,18,31,0.1) 100%)',
+              'linear-gradient(to top, rgba(19,18,31,1) 0%, rgba(19,18,31,1) 50%, rgba(19,18,31,0.85) 78%, rgba(19,18,31,0.6) 100%)',
           }}
         />
       )}
@@ -160,17 +160,17 @@ export function HeroSection() {
       )}
 
       {/* Content */}
-      <div className="relative z-10 w-full h-full flex flex-col justify-end px-6 md:px-[64px] pb-[48px]">
+      <div className="relative z-10 w-full h-full flex flex-col justify-center md:justify-end translate-y-[15dvh] md:translate-y-0 px-6 md:px-[64px] pb-[48px]">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-x-[20px] items-end">
           {/* Wordmark: Spans 5 columns. Real <h1> text (sr-only) so crawlers
               and brand verification read the exact app name "Kindred", not just
               the wordmark image's alt. */}
-          <h1 className="col-span-1 md:col-span-5 relative m-0 flex items-end">
+          <h1 className="col-span-1 md:col-span-5 relative m-0 flex items-end justify-center md:justify-start">
             <span className="sr-only">Kindred</span>
             <img
               src={wordmarkSrc}
               alt="Kindred"
-              className="w-[86%] md:w-full md:max-w-full h-auto object-contain object-bottom origin-bottom-left"
+              className="w-[74%] md:w-full md:max-w-full h-auto object-contain object-bottom origin-bottom-left"
             />
           </h1>
 
@@ -183,30 +183,29 @@ export function HeroSection() {
             <div className="order-2 md:order-1 flex flex-col md:flex-row gap-3 md:gap-2 mt-8 md:mt-0">
               <motion.a
                 href="https://apps.apple.com/us/app/kindred-todo/id6744142764"
-                className="px-5 py-3 bg-primary rounded-[12px] font-outfit text-base text-white shadow-[0_0_22px_rgba(133,77,255,0.28)] md:shadow-[0_0_40px_var(--color-primary-glow)] text-center whitespace-nowrap"
+                className="px-5 py-3 bg-primary rounded-[12px] font-outfit text-base text-white shadow-[0_0_22px_rgba(133,77,255,0.28)] md:shadow-[0_0_40px_var(--color-primary-glow)] flex items-center justify-center gap-2 whitespace-nowrap"
                 style={{ width: isMobile ? '100%' : '247px' }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Download Free
-              </motion.a>
-              <motion.a
-                href="#"
-                className="px-5 py-3 rounded-[12px] font-outfit text-base text-white border border-primary shadow-none md:shadow-[0_0_40px_var(--color-primary-glow)] text-center whitespace-nowrap"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                See how it works
+                <svg viewBox="0 0 384 512" fill="currentColor" className="w-[18px] h-[18px] -mt-0.5" aria-hidden="true">
+                  <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z" />
+                </svg>
+                Download on App Store
               </motion.a>
             </div>
 
             {/* Copy */}
-            <div className="order-1 md:order-2 space-y-4">
-              <h2 className="font-outfit text-[40px] md:text-[64px] font-normal leading-[1.05] tracking-[-0.03em]">
-                The most rewarding, feel good productivity system.
+            <div className="order-1 md:order-2 space-y-4 text-center md:text-left">
+              <h2 className="font-outfit text-[35px] md:text-[64px] font-normal leading-[1.05] tracking-[-0.03em] text-balance">
+                The most rewarding, feel good productivity{' '}
+                <br className="md:hidden" />
+                system.
               </h2>
               <p className="font-outfit text-[18px] md:text-[24px] font-[350] leading-[1.25] tracking-[-0.01em] opacity-90">
-                Kindred is a social productivity app that makes your goals and everyday tasks feel good to do — because doing it alone never really worked.
+                {isMobile
+                  ? 'Social productivity that changes your behavior and drives real action, not just organization.'
+                  : 'Kindred is a social productivity app that makes your goals and everyday tasks feel good to do — because doing it alone never really worked.'}
               </p>
             </div>
           </div>
