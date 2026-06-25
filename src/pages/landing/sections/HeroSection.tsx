@@ -191,7 +191,7 @@ export function HeroSection() {
             <div className="order-2 md:order-1 flex flex-col md:flex-row gap-3 md:gap-2">
               <motion.a
                 href="https://apps.apple.com/us/app/kindred-todo/id6744142764"
-                className="px-5 py-3 bg-primary rounded-[12px] font-outfit text-base text-white shadow-[0_0_22px_rgba(133,77,255,0.28)] md:shadow-[0_0_40px_var(--color-primary-glow)] flex items-center justify-center gap-2 whitespace-nowrap"
+                className="px-5 py-3 bg-primary rounded-[12px] font-outfit font-normal text-base text-white shadow-[0_0_22px_rgba(133,77,255,0.28)] md:shadow-[0_0_40px_var(--color-primary-glow)] flex items-center justify-center gap-2 whitespace-nowrap"
                 style={{ width: isMobile ? '100%' : '247px' }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
