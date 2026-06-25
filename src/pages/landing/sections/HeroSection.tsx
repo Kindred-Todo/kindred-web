@@ -160,8 +160,8 @@ export function HeroSection() {
       )}
 
       {/* Content */}
-      <div className="relative z-10 w-full h-full flex flex-col justify-center md:justify-end translate-y-[15dvh] md:translate-y-0 px-6 md:px-[64px] pb-[48px]">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-x-[20px] items-end">
+      <div className="relative z-10 w-full h-full flex flex-col justify-center md:justify-end translate-y-[8dvh] md:translate-y-0 px-6 md:px-[64px] pb-[48px]">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-x-[20px] gap-y-2 md:gap-y-0 items-end">
           {/* Wordmark: Spans 5 columns. Real <h1> text (sr-only) so crawlers
               and brand verification read the exact app name "Kindred", not just
               the wordmark image's alt. */}
@@ -177,10 +177,18 @@ export function HeroSection() {
           {/* Spacer: 1 column */}
           <div className="hidden md:block md:col-span-1" />
 
-          {/* Content: 6 columns */}
-          <div className="col-span-1 md:col-span-6 flex flex-col justify-end gap-6 md:pb-4">
+          {/* Content: 6 columns. Mobile order: headline → button → subtitle.
+              Desktop keeps buttons on top via order overrides. */}
+          <div className="col-span-1 md:col-span-6 flex flex-col justify-end gap-6 md:pb-4 text-center md:text-left">
+            {/* Headline */}
+            <h2 className="order-1 md:order-2 font-outfit text-[35px] md:text-[64px] font-normal leading-[1.05] tracking-[-0.03em] text-balance">
+              The most rewarding, feel good productivity{' '}
+              <br className="md:hidden" />
+              system.
+            </h2>
+
             {/* Buttons */}
-            <div className="order-2 md:order-1 flex flex-col md:flex-row gap-3 md:gap-2 mt-8 md:mt-0">
+            <div className="order-2 md:order-1 flex flex-col md:flex-row gap-3 md:gap-2">
               <motion.a
                 href="https://apps.apple.com/us/app/kindred-todo/id6744142764"
                 className="px-5 py-3 bg-primary rounded-[12px] font-outfit text-base text-white shadow-[0_0_22px_rgba(133,77,255,0.28)] md:shadow-[0_0_40px_var(--color-primary-glow)] flex items-center justify-center gap-2 whitespace-nowrap"
@@ -195,19 +203,12 @@ export function HeroSection() {
               </motion.a>
             </div>
 
-            {/* Copy */}
-            <div className="order-1 md:order-2 space-y-4 text-center md:text-left">
-              <h2 className="font-outfit text-[35px] md:text-[64px] font-normal leading-[1.05] tracking-[-0.03em] text-balance">
-                The most rewarding, feel good productivity{' '}
-                <br className="md:hidden" />
-                system.
-              </h2>
-              <p className="font-outfit text-[18px] md:text-[24px] font-[350] leading-[1.25] tracking-[-0.01em] opacity-90">
-                {isMobile
-                  ? 'Social productivity that changes your behavior and drives real action, not just organization.'
-                  : 'Kindred is a social productivity app that makes your goals and everyday tasks feel good to do — because doing it alone never really worked.'}
-              </p>
-            </div>
+            {/* Subtitle */}
+            <p className="order-3 font-outfit text-[18px] md:text-[24px] font-[350] leading-[1.25] tracking-[-0.01em] opacity-90">
+              {isMobile
+                ? 'Social productivity that changes your behavior and drives real action, not just organization.'
+                : 'Kindred is a social productivity app that makes your goals and everyday tasks feel good to do — because doing it alone never really worked.'}
+            </p>
           </div>
         </div>
       </div>

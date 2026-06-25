@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { Link } from '@tanstack/react-router'
 import { useIsMobile, useResponsiveScale } from '@/hooks/useResponsiveScale'
+import { AppleLogo } from '@/components/topnav'
 import checkLogo from '@/assets/check-logo.svg'
 
 const legalLinkClass =
@@ -32,7 +33,8 @@ export function Footer() {
                   Download Kindred and start building the life you actually want — with the people who want it for you too.
                 </p>
                 <div className="flex flex-row gap-3 mt-6">
-                  <motion.a href="https://apps.apple.com/us/app/kindred-todo/id6744142764" className="flex-1 px-5 py-3 bg-primary rounded-[12px] font-outfit text-base text-white shadow-[0_0_20px_rgba(133,77,255,0.22)] text-center whitespace-nowrap" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <motion.a href="https://apps.apple.com/us/app/kindred-todo/id6744142764" className="flex-1 px-5 py-3 bg-primary rounded-[12px] font-outfit text-base text-white shadow-[0_0_20px_rgba(133,77,255,0.22)] flex items-center justify-center gap-2 whitespace-nowrap" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <AppleLogo className="w-[18px] h-[18px] -mt-0.5" />
                     Download Free
                   </motion.a>
                   <motion.a href="mailto:kindred@kindredtodo.com" className="flex-1 px-5 py-3 rounded-[12px] font-outfit text-base text-primary border border-primary text-center whitespace-nowrap" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -60,7 +62,8 @@ export function Footer() {
                   Download Kindred and start building the life you actually want — with the people who want it for you too.
                 </p>
                 <div className="flex gap-2 mt-6">
-                  <motion.a href="https://apps.apple.com/us/app/kindred-todo/id6744142764" className="px-5 py-3 bg-primary rounded-[12px] font-outfit text-base text-white shadow-[0_0_16px_var(--color-primary-glow)] text-center whitespace-nowrap" style={{ width: '247px' }} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <motion.a href="https://apps.apple.com/us/app/kindred-todo/id6744142764" className="px-5 py-3 bg-primary rounded-[12px] font-outfit text-base text-white shadow-[0_0_16px_var(--color-primary-glow)] flex items-center justify-center gap-2 whitespace-nowrap" style={{ width: '247px' }} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <AppleLogo className="w-[18px] h-[18px] -mt-0.5" />
                     Download Free
                   </motion.a>
                   <motion.a href="mailto:kindred@kindredtodo.com" className="px-5 py-3 rounded-[12px] font-outfit text-base text-primary border border-primary text-center whitespace-nowrap" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
