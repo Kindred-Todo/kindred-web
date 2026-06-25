@@ -16,12 +16,12 @@ export default function NewLanding() {
       <HeroSection />
       <ScrollRevealSection />
       <ParallaxGallerySection />
-      <CapabilitiesSection />
-      <EveryoneWinsSection />
-      <KudosSection />
-      <RingsSection />
-      <PrivacySection />
       <MotivationSection />
+      <EveryoneWinsSection />
+      <RingsSection />
+      <KudosSection />
+      <PrivacySection />
+      <CapabilitiesSection />
       <FAQSection />
       <Footer />
     </div>

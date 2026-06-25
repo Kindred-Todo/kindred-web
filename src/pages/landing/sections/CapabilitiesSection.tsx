@@ -103,32 +103,6 @@ function CapabilityCard({
   )
 }
 
-function MobileCapabilityCard({
-  capability,
-  isActive,
-  onActivate,
-}: {
-  capability: Capability
-  isActive: boolean
-  onActivate: () => void
-}) {
-  const ref = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start 0.85', 'start 0.35'],
-  })
-  return (
-    <div ref={ref} className="w-full">
-      <CapabilityCard
-        capability={capability}
-        isActive={isActive}
-        onActivate={onActivate}
-        progress={scrollYProgress}
-      />
-    </div>
-  )
-}
-
 function RevealCharacter({
   char,
   index,
@@ -270,6 +244,9 @@ function PhoneDemo({
 
 // Mobile auto-cycles each capability's frames once it's the active section.
 const MOBILE_FRAME_INTERVAL_MS = 2800
+// Mobile carousel auto-advances to the next capability on this cadence,
+// pausing for one interval after the user last touches it.
+const MOBILE_CAROUSEL_INTERVAL_MS = 6000
 
 export function CapabilitiesSection() {
   const scale = useResponsiveScale()
@@ -279,6 +256,27 @@ export function CapabilitiesSection() {
     CAPABILITIES.map(() => 0),
   )
   const pinContainerRef = useRef<HTMLDivElement>(null)
+  const carouselRef = useRef<HTMLDivElement>(null)
+  // Timestamp of the user's last touch on the carousel, so autoplay backs off
+  // instead of yanking the slide out from under a swipe.
+  const lastInteractRef = useRef(0)
+
+  const scrollToSlide = (index: number) => {
+    const el = carouselRef.current
+    if (!el) return
+    lastInteractRef.current = Date.now()
+    el.scrollTo({ left: index * el.clientWidth, behavior: 'smooth' })
+  }
+
+  const handleCarouselScroll = () => {
+    const el = carouselRef.current
+    if (!el) return
+    const idx = Math.min(
+      CAPABILITIES.length - 1,
+      Math.max(0, Math.round(el.scrollLeft / el.clientWidth)),
+    )
+    setActiveIndex((prev) => (prev === idx ? prev : idx))
+  }
 
   const { scrollYProgress } = useScroll({
     target: pinContainerRef,
@@ -335,6 +333,21 @@ export function CapabilitiesSection() {
     return () => window.clearInterval(id)
   }, [isMobile, activeIndex])
 
+  // Mobile: auto-advance the carousel to the next capability. Programmatic
+  // scrolls don't fire pointerdown, so they don't trip the interaction pause.
+  useEffect(() => {
+    if (!isMobile) return
+    const id = window.setInterval(() => {
+      const el = carouselRef.current
+      if (!el) return
+      if (Date.now() - lastInteractRef.current < MOBILE_CAROUSEL_INTERVAL_MS) return
+      const next =
+        (Math.round(el.scrollLeft / el.clientWidth) + 1) % CAPABILITIES.length
+      el.scrollTo({ left: next * el.clientWidth, behavior: 'smooth' })
+    }, MOBILE_CAROUSEL_INTERVAL_MS)
+    return () => window.clearInterval(id)
+  }, [isMobile])
+
   return (
     <section
       id="capabilities-section"
@@ -374,26 +387,58 @@ export function CapabilitiesSection() {
 
         {/* Phone + floating cards */}
         {isMobile ? (
-          <div className="flex flex-col gap-8 mt-12 items-center">
-            <div className="w-[260px] aspect-[367/789] relative">
-              <div className="absolute inset-0 border-[10px] border-white rounded-[28px] overflow-hidden bg-black shadow-[0_8px_32px_rgba(0,0,0,0.15)]">
-                {CAPABILITIES.map((capability, index) => (
-                  <FrameStack
-                    key={capability.title}
-                    frames={capability.frames}
-                    activeFrame={activeFrames[index] ?? 0}
-                    isActiveSection={activeIndex === index}
-                  />
-                ))}
-              </div>
-            </div>
-            <div className="flex flex-col gap-4 w-full">
+          <div className="mt-12">
+            {/* Swipeable carousel — one capability per slide. Native CSS
+                scroll-snap handles the swipe; autoplay advances slides. */}
+            <div
+              ref={carouselRef}
+              onScroll={handleCarouselScroll}
+              onPointerDown={() => {
+                lastInteractRef.current = Date.now()
+              }}
+              className="flex overflow-x-auto snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            >
               {CAPABILITIES.map((capability, index) => (
-                <MobileCapabilityCard
+                <div
                   key={capability.title}
-                  capability={capability}
-                  isActive={activeIndex === index}
-                  onActivate={() => setActiveIndex(index)}
+                  className="shrink-0 w-full snap-center flex flex-col items-center gap-8"
+                >
+                  <div className="w-[260px] aspect-[367/789] relative">
+                    <div className="absolute inset-0 border-[10px] border-white rounded-[28px] overflow-hidden bg-black shadow-[0_8px_32px_rgba(0,0,0,0.15)]">
+                      <FrameStack
+                        frames={capability.frames}
+                        activeFrame={activeFrames[index] ?? 0}
+                        isActiveSection={activeIndex === index}
+                      />
+                    </div>
+                  </div>
+                  <div className="w-full px-1">
+                    <CapabilityCard
+                      capability={capability}
+                      isActive={activeIndex === index}
+                      onActivate={() => scrollToSlide(index)}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Dots */}
+            <div className="flex gap-2 justify-center mt-6">
+              {CAPABILITIES.map((capability, index) => (
+                <button
+                  key={capability.title}
+                  type="button"
+                  aria-label={`Show ${capability.title}`}
+                  onClick={() => scrollToSlide(index)}
+                  className="h-2 rounded-full transition-all duration-300"
+                  style={{
+                    width: activeIndex === index ? 20 : 8,
+                    background:
+                      activeIndex === index
+                        ? 'var(--color-primary)'
+                        : 'rgba(0,0,0,0.15)',
+                  }}
                 />
               ))}
             </div>

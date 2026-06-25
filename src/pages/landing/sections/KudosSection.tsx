@@ -245,9 +245,9 @@ export function KudosSection() {
             className="font-outfit font-normal text-black text-right tracking-[-0.03em]"
             style={{ fontSize: 36, lineHeight: 1 }}
           >
-            Kudos Before
+            Kudos All
             <br />
-            &amp; After
+            Along The Way
           </h2>
           <motion.div
             initial={{ opacity: 0, x: -60 }}
@@ -305,9 +305,9 @@ export function KudosSection() {
                   lineHeight: 1,
                 }}
               >
-                Kudos Before
+                Kudos All
                 <br />
-                &amp; After
+                Along The Way
               </h2>
               <motion.div style={{ opacity: c1Op }}>
                 <CommentCard {...COMMENTS[0]} />
@@ -494,9 +494,9 @@ export function KudosSection() {
               lineHeight: 1,
             }}
           >
-            Kudos Before
+            Kudos All
             <br />
-            &amp; After
+            Along The Way
           </div>
         </div>
       </div>

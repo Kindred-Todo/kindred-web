@@ -82,9 +82,9 @@ function LabeledBelt({ label, children }: { label: string; children: React.React
   return (
     <div className="relative">
       {children}
-      {/* Left gradient overlay with label */}
+      {/* Left gradient overlay with label — hidden on mobile */}
       <div
-        className="absolute left-0 top-0 bottom-0 flex items-center z-10 pointer-events-none w-[35%] md:w-[45%]"
+        className="absolute left-0 top-0 bottom-0 hidden md:flex items-center z-10 pointer-events-none w-[35%] md:w-[45%]"
       >
         <div
           className="absolute inset-0"
@@ -135,20 +135,16 @@ export function MotivationSection() {
           <>
             <div>
               <p className="font-outfit font-normal leading-[1.25] text-black tracking-[-0.02em] text-[28px]">
-                You've Tried Every Productivity App.
+                You've Tried Every Productivity App. You{' '}
+                <span
+                  className="font-fraunces italic text-primary"
+                  style={{ fontVariationSettings: "'SOFT' 0, 'WONK' 1" }}
+                >
+                  Never Changed
+                </span>.
               </p>
-              <p className="font-outfit font-normal leading-[1.25] tracking-[-0.02em] text-[28px]">
-                <span className="text-black">
-                  You{' '}
-                  <span
-                    className="font-fraunces italic text-primary"
-                    style={{ fontVariationSettings: "'SOFT' 0, 'WONK' 1" }}
-                  >
-                    Never Changed
-                  </span>.
-                </span>
-                {' '}
-                <span className="text-text-subtle">It's Not Because Organization Was the Problem. It's Because of Motivation and Accountability</span>
+              <p className="font-outfit font-normal leading-[1.25] text-text-subtle tracking-[-0.02em] text-[28px]">
+                It's Not Because Organization Was the Problem. It's Because of Motivation and Accountability
               </p>
             </div>
             <div className="bg-primary" style={{ height: '3px', width: '150px', marginTop: '24px' }} />
