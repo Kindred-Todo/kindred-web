@@ -116,7 +116,7 @@ export function MotivationSection() {
   const isMobile = useIsMobile()
 
   return (
-    <section className="relative w-full bg-white overflow-hidden" style={{ padding: isMobile ? '64px 0' : `${scale(96)} 0` }}>
+    <section id="motivation-section" className="relative w-full bg-white overflow-hidden" style={{ padding: isMobile ? '64px 0' : `${scale(96)} 0` }}>
       {/* Decorative shape */}
       {!isMobile && (
         <motion.div

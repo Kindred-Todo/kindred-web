@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils'
 import { useMobile } from '@/contexts/MobileContext'
 
 const DOWNLOAD_URL = 'https://apps.apple.com/us/app/kindred-todo/id6744142764'
+const LOGIN_URL = 'https://app.kindredtodo.com/login'
 
 // LiquidGlass sizes itself from the children's intrinsic width (its inner
 // `.glass` div is inline-flex). The wrapper, children, and CTA all use this
@@ -47,12 +48,13 @@ export default function TopNav() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Reveal the nav once the user has scrolled past the capabilities
-      // section. Fall back to the old dark-sections threshold if the section
-      // can't be found (e.g. another page that re-uses TopNav).
-      const capabilitiesEl = document.getElementById('capabilities-section')
-      const threshold = capabilitiesEl
-        ? capabilitiesEl.offsetTop + capabilitiesEl.offsetHeight - 100
+      // Reveal the nav once the "You've Tried Every Productivity App."
+      // (motivation) section scrolls into view. Fall back to the old
+      // dark-sections threshold if the section can't be found (e.g. another
+      // page that re-uses TopNav).
+      const motivationEl = document.getElementById('motivation-section')
+      const threshold = motivationEl
+        ? motivationEl.offsetTop - window.innerHeight * 0.5
         : window.innerHeight * 4 - 100
       setIsScrolled(window.scrollY > window.innerHeight - 100)
       setIsVisible(!isHome || window.scrollY > threshold)
@@ -271,10 +273,29 @@ export default function TopNav() {
           </LiquidGlass>
         </motion.div>
 
-        <DownloadButton
-          isMobile={isMobile}
-          onDesktopClick={() => setQrOpen(true)}
-        />
+        <div className="flex items-center gap-[10px]">
+          <motion.a
+            href={LOGIN_URL}
+            className="inline-flex items-center justify-center font-outfit font-normal transition-colors"
+            style={{
+              fontSize: 15,
+              height: 40,
+              borderRadius: 10,
+              padding: '0 16px',
+              color: textColor,
+              border: `1px solid ${isLightMode ? 'rgba(255,255,255,0.4)' : 'rgba(19,18,31,0.16)'}`,
+              background: isLightMode ? 'rgba(255,255,255,0.1)' : 'rgba(19,18,31,0.03)',
+            }}
+            whileHover={{ y: -1 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            Log in
+          </motion.a>
+          <DownloadButton
+            isMobile={isMobile}
+            onDesktopClick={() => setQrOpen(true)}
+          />
+        </div>
       </nav>
 
       <AnimatePresence>
