@@ -49,7 +49,7 @@ export function FeaturesSection() {
       >
         <CaptureWaveform
           active={inView}
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 max-md:w-[70%]"
+          className="absolute left-[44%] top-1/2 -translate-x-1/2 -translate-y-1/2 max-md:left-1/2 max-md:w-[70%]"
         />
       </div>
       <div

@@ -579,36 +579,19 @@ export function SignupPrompt({ progress }: { progress: MotionValue<number> }) {
           <Check size={26} weight="bold" style={{ color: '#fff' }} />
         </span>
 
-        <h3
-          className="font-fraunces"
-          style={{
-            fontSize: 27,
-            fontWeight: 600,
-            letterSpacing: '-0.02em',
-            color: INK,
-            marginTop: 18,
-            fontVariationSettings: "'SOFT' 50, 'WONK' 1, 'opsz' 144",
-          }}
-        >
-          Make it yours
-        </h3>
-        <p
-          className="font-outfit"
-          style={{ fontSize: 15, fontWeight: 300, color: MUTED, marginTop: 8, lineHeight: 1.5 }}
-        >
+        <h3 className="t-rings text-ink mt-[18px]">Make it yours</h3>
+        <p className="t-label text-ink/60 mt-2">
           Kindred is free. Create an account to keep your streaks, invite a friend, and get kudos
           when you follow through.
         </p>
 
         <a
           href={SIGNUP_URL}
-          className="font-outfit mt-7 flex w-full items-center justify-center gap-2 text-white transition-opacity hover:opacity-95"
+          className="t-button mt-7 flex w-full items-center justify-center gap-2 text-white transition-opacity hover:opacity-95"
           style={{
             height: 48,
             borderRadius: 999,
             background: PRIMARY,
-            fontSize: 16,
-            fontWeight: 500,
             boxShadow: '0 10px 24px -8px rgba(133,77,255,0.6)',
           }}
         >
@@ -618,8 +601,7 @@ export function SignupPrompt({ progress }: { progress: MotionValue<number> }) {
         <button
           type="button"
           onClick={() => setDismissed(true)}
-          className="font-outfit mt-3 transition-colors hover:text-[#13121f]"
-          style={{ fontSize: 14, fontWeight: 300, color: MUTED }}
+          className="t-button mt-3 text-[#919090] transition-colors hover:text-[#13121f]"
         >
           Maybe later
         </button>

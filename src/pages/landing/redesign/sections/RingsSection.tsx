@@ -251,7 +251,7 @@ export function RingsSection() {
 
   // Beat one fills with scroll (plan → do → share, staggered via ConcentricRings);
   // the morph then takes the completed stack down to the app's day ring at 62%.
-  const ringProgress = Math.max(fill, 1 - 0.38 * Math.min(1, Math.max(0, mState)))
+  const ringProgress = Math.max(0, fill - 0.38 * Math.min(1, Math.max(0, mState)))
 
   if (reduceMotion) {
     return (
