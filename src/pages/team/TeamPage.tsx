@@ -1,307 +1,188 @@
 import { motion } from 'framer-motion'
-import { useIsMobile, useResponsiveScale } from '@/hooks/useResponsiveScale'
-import { decorativeShapes } from '@/assets/shapes/decorative-shapes'
+import type { CSSProperties } from 'react'
+import { DotGrid } from '@/pages/landing/redesign/components/DotGrid'
 import beakPhoto from '@/assets/beak.png'
 import lokyePhoto from '@/assets/lokye.png'
-import mongoLogo from '@/mongo.png'
-import klaviyoLogo from '@/assets/klaviyo.png'
-import microsoftLogo from '@/assets/microsoft.png'
 
-type LogoChip = { src: string; alt: string }
+/**
+ * Team — white page, violet Fraunces and the landing redesign's 7-column grid
+ * (`t-*`, `grid7`). The founders take two columns each on the right; the
+ * columns to their left carry the story that introduces them.
+ *
+ * Past the 1728px canvas the grid keeps growing, but its margin grows too —
+ * by a quarter of every extra pixel — so wide screens get a gentle, rising
+ * gutter instead of either a centred strip or edge-to-edge content. Type
+ * stops scaling at 1728 (the `--text-*` clamps), so it never balloons.
+ */
+
+const EASE = [0.22, 1, 0.36, 1] as const
+
+const PAGE_GRID = {
+  '--grid-max': 'none',
+  '--grid-margin':
+    'max(clamp(20px, 3.588vw, 62px), calc(62px + (100vw - 1728px) / 4))',
+} as CSSProperties
+
+type Fact = { label: string; value: string }
 
 type TeamMember = {
   name: string
   photo: string
   role: string
-  bio: Array<string>
-  funFact?: string
-  logos: Array<LogoChip>
+  facts: Array<Fact>
 }
 
 const TEAM: Array<TeamMember> = [
   {
     name: 'Abhik Ray',
     photo: beakPhoto,
-    role: 'SWE · MongoDB',
-    bio: [
-      'Previously a founder building consumer apps.',
-      'Director at Generate, Northeastern’s student-run product studio.',
-      'CS × Interaction Design — Northeastern University.',
-    ],
-    funFact: 'Part-time DJ.',
-    logos: [
-      { src: mongoLogo, alt: 'MongoDB' },
-      { src: klaviyoLogo, alt: 'Klaviyo' },
+    role: 'Co-founder',
+    facts: [
+      { label: 'Now', value: 'Software engineer at MongoDB' },
+      { label: 'Before', value: 'Founder, building consumer apps' },
+      { label: 'Generate', value: 'Director at Northeastern’s product studio' },
+      { label: 'Studied', value: 'CS × Interaction Design, Northeastern' },
+      { label: 'Off hours', value: 'Part-time DJ' },
     ],
   },
   {
     name: 'Lok Ye Young',
     photo: lokyePhoto,
-    role: 'SWE · Microsoft',
-    bio: [
-      'Two years designing consumer interfaces.',
-      'Software Designer at Generate, Northeastern’s student-run product studio.',
-      'CS × Human-Centered Computing — Northeastern University.',
+    role: 'Chief Software Designer',
+    facts: [
+      { label: 'Now', value: 'Software engineer at Microsoft' },
+      { label: 'Before', value: 'Two years designing consumer interfaces' },
+      { label: 'Generate', value: 'Software designer at Northeastern’s product studio' },
+      { label: 'Studied', value: 'CS × Human-Centered Computing, Northeastern' },
     ],
-    logos: [{ src: microsoftLogo, alt: 'Microsoft' }],
   },
 ]
 
-function TeamMemberCard({
-  member,
-  index,
-  isMobile,
-  scale,
-}: {
-  member: TeamMember
-  index: number
-  isMobile: boolean
-  scale: (value: number) => string
-}) {
-  const reversed = index % 2 === 1
+function Hero() {
+  return (
+    <section className="relative w-full overflow-hidden bg-page">
+      <DotGrid className="r-hide-mobile right-0 top-0 h-[min(311px,18vw)] w-[min(824px,47.69vw)] opacity-60" />
 
+      <div className="grid7 relative pt-[clamp(140px,13.25vw,229px)] pb-[min(140px,8.1vw)] max-md:pt-[120px] max-md:pb-14">
+        <motion.p
+          className="t-label col-start-1 col-span-3 text-violet"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: EASE }}
+        >
+          The team
+        </motion.p>
+
+        <motion.h1
+          className="t-display col-start-1 col-span-5 mt-[min(40px,2.31vw)] text-violet max-md:mt-5"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.05, ease: EASE }}
+        >
+          Two friends building the app they{' '}
+          <span className="t-accent">actually</span> wanted.
+        </motion.h1>
+      </div>
+    </section>
+  )
+}
+
+/** Label / value rows on hairlines — scannable, unlike a run-on bio. */
+function Facts({ facts }: { facts: Array<Fact> }) {
+  return (
+    <dl className="mt-[min(28px,1.62vw)] border-t border-hairline max-md:mt-5">
+      {facts.map(({ label, value }) => (
+        <div
+          key={label}
+          className="grid grid-cols-[minmax(0,1fr)_minmax(0,2.2fr)] gap-4 border-b border-hairline py-[min(16px,0.93vw)] max-md:py-3.5"
+        >
+          <dt className="t-small text-copy-dim">{label}</dt>
+          <dd className="t-small text-ink">{value}</dd>
+        </div>
+      ))}
+    </dl>
+  )
+}
+
+function Member({ member, index }: { member: TeamMember; index: number }) {
   return (
     <motion.article
-      className="bg-white overflow-hidden shadow-[0px_0px_24px_0px_rgba(0,0,0,0.05)]"
-      style={{ borderRadius: isMobile ? 20 : 28 }}
+      className={`${index === 0 ? 'col-start-4' : 'col-start-6'} col-span-2 row-start-1 flex flex-col`}
       initial={{ opacity: 0, y: 32 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.8, delay: index * 0.1, ease: EASE }}
       viewport={{ once: true, margin: '-80px' }}
     >
-      <div
-        className={
-          isMobile
-            ? 'flex flex-col'
-            : `flex ${reversed ? 'flex-row-reverse' : ''}`
-        }
-      >
-        {/* Photo */}
-        <div
-          className={
-            isMobile
-              ? 'w-full overflow-hidden'
-              : 'overflow-hidden flex-shrink-0'
-          }
-          style={{
-            aspectRatio: isMobile ? '4 / 3' : undefined,
-            width: isMobile ? '100%' : 260,
-          }}
-        >
-          <img
-            src={member.photo}
-            alt={member.name}
-            className="w-full h-full object-cover"
-          />
-        </div>
-
-        {/* Body */}
-        <div
-          className={
-            isMobile
-              ? 'flex flex-col gap-5'
-              : 'flex-1 flex flex-col justify-center gap-6'
-          }
-          style={{
-            padding: isMobile ? '32px 24px 36px' : '52px 56px',
-          }}
-        >
-          <div className="flex flex-col gap-3">
-            <p className="font-outfit text-primary text-xs uppercase">
-              {member.role}
-            </p>
-            <h2
-              className="font-outfit font-normal text-black leading-none tracking-[-0.02em]"
-              style={{ fontSize: isMobile ? 32 : 36 }}
-            >
-              {member.name}
-            </h2>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            {member.bio.map((line) => (
-              <p
-                key={line}
-                className="font-outfit font-[350] text-text-muted leading-[1.5] tracking-[-0.01em]"
-                style={{ fontSize: isMobile ? 16 : `clamp(16px, ${scale(18)}, 18px)` }}
-              >
-                {line}
-              </p>
-            ))}
-          </div>
-
-          {member.funFact && (
-            <p
-              className="font-outfit font-[350] text-primary leading-[1.4]"
-              style={{ fontSize: isMobile ? 16 : `clamp(16px, ${scale(18)}, 18px)` }}
-            >
-              {member.funFact}
-            </p>
-          )}
-
-          <div className="flex items-center flex-wrap gap-x-6 gap-y-3 mt-2 pt-5 border-t border-black/10">
-            {member.logos.map((logo) => (
-              <img
-                key={logo.alt}
-                src={logo.src}
-                alt={logo.alt}
-                className="object-contain"
-                style={{
-                  height: isMobile ? 28 : 36,
-                  width: 'auto',
-                }}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
+      <img
+        src={member.photo}
+        alt={member.name}
+        draggable={false}
+        className="aspect-[4/5] w-full object-cover"
+      />
+      <h2 className="t-feature mt-[min(32px,1.85vw)] text-ink max-md:mt-6">
+        {member.name}
+      </h2>
+      <p className="t-label mt-2 text-violet">{member.role}</p>
+      <Facts facts={member.facts} />
     </motion.article>
   )
 }
 
-export default function TeamPage() {
-  const scale = useResponsiveScale()
-  const isMobile = useIsMobile()
-
+function Team() {
   return (
-    <div className="w-full bg-white">
-      {/* Hero */}
-      <section
-        className="relative w-full bg-white"
-        style={{ padding: isMobile ? '96px 16px 40px' : `${scale(160)} ${scale(64)} ${scale(48)}` }}
-      >
-        <div
-          className="relative bg-surface rounded-[56px] w-full max-w-[1600px] mx-auto overflow-hidden"
-          style={{
-            padding: isMobile ? '64px 24px' : `${scale(120)} ${scale(64)}`,
-          }}
-        >
-          {/* Decorative dashed star */}
-          {!isMobile && (
-            <motion.div
-              className="absolute pointer-events-none"
-              style={{
-                top: scale(72),
-                right: scale(96),
-                width: scale(56),
-                height: scale(56),
-                opacity: 0.12,
-                filter: 'drop-shadow(0 0 14px rgba(133, 77, 255, 0.4))',
-              }}
-              animate={{ rotate: [0, 360] }}
-              transition={{ duration: 38, repeat: Infinity, ease: 'linear' }}
-            >
-              <svg className="block size-full" fill="none" viewBox="0 0 65.1557 62.234">
-                <path
-                  d={decorativeShapes.dashedStar}
-                  stroke="var(--color-primary)"
-                  strokeDasharray="18.04 18.04"
-                  strokeWidth="1.8"
-                />
-              </svg>
-            </motion.div>
-          )}
-
-          <div
-            className="flex flex-col items-center gap-8 text-center mx-auto"
-            style={{ maxWidth: isMobile ? '100%' : scale(1086) }}
-          >
-            <motion.p
-              className="font-outfit text-primary text-xs uppercase"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              The Team
-            </motion.p>
-
-            <motion.h1
-              className="font-outfit font-normal leading-none text-black tracking-[-0.02em]"
-              style={{ fontSize: isMobile ? 40 : scale(64) }}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
-            >
-              Two builders making the productivity app they actually wanted.
-            </motion.h1>
-
-            <motion.p
-              className="font-outfit font-[350] text-text-muted leading-[1.2] tracking-[-0.01em]"
-              style={{
-                fontSize: isMobile ? 16 : `clamp(16px, ${scale(20)}, 20px)`,
-                maxWidth: isMobile ? '100%' : scale(720),
-              }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.7, delay: 0.15 }}
-            >
-              Kindred is built by a small team of friends who got tired of todo lists that
-              didn’t care if you actually finished anything. Here’s who’s behind it.
-            </motion.p>
+    <section className="w-full bg-page pb-[min(200px,11.57vw)] max-md:pb-20">
+      <div className="grid7 max-md:gap-y-16">
+        {/* The story, held in view beside the founders. */}
+        <div className="col-start-1 col-span-3 row-start-1 pr-[min(160px,9.26vw)] max-md:pr-0">
+          <div className="sticky top-[160px] max-md:static">
+            <p className="t-label text-violet">Why Kindred</p>
+            <p className="t-body mt-5 max-w-[560px]">
+              We got tired of todo lists that didn’t care whether you finished
+              anything. So we built the one that notices, and gets your friends
+              to cheer you on when you do.
+            </p>
+            <p className="t-body mt-4 max-w-[560px]">
+              We both came up through Generate, Northeastern’s student-run
+              product studio.
+            </p>
           </div>
         </div>
-      </section>
 
-      {/* Team grid */}
-      <section
-        className="relative w-full bg-white"
-        style={{
-          padding: isMobile ? '24px 16px 80px' : `${scale(24)} ${scale(64)} ${scale(120)}`,
-        }}
-      >
-        <div
-          className="w-full max-w-[960px] mx-auto flex flex-col"
-          style={{ gap: isMobile ? 24 : 32 }}
-        >
-          {TEAM.map((member, index) => (
-            <TeamMemberCard
-              key={member.name}
-              member={member}
-              index={index}
-              isMobile={isMobile}
-              scale={scale}
-            />
-          ))}
-        </div>
-      </section>
+        {TEAM.map((member, index) => (
+          <Member key={member.name} member={member} index={index} />
+        ))}
+      </div>
+    </section>
+  )
+}
 
-      {/* Outro */}
-      <section
-        className="relative w-full bg-white"
-        style={{ padding: isMobile ? '32px 16px 96px' : `${scale(24)} ${scale(64)} ${scale(160)}` }}
-      >
-        <div
-          className="relative bg-surface rounded-[40px] w-full max-w-[1600px] mx-auto overflow-hidden text-center"
-          style={{
-            padding: isMobile ? '48px 24px' : `${scale(96)} ${scale(64)}`,
-          }}
-        >
-          <p className="font-outfit text-primary text-xs uppercase">
-            Say hi
-          </p>
-          <p
-            className="font-outfit font-normal leading-none text-black tracking-[-0.02em] mx-auto"
-            style={{
-              fontSize: isMobile ? 28 : scale(48),
-              marginTop: isMobile ? 16 : scale(20),
-              maxWidth: isMobile ? '100%' : scale(840),
-            }}
-          >
-            Building this with us, or just want to chat? We read every email.
+function Outro() {
+  return (
+    <section className="relative w-full overflow-hidden bg-page">
+      <div className="grid7 pb-[min(180px,10.42vw)] max-md:pb-20">
+        <div className="col-start-1 col-span-5 flex flex-col items-start">
+          <p className="t-display text-ink">
+            Building with us, or just want to <span className="t-accent">chat</span>?
           </p>
           <a
             href="mailto:kindred@kindredtodo.com"
-            className="inline-block font-outfit text-primary underline underline-offset-4"
-            style={{
-              fontSize: isMobile ? 18 : `clamp(18px, ${scale(22)}, 22px)`,
-              marginTop: isMobile ? 24 : scale(32),
-              letterSpacing: '-0.01em',
-            }}
+            className="t-label mt-[min(40px,2.31vw)] text-violet underline underline-offset-4 max-md:mt-6"
           >
             kindred@kindredtodo.com
           </a>
         </div>
-      </section>
-    </div>
+      </div>
+      <div aria-hidden="true" className="h-[min(42px,2.43vw)] w-full bg-violet max-md:h-6" />
+    </section>
+  )
+}
+
+export default function TeamPage() {
+  return (
+    <main className="w-full bg-page" style={PAGE_GRID}>
+      <Hero />
+      <Team />
+      <Outro />
+    </main>
   )
 }
