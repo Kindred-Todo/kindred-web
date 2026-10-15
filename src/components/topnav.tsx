@@ -61,15 +61,73 @@ export default function TopNav() {
   // liquid-glass-react only re-measures its layered shadows/sheens on
   // window.resize. When the pill expands to reveal the menu, the children's
   // height changes — observe that and fan out fake resize events so the
-  // library's layers track the new size.
+  // library's layers track the new size. Phones render a plain frosted div
+  // (see PillGlass), so there is nothing to re-measure there and no reason to
+  // put every resize listener on the page through the storm.
   useEffect(() => {
     const node = glassContentRef.current
-    if (!node) return
+    if (!node || isMobile) return
+    let frame = 0
     const ro = new ResizeObserver(() => {
-      window.dispatchEvent(new Event('resize'))
+      // The height animation ticks the observer far more often than the
+      // layers need re-measuring; one event per frame is enough.
+      if (frame) return
+      frame = requestAnimationFrame(() => {
+        frame = 0
+        window.dispatchEvent(new Event('resize'))
+      })
     })
     ro.observe(node)
-    return () => ro.disconnect()
+    return () => {
+      ro.disconnect()
+      if (frame) cancelAnimationFrame(frame)
+    }
+  }, [isMobile])
+
+  // The nav is only part of the page once the rider is behind the user. It
+  // stays tucked above the viewport through the hero and the whole
+  // statement/finale section — which carries its own wordmark and CTAs — then
+  // slides down as that section leaves. Scrolling back into it tucks it away
+  // again, so the entrance is the same gesture in both directions.
+  const [navVisible, setNavVisible] = useState(false)
+  useEffect(() => {
+    // The statement/finale section is the tall pinned one. Find it by height
+    // rather than by position so the trigger survives sections being
+    // reordered; its bottom edge is where the rider finishes.
+    let triggerY = Infinity
+    const measure = () => {
+      const pinned = Array.from(document.querySelectorAll<HTMLElement>('main > section')).find(
+        (el) => el.offsetHeight > window.innerHeight * 4,
+      )
+      // The pinned stage releases when the section's bottom edge reaches the
+      // bottom of the viewport, which is the moment the ride is over — so
+      // that is where the nav comes back. The hair of bias means it is
+      // already moving by the time the next section arrives.
+      triggerY = pinned
+        ? pinned.offsetTop + pinned.offsetHeight - window.innerHeight * 0.98
+        : 0
+    }
+    let last = false
+    const check = () => {
+      const next = window.scrollY > triggerY
+      if (next === last) return
+      last = next
+      setNavVisible(next)
+      // The menu belongs to the nav: don't leave it hanging in the air.
+      if (!next) setMenuOpen(false)
+    }
+    const onResize = () => {
+      measure()
+      check()
+    }
+    measure()
+    check()
+    window.addEventListener('scroll', check, { passive: true })
+    window.addEventListener('resize', onResize)
+    return () => {
+      window.removeEventListener('scroll', check)
+      window.removeEventListener('resize', onResize)
+    }
   }, [])
 
   // Once the rings section starts turning into the desktop app, the nav has to
@@ -77,12 +135,20 @@ export default function TopNav() {
   const [appMode, setAppMode] = useState(0)
   useEffect(() => {
     let last = 0
-    const check = () => {
+    // The stage's geometry only moves on resize, so cache it: this handler
+    // runs on every scroll event, and reading layout in it would both cost
+    // and risk forcing a synchronous reflow behind the other handlers.
+    let start = Infinity
+    let scrollable = 0
+    const measure = () => {
       const el = document.getElementById('rings-stage')
+      start = el ? el.offsetTop : Infinity
+      scrollable = el ? el.offsetHeight - window.innerHeight : 0
+    }
+    const check = () => {
       let next = 0
-      if (el) {
-        const scrollable = el.offsetHeight - window.innerHeight
-        const p = scrollable > 0 ? (window.scrollY - el.offsetTop) / scrollable : 0
+      if (scrollable > 0 && window.scrollY >= start) {
+        const p = (window.scrollY - start) / scrollable
         next = Math.min(1, Math.max(0, (p - 0.55) / 0.25))
       }
       // Only re-render when it actually moves.
@@ -91,12 +157,17 @@ export default function TopNav() {
         setAppMode(next)
       }
     }
+    const onResize = () => {
+      measure()
+      check()
+    }
+    measure()
     check()
     window.addEventListener('scroll', check, { passive: true })
-    window.addEventListener('resize', check)
+    window.addEventListener('resize', onResize)
     return () => {
       window.removeEventListener('scroll', check)
-      window.removeEventListener('resize', check)
+      window.removeEventListener('resize', onResize)
     }
   }, [])
 
@@ -107,9 +178,18 @@ export default function TopNav() {
 
   // The pill is fixed, so it glides over the page's alternating light/dark
   // sections. Detect the section colour sitting behind it so the CTA row
-  // below stays legible on both.
+  // below stays legible on both. Phones never show the "Log in" link this
+  // feeds (it is hidden below md) and the nav is out of the way for the first
+  // nine screens, so there is nothing to keep legible: don't pay for a
+  // hit-test and a walk up the ancestor chain on every scroll frame.
   useEffect(() => {
-    const check = () => {
+    if (isMobile || !navVisible) return
+    let lastY = Number.NEGATIVE_INFINITY
+    const check = (force = false) => {
+      // The colour only changes at section boundaries, so it is not worth
+      // re-testing until the page has actually moved.
+      if (!force && Math.abs(window.scrollY - lastY) < 24) return
+      lastY = window.scrollY
       const navEl = navRef.current
       const cx = window.innerWidth / 2
       const cy = Math.min(70, Math.max(16, window.innerWidth * 0.0405)) + 26
@@ -128,18 +208,23 @@ export default function TopNav() {
         node = node.parentElement
       }
     }
-    check()
-    window.addEventListener('scroll', check, { passive: true })
-    window.addEventListener('resize', check)
+    check(true)
+    const onScroll = () => check()
+    const onResize = () => check(true)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onResize)
     return () => {
-      window.removeEventListener('scroll', check)
-      window.removeEventListener('resize', check)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onResize)
     }
-  }, [])
+  }, [isMobile, navVisible])
 
   const expandedHeight = computeExpandedHeight(MENU_ITEMS.length)
   const pillHeight = menuOpen ? expandedHeight : PILL_TOP_ROW_HEIGHT
   const pillTransition = { duration: 0.36, ease: [0.22, 1, 0.36, 1] as const }
+  // Tucked away until the rider is behind the user, and out of the way again
+  // once the app's own chrome takes the screen over.
+  const navShown = navVisible && appMode < 0.5
 
   const startDownload = () => {
     setMenuOpen(false)
@@ -152,16 +237,27 @@ export default function TopNav() {
 
   return (
     <>
-      <nav
+      <motion.nav
         ref={navRef}
-        className="fixed left-1/2 z-50 flex -translate-x-1/2 flex-col items-center gap-[10px] transition-all duration-300"
-        // Figma places the pill 70px from the top of the 1728 canvas.
+        className="fixed left-1/2 z-50 flex flex-col items-center gap-[10px]"
+        initial={false}
+        // -180% of its own height clears its top offset at every size it
+        // takes — the collapsed row and the expanded menu — so it leaves the
+        // screen completely rather than peeking over the edge.
+        animate={{ y: navShown ? '0%' : '-180%', opacity: navShown ? 1 : 0 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        // Figma places the pill 70px from the top of the 1728 canvas. The
+        // centring lives in framer's transform rather than a Tailwind
+        // translate utility, so the two can't fight over `transform`.
         style={{
           top: 'clamp(16px, 4.05vw, 70px)',
           width: PILL_WIDTH,
-          opacity: 1 - appMode,
-          pointerEvents: appMode > 0.5 ? 'none' : 'auto',
+          x: '-50%',
+          pointerEvents: navShown ? 'auto' : 'none',
         }}
+        // Hidden is hidden: keep its links out of the tab order and off the
+        // accessibility tree while it is above the viewport.
+        inert={!navShown}
         aria-label="Primary navigation"
       >
         {/* The pill itself. LiquidGlass sits absolutely inside this wrapper so
@@ -353,7 +449,7 @@ export default function TopNav() {
           </motion.a>
           <DownloadButton isMobile={isMobile} onDesktopClick={() => setQrOpen(true)} />
         </div>
-      </nav>
+      </motion.nav>
 
       <AnimatePresence>
         {qrOpen && (

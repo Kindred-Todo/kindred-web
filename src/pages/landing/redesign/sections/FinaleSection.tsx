@@ -1,10 +1,11 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import {
-  
+
   easeInOut,
   easeOut,
   motion,
   useAnimationFrame,
+  useMotionValueEvent,
   useSpring,
   useTransform
 } from 'framer-motion'
@@ -19,6 +20,7 @@ import avatarPriya from '@/assets/new-design/avatar-priya.png'
 import avatarJordan from '@/assets/new-design/avatar-jordan.png'
 import logoSrc from '@/assets/redesign/logo-white.png'
 import checkSrc from '@/assets/check-logo.svg'
+import sheetSrc from '@/assets/redesign/cyclist-sheet.webp'
 
 /**
  * The closing beat, played on top of the (still pinned) statement text.
@@ -53,6 +55,15 @@ const CHECK_HEIGHT = `calc(${CHECK_SIZE} * 0.8)`
 /** Phones: the clamp floor reads as specks next to a rider that fills most of
  *  the screen, so the checks get a fixed, chunkier size. */
 const CHECK_SIZE_MOBILE = 38
+
+/** The glow's final geometry: the end state of what used to be animated every
+ *  frame (width 140% → 900% of the cyclist box, blur 50 → 350px, spread
+ *  20 → 220px). It's painted once at this size and grown with `scale` instead
+ *  — a transform scales the painted result, so growing it costs no layout and
+ *  no per-frame re-raster of a huge blurred shadow. */
+const GLOW_SIZE = '900%'
+const GLOW_BLUR = 350
+const GLOW_SPREAD = 220
 
 /* -------------------------------------------------------------------------- */
 /*  Check trail — imperative pool, emitted by distance ridden                  */
@@ -103,13 +114,30 @@ function Trail({ progress }: { progress: MotionValue<number> }) {
   const lastEmit = useRef(0)
   const seed = useRef(1)
   const rnd = () => ((seed.current = (seed.current * 16807) % 2147483647) / 2147483647)
+  // How many pool slots are currently showing (or fading out) a check. When
+  // it's 0 and the ride isn't running there is nothing for this loop to do,
+  // so it can bail before touching the DOM.
+  const liveCount = useRef(0)
 
   useAnimationFrame((now) => {
     const p = progress.get()
+
+    // The finale sits below the fold for most of the page, but this callback
+    // runs every frame regardless — without this bail it writes 30 dead
+    // slots' styles 60 times a second for the entire page lifetime. Any live
+    // check keeps the loop running (including after the ride ends, while the
+    // last checks fade out).
+    const riding = p > 0 && p < RIDE_END + 0.005
+    if (liveCount.current === 0 && !riding) {
+      lastX.current = null
+      return
+    }
+
     const W = cyclistWidth()
     const x = riderLeft(p)
+    const life = isMobile ? LIFE_MS_MOBILE : LIFE_MS
 
-    if (p > 0 && p < RIDE_END + 0.005) {
+    if (riding) {
       if (lastX.current == null) {
         lastX.current = x
         prevX.current = x
@@ -124,6 +152,9 @@ function Trail({ progress }: { progress: MotionValue<number> }) {
       const emit = (anchorX: number) => {
         const s = slots.current[next.current]
         next.current = (next.current + 1) % POOL
+        // Recycling a dead slot brings it back to life; recycling a live one
+        // just moves it, so only the former counts.
+        if (s.born < 0 || now - s.born >= life) liveCount.current++
         s.born = now
         // Off the back of the bike (she faces left, so behind = right).
         if (isMobile) {
@@ -163,12 +194,24 @@ function Trail({ progress }: { progress: MotionValue<number> }) {
       lastX.current = null
     }
 
+    // No slot can come alive inside the loop itself, so when everything is
+    // dead already (each was zeroed the frame it expired) the writes can be
+    // skipped entirely.
+    if (liveCount.current === 0) return
+
     for (let i = 0; i < POOL; i++) {
       const el = els.current[i]
       const s = slots.current[i]
       if (!el) continue
-      const age = (now - s.born) / (isMobile ? LIFE_MS_MOBILE : LIFE_MS)
-      if (s.born < 0 || age >= 1) {
+      if (s.born < 0) {
+        el.style.opacity = '0'
+        continue
+      }
+      const age = (now - s.born) / life
+      if (age >= 1) {
+        // Mark the slot dead so it's only counted once.
+        s.born = -1
+        liveCount.current--
         el.style.opacity = '0'
         continue
       }
@@ -248,6 +291,20 @@ function KudosToast({
   const { name, avatar, message, gif, from } = KUDOS[index]
   const hit = HITS[index]
   const start = hit - 0.05
+  // Both kudos GIFs (674 KB of animation) used to sit in the DOM from first
+  // paint — opacity 0, but still decoded and stepped by the engine — hundreds
+  // of vh before their beat. So the card only exists while the beat is within
+  // reach: progress inside [start - 0.02, hit + 0.06]. Outside that window the
+  // card is fully transparent anyway, so nothing visible changes; the state
+  // only flips at the window's edges, never per frame.
+  const inBeat = (v: number) => v >= start - 0.02 && v <= hit + 0.06
+  const [active, setActive] = useState(() => inBeat(progress.get()))
+  useMotionValueEvent(progress, 'change', (v) => {
+    setActive((prev) => {
+      const next = inBeat(v)
+      return prev === next ? prev : next
+    })
+  })
   const x = useTransform(progress, [start, hit], [mobile ? '0vw' : `${from[0]}vw`, '0vw'], {
     clamp: true,
     ease: easeInOut,
@@ -274,6 +331,10 @@ function KudosToast({
   // The hit: a violet ring ripples out from the rider.
   const ring = useTransform(progress, [hit, hit + 0.05], [0.3, 1.8], { clamp: true })
   const ringOpacity = useTransform(progress, [hit, hit + 0.008, hit + 0.05], [0, 0.55, 0])
+
+  // Invisible outside the beat, so not rendering it at all changes nothing —
+  // and keeps the GIF undecoded until the toast is on its way in.
+  if (!active) return null
 
   return (
     <>
@@ -340,14 +401,16 @@ export function FinaleStage({ progress }: { progress: MotionValue<number> }) {
   )
 
   // The glow swells with the whole ride: tight at first, wiping a wide swath
-  // of words by the time she exits.
+  // of words by the time she exits. Painted at its final size and shadow
+  // once (see GLOW_SIZE above), then grown by `scale` from 140/900 → 1 over
+  // the same range and easing the old `width` animation used — a transform
+  // scales the painted result (gradient and blur alike) without laying out
+  // or re-rasterising a viewport-covering shadow every scroll frame.
+  // The shadow rides on its own layer purely so its opacity can still track
+  // the old 0.75 → 0.95 ramp: a transform scales colour, not alpha.
   const glowK = useTransform(progress, [0, RIDE_END], [0, 1], { clamp: true })
-  const glowSize = useTransform(glowK, [0, 1], ['140%', '900%'])
-  const glowShadow = useTransform(glowK, (k) => {
-    const blur = 50 + 300 * k
-    const spread = 20 + 200 * k
-    return `0 0 ${blur}px ${spread}px rgba(255,255,255,${0.75 + 0.2 * k})`
-  })
+  const glowScale = useTransform(glowK, [0, 1], [140 / 900, 1])
+  const glowShadowOpacity = useTransform(glowK, (k) => 0.75 + 0.2 * k)
 
   const stageOpacity = useTransform(progress, [0, 0.01, 0.88, 0.96], [0, 1, 1, 0])
   const panelScale = useTransform(progress, [0.86, 1], [0, 1], { clamp: true })
@@ -364,19 +427,50 @@ export function FinaleStage({ progress }: { progress: MotionValue<number> }) {
 
   return (
     <div className="pointer-events-none absolute inset-0 z-20 overflow-hidden" aria-hidden>
+      {/* Warm the sprite decode while the page is idle: the sheet is
+          620 KB / 3840×2400, and left lazy it decodes at paint time — a
+          one-off hitch exactly when the ride starts. Same file, 1px, never
+          visible. */}
+      <img
+        src={sheetSrc}
+        alt=""
+        aria-hidden
+        draggable={false}
+        className="pointer-events-none absolute left-0 top-0 h-px w-px opacity-0"
+      />
       <motion.div className="absolute inset-0" style={{ opacity: stageOpacity }}>
         {/* Rider on a soft white glow that wipes the words out as she passes. */}
         <motion.div
           className="absolute left-0"
           style={{ bottom: CYCLIST_BOTTOM, width: CYCLIST_W, x }}
         >
+          {/* Shadow layer first, so it sits behind the gradient as it did
+              when both lived on one element. Centring is in the motion style
+              (x/y) because an inline transform would override — or, with
+              Tailwind v4's `translate` property, double up on — the old
+              -translate-1/2 classes. */}
           <motion.div
-            className="absolute left-1/2 top-1/2 aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full"
+            className="absolute left-1/2 top-1/2 aspect-square rounded-full"
             style={{
-              width: glowSize,
+              width: GLOW_SIZE,
+              x: '-50%',
+              y: '-50%',
+              scale: glowScale,
+              boxShadow: `0 0 ${GLOW_BLUR}px ${GLOW_SPREAD}px #fff`,
+              opacity: glowShadowOpacity,
+              willChange: 'transform, opacity',
+            }}
+          />
+          <motion.div
+            className="absolute left-1/2 top-1/2 aspect-square rounded-full"
+            style={{
+              width: GLOW_SIZE,
+              x: '-50%',
+              y: '-50%',
+              scale: glowScale,
               background:
                 'radial-gradient(closest-side, #fff 0%, #fff 60%, rgba(255,255,255,0.85) 74%, rgba(255,255,255,0) 100%)',
-              boxShadow: glowShadow,
+              willChange: 'transform',
             }}
           />
           <motion.div style={{ rotate: rock, transformOrigin: '50% 90%' }}>

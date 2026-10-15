@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { motion, useTransform } from 'framer-motion'
+import { motion, useMotionValueEvent, useTransform } from 'framer-motion'
 import {
   Barbell,
   CalendarX,
@@ -100,6 +100,16 @@ function Banner({ note }: { note: Note }) {
 
 const CARD =
   'flex items-center gap-3 rounded-[20px] bg-white/85 px-4 py-3 shadow-[0_12px_40px_rgba(23,22,38,0.14)] backdrop-blur-xl'
+
+// The banners only exist while the notes beat is live. Each card backdrop-blurs
+// its backdrop, so the twelve of them sitting at opacity 0 from page load —
+// blurring nothing, but still layered — is pure cost for the ~95% of the
+// section they aren't in. They first become visible at REVEALS[0] = 0.05, so
+// they mount a hair below that and unmount once the progress has fallen back
+// (the beat hands over by setting it to 0). The small gap between the two
+// thresholds stops the mount from flapping at the edge.
+const LIVE_AT = 0.04
+const DEAD_BELOW = 0.02
 
 // ── Desktop: the burst ───────────────────────────────────────────────────────
 
@@ -237,6 +247,13 @@ export function NotesStack({
   anchor: MotionValue<Anchor>
 }) {
   const desktop = useIsDesktop()
+  // Mounted only across the beat (see LIVE_AT): a state flip per threshold
+  // crossing, never per frame. Read once so a reload partway down the section
+  // mounts them on the first change, not the first render.
+  const [live, setLive] = useState(() => progress.get() >= LIVE_AT)
+  useMotionValueEvent(progress, 'change', (p) => {
+    setLive((was) => (was ? p >= DEAD_BELOW : p >= LIVE_AT))
+  })
   // The stack clears as one so the next beat starts on an empty screen; the
   // burst is recalled into its phrase instead.
   const fade = useTransform(progress, [0.86, 0.96], [1, 0], { clamp: true })
@@ -249,9 +266,10 @@ export function NotesStack({
         style={{ fontFamily: 'var(--font-outfit)' }}
         className="pointer-events-none absolute inset-0"
       >
-        {NOTES.map((note, index) => (
-          <BurstBanner key={index} note={note} index={index} progress={progress} anchor={anchor} />
-        ))}
+        {live &&
+          NOTES.map((note, index) => (
+            <BurstBanner key={index} note={note} index={index} progress={progress} anchor={anchor} />
+          ))}
       </div>
     )
 
@@ -269,9 +287,10 @@ export function NotesStack({
           <p className="text-sm leading-snug max-md:text-[15px]">&nbsp;</p>
         </div>
       </div>
-      {NOTES.map((note, index) => (
-        <StackBanner key={index} note={note} index={index} progress={progress} />
-      ))}
+      {live &&
+        NOTES.map((note, index) => (
+          <StackBanner key={index} note={note} index={index} progress={progress} />
+        ))}
     </motion.div>
   )
 }

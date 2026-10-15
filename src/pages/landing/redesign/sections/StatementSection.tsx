@@ -168,9 +168,12 @@ const SLOT_MORPH = 1 - STAGGER * (SLOTS - 1)
 const INTRO = 0.16
 /** Width of the flickering front, in characters. */
 const BAND = 6
-/** Scroll (px) per re-roll of the flickering glyphs; settled noise re-rolls at a
- *  quarter of the rate. */
+/** Scroll (px) per re-roll of the flickering glyphs in the band at the front. */
 const FLICKER_PX = 10
+/** The settled noise churns on the clock instead of the scroll — one re-roll
+ *  per this many ms (~5 Hz) — because a scroll-driven salt re-rolled it every
+ *  FLICKER_PX * 4 px, and each re-roll repaints the whole hero-size block. */
+const SETTLED_MS = 200
 
 // Outfit has no box-drawing or shade glyphs, so the noise sticks to ASCII.
 const GLYPHS = '<>/\\|=+*#%&$01XZKQ'
@@ -182,6 +185,11 @@ const ease = (t: number) => t * t * (3 - 2 * t)
 /** Stable pseudo-random integer per character (and per flicker tick). */
 const shade = (i: number, salt = 0) =>
   (Math.imul(i + 1, 2654435761) ^ Math.imul(salt + 1, 40503)) >>> 0
+
+// Both are driven entirely by MotionValues, so memo keeps the `phase`
+// re-render — one per lit word, dozens per pass — from reaching them.
+const NotesStackMemo = memo(NotesStack)
+const FinaleStageMemo = memo(FinaleStage)
 
 /**
  * A word as per-character spans, so the cipher can paint over each one.
@@ -208,14 +216,19 @@ const Glyphs = memo(function Glyphs({ text }: { text: string }) {
  * Driven straight off the scroll rather than through React, so the spans never
  * re-render, and a character is only touched when its state changes.
  */
-function cipher(chars: Array<HTMLElement>, front: number, sealing: boolean, tick: number) {
+function cipher(
+  chars: Array<HTMLElement>,
+  front: number,
+  sealing: boolean,
+  tick: number,
+  settledTick: number,
+) {
   const at = -BAND + front * (chars.length + BAND)
   for (let i = 0; i < chars.length; i++) {
     const el = chars[i]
     const hot = i >= at && i < at + BAND
     const sealed = !hot && i < at === sealing
-    const state =
-      hot || sealed ? GLYPHS[shade(i, hot ? tick : tick >> 2) % GLYPHS.length] : ''
+    const state = hot || sealed ? GLYPHS[shade(i, hot ? tick : settledTick) % GLYPHS.length] : ''
     if (el.dataset.g === state) continue
     el.dataset.g = state
     el.classList.toggle('is-cipher', state !== '')
@@ -265,10 +278,20 @@ export function StatementSection() {
     const chars = layers.map((slot) =>
       slot.map((node) => Array.from(node.querySelectorAll<HTMLElement>('.t-char'))),
     )
-    const show = (slot: number, frame: number) =>
+    // Which frame each slot is showing: visibility only changes when a slot
+    // switches frames, so the write is skipped the other ~11 calls per frame.
+    const shown: Array<number> = new Array(SLOTS).fill(-1)
+    const show = (slot: number, frame: number) => {
+      if (shown[slot] === frame) return
+      shown[slot] = frame
       layers[slot].forEach((node, f) => {
         node.style.visibility = f === frame ? 'visible' : 'hidden'
       })
+    }
+
+    // The last --dim written: setting a custom property dirties style for the
+    // whole block, so it's only written when the value actually changes.
+    let lastDim = ''
 
     const measure = () => {
       const rect = el.getBoundingClientRect()
@@ -304,9 +327,14 @@ export function StatementSection() {
       if (reduceMotion) return
 
       // Behind the notifications everything dims but the phrase they burst out
-      // of, which turns alarm red (see .t-slot.is-alarm).
+      // of, which turns alarm red (see .t-slot.is-alarm). --dim is zero almost
+      // always, so the write is skipped unless the value actually moved.
       const notesOn = beat.kind === 'notes' ? Math.min(span(local, 0, 0.08), 1 - span(local, 0.9, 1)) : 0
-      text.style.setProperty('--dim', `${NOTES_DIM * notesOn}`)
+      const dim = `${NOTES_DIM * notesOn}`
+      if (dim !== lastDim) {
+        lastDim = dim
+        text.style.setProperty('--dim', dim)
+      }
       layers[ANCHOR.slot][ANCHOR.frame].classList.toggle('is-alarm', notesOn > 0.5)
 
       // The morph: only the emphasised phrases change. In a phase each slot
@@ -314,16 +342,25 @@ export function StatementSection() {
       // pins); in a morph each slot, a little after the one before, scrambles
       // out of the old phrase and resolves into the new one in place.
       const tick = Math.floor(scrolled / FLICKER_PX)
+      // One clock salt per frame for the settled noise (see SETTLED_MS) —
+      // never read per character, so the loop stays O(chars) cheap.
+      const settledTick = Math.floor(performance.now() / SETTLED_MS)
       for (let slot = 0; slot < SLOTS; slot++) {
         if (beat.kind === 'morph') {
           const q = span(local, slot * STAGGER, slot * STAGGER + SLOT_MORPH)
           const leaving = q < 0.5
           show(slot, leaving ? beat.from : beat.to)
-          cipher(chars[slot][beat.from], leaving ? ease(q * 2) : 1, true, tick)
-          cipher(chars[slot][beat.to], leaving ? 0 : ease(q * 2 - 1), false, tick)
+          cipher(chars[slot][beat.from], leaving ? ease(q * 2) : 1, true, tick, settledTick)
+          cipher(chars[slot][beat.to], leaving ? 0 : ease(q * 2 - 1), false, tick, settledTick)
         } else {
           show(slot, frame)
-          cipher(chars[slot][frame], index === 0 ? ease(Math.min(1, local / INTRO)) : 1, false, tick)
+          cipher(
+            chars[slot][frame],
+            index === 0 ? ease(Math.min(1, local / INTRO)) : 1,
+            false,
+            tick,
+            settledTick,
+          )
         }
       }
     }
@@ -396,8 +433,6 @@ export function StatementSection() {
 
       <div
         ref={stickyRef}
-        data-frame={phase.frame}
-        data-lit={phase.lit}
         className={cn(
           'relative flex items-center overflow-hidden',
           // Clear the floating nav pill, which sits ~122px down.
@@ -453,8 +488,8 @@ export function StatementSection() {
             ))}
           </p>
         </motion.div>
-        {!reduceMotion && <NotesStack progress={notes} anchor={anchor} />}
-        {!reduceMotion && <FinaleStage progress={finale} />}
+        {!reduceMotion && <NotesStackMemo progress={notes} anchor={anchor} />}
+        {!reduceMotion && <FinaleStageMemo progress={finale} />}
       </div>
     </section>
   )

@@ -122,7 +122,17 @@ export function LegalPage({ doc }: { doc: LegalDoc }) {
 
   const jump = (id: string) => {
     const el = document.getElementById(id)
-    if (el) lenis?.scrollTo(el, { offset: -NAV_OFFSET })
+    if (!el) return
+    // Lenis is only mounted where it does something (fine pointers), so touch
+    // devices scroll natively — with the same offset the nav pill needs.
+    if (lenis) {
+      lenis.scrollTo(el, { offset: -NAV_OFFSET })
+      return
+    }
+    window.scrollTo({
+      top: el.getBoundingClientRect().top + window.scrollY - NAV_OFFSET,
+      behavior: 'smooth',
+    })
   }
 
   return (

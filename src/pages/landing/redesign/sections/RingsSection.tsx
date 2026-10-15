@@ -155,6 +155,10 @@ function Confetti({ show }: { show: boolean }) {
   )
 }
 
+// `layout` is `appGeo`, memoised on [vp.h, mobile], so this only re-renders
+// on a real resize.
+const MemoAppStage = memo(AppStage)
+
 /**
  * The pieces that only exist once the screen is the app: selector, card, dots
  * and the "see your whole day" link. Memoised on motion values, so the scroll
@@ -176,7 +180,7 @@ const AppExtras = memo(function AppExtras({
   return (
     <div className="absolute inset-y-0 right-0" style={{ left: sidebarW }} aria-hidden>
       <motion.div className="absolute inset-0" style={{ opacity, y }}>
-        <AppStage layout={layout} compact={mobile} />
+        <MemoAppStage layout={layout} compact={mobile} />
       </motion.div>
       {/* On a phone the tab bar takes the footer's place. */}
       {!mobile && (
@@ -197,6 +201,22 @@ const AppExtras = memo(function AppExtras({
   )
 })
 
+/**
+ * The scroll handlers below (`fillMV → setFill`, `m → setMState`) re-render
+ * this section every frame of the beat and the morph. Most of the app chrome
+ * only takes empty or stable props, though, so memoising them here — at the
+ * usage site, at module level so the identity is stable — lets React bail out
+ * of those subtrees and leave only the rings and the score actually redraw.
+ */
+const MemoSidebar = memo(AppSidebar)
+const MemoTabBar = memo(AppTabBar)
+const MemoStageGlow = memo(StageGlow)
+const MemoGreeting = memo(AppGreeting)
+const MemoCaption = memo(AppCaption)
+const MemoConfetti = memo(Confetti)
+// `progress` is the `m` motion value, which never changes identity.
+const MemoSignupPrompt = memo(SignupPrompt)
+
 export function RingsSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const reduceMotion = useReducedMotion()
@@ -207,7 +227,15 @@ export function RingsSection() {
   const [vp, setVp] = useState({ w: 1440, h: 900 })
 
   useEffect(() => {
-    const measure = () => setVp({ w: window.innerWidth, h: window.innerHeight })
+    // iOS Safari fires resize as the URL bar collapses mid-scroll. Keep the
+    // same object when nothing changed, so those events don't re-render the
+    // section and rewrite the pinned blocks' `top` (forced layout).
+    const measure = () =>
+      setVp((prev) => {
+        const w = window.innerWidth
+        const h = window.innerHeight
+        return prev.w === w && prev.h === h ? prev : { w, h }
+      })
     measure()
     window.addEventListener('resize', measure)
     return () => window.removeEventListener('resize', measure)
@@ -332,8 +360,12 @@ export function RingsSection() {
         <motion.div className="absolute inset-0" style={{ opacity: appBgOpacity }}>
           {/* Remounted as the transform begins, so the wash's own animation —
               it sinks, then the dot lattice surfaces and fades — plays for the
-              user instead of on page load. */}
-          <StageGlow key={mState > 0.04 ? 'wash' : 'idle'} />
+              user instead of on page load. The wash is a full-viewport masked
+              layer on an infinite loop, so it only exists while it's on
+              screen: mounting at the same 0.04 threshold the old remount key
+              used keeps that timing (and the restart on scrolling back)
+              without paying for the animation across the whole section. */}
+          {mState > 0.04 && <MemoStageGlow key={mState > 0.04 ? 'wash' : 'idle'} />}
         </motion.div>
 
         {/* The sidebar arrives, and the screen makes room for it */}
@@ -342,17 +374,19 @@ export function RingsSection() {
             className="absolute top-0 left-0 h-full"
             style={{ width: SIDEBAR_W, x: sidebarX, opacity: sidebarOpacity }}
           >
-            <AppSidebar />
+            <MemoSidebar />
           </motion.div>
         )}
 
-        {mobile && (
+        {/* The tab bar is invisible until the sidebar's fade starts (0.12), and
+            its blur strip is expensive on a phone — don't mount it before that. */}
+        {mobile && mState > 0.1 && (
           <motion.div
             className="absolute inset-x-0 bottom-0 z-10"
             style={{ y: tabY, opacity: sidebarOpacity }}
             aria-hidden
           >
-            <AppTabBar />
+            <MemoTabBar />
           </motion.div>
         )}
 
@@ -405,7 +439,7 @@ export function RingsSection() {
                   </motion.span>
                 }
               />
-              <Confetti show={burst} />
+              <MemoConfetti show={burst} />
             </div>
           </motion.div>
 
@@ -418,7 +452,7 @@ export function RingsSection() {
               Say <span className="t-accent t-accent--soft">yes</span> to your productivity rings
             </h2>
             <div className="absolute inset-x-0 top-0" style={swap(swapped)}>
-              <AppGreeting />
+              <MemoGreeting />
             </div>
           </motion.div>
 
@@ -432,12 +466,16 @@ export function RingsSection() {
               <br className="max-md:hidden" /> 10x your output
             </p>
             <div className="absolute inset-x-0 top-0" style={swap(swapped)}>
-              <AppCaption />
+              <MemoCaption />
             </div>
           </motion.div>
         </motion.div>
 
-        <SignupPrompt progress={m} />
+        {/* The prompt only fades in from m 0.9, but its backdrop blur covers
+            the whole viewport — mount it just before that fade starts so the
+            blur layer isn't live (and re-blurred every frame) across the
+            whole scroll. */}
+        {mState > 0.86 && <MemoSignupPrompt progress={m} />}
       </div>
     </section>
   )
