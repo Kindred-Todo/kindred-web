@@ -1,10 +1,10 @@
-import { colors } from '@/lib/design-system'
 import { Link, useLocation } from '@tanstack/react-router'
-import { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowRight, Menu, X } from 'lucide-react'
 import LiquidGlass from 'liquid-glass-react'
 import QRCode from 'react-qr-code'
+import { colors } from '@/lib/design-system'
 import { cn } from '@/lib/utils'
 import { useMobile } from '@/contexts/MobileContext'
 
@@ -32,7 +32,7 @@ type MenuItem =
   | { label: string; disabled: true }
   | { label: string; action: 'download' }
 
-const MENU_ITEMS: MenuItem[] = [
+const MENU_ITEMS: Array<MenuItem> = [
   { label: 'Home', to: '/' },
   { label: 'Team', to: '/team' },
   { label: 'Download', action: 'download' },
@@ -176,7 +176,8 @@ export default function TopNav() {
           data-pill-expanded={menuOpen}
           style={{ position: 'relative', width: '100%', height: PILL_TOP_ROW_HEIGHT }}
         >
-          <LiquidGlass
+          <PillGlass
+            plain={isMobile}
             cornerRadius={26}
             padding="0"
             // `overLight` stacks bg-black layers on top of the glass to
@@ -325,16 +326,17 @@ export default function TopNav() {
                 })}
               </motion.div>
             </motion.div>
-          </LiquidGlass>
+          </PillGlass>
         </motion.div>
 
         {/* Secondary row — Log in link + the purple primary CTA. Desktop
             click opens the QR modal (download happens on the phone); mobile
-            goes straight to the App Store. */}
-        <div className="flex items-center gap-[10px]">
+            goes straight to the App Store. On phones the row spans the pill's
+            width with just the CTA, stretched to fill it. */}
+        <div className="flex items-center gap-[10px] max-md:w-full">
           <motion.a
             href={SIGNUP_URL}
-            className="inline-flex items-center justify-center font-outfit font-normal transition-opacity hover:opacity-70"
+            className="max-md:hidden inline-flex items-center justify-center font-outfit font-normal transition-opacity hover:opacity-70"
             style={{
               fontSize: 15,
               letterSpacing: '-0.2px',
@@ -410,6 +412,22 @@ export default function TopNav() {
   )
 }
 
+/** LiquidGlass's SVG displacement smears a grey shadow across the pill on
+ *  phones (and mobile Safari renders the filter poorly), so phones get a
+ *  plain frosted pill in the same footprint. */
+function PillGlass({
+  plain,
+  children,
+  ...glass
+}: React.ComponentProps<typeof LiquidGlass> & { plain: boolean }) {
+  if (!plain) return <LiquidGlass {...glass}>{children}</LiquidGlass>
+  return (
+    <div className="absolute inset-0 overflow-hidden rounded-[26px] bg-white/80 shadow-[0_8px_28px_rgba(19,18,31,0.08)] ring-1 ring-black/5 backdrop-blur-xl backdrop-saturate-150">
+      {children}
+    </div>
+  )
+}
+
 export function AppleLogo({ className }: { className?: string }) {
   return (
     <svg
@@ -447,7 +465,7 @@ function DownloadButton({
       'inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 8px 24px rgba(133, 77, 255, 0.35)',
   }
   const sharedClass =
-    'inline-flex items-center justify-center font-outfit font-normal text-white'
+    'inline-flex items-center justify-center font-outfit font-normal text-white max-md:flex-1'
 
   if (isMobile) {
     return (

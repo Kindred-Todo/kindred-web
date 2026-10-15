@@ -1,14 +1,16 @@
 import { useRef } from 'react'
 import {
+  
   easeInOut,
   easeOut,
   motion,
   useAnimationFrame,
   useSpring,
-  useTransform,
-  type MotionValue,
+  useTransform
 } from 'framer-motion'
 import { Cyclist } from '../components/Cyclist'
+import type {MotionValue} from 'framer-motion';
+import { useMobile } from '@/contexts/MobileContext'
 import kermitGif from '@/assets/gifs/kermit.gif'
 import cinemaGif from '@/assets/gifs/cinema.gif'
 import avatarSophia from '@/assets/new-design/avatar-sophia.png'
@@ -48,6 +50,9 @@ const CYCLIST_BOTTOM = `calc(var(--text-gap, 12vh) - ${CYCLIST_W} * 0.15)`
 
 const CHECK_SIZE = 'clamp(24px, 3.4vw, 60px)'
 const CHECK_HEIGHT = `calc(${CHECK_SIZE} * 0.8)`
+/** Phones: the clamp floor reads as specks next to a rider that fills most of
+ *  the screen, so the checks get a fixed, chunkier size. */
+const CHECK_SIZE_MOBILE = 38
 
 /* -------------------------------------------------------------------------- */
 /*  Check trail — imperative pool, emitted by distance ridden                  */
@@ -55,6 +60,7 @@ const CHECK_HEIGHT = `calc(${CHECK_SIZE} * 0.8)`
 
 const POOL = 30
 const LIFE_MS = 1900
+const LIFE_MS_MOBILE = 2300
 
 type Slot = {
   born: number
@@ -84,8 +90,9 @@ const riderLeft = (p: number) => {
 }
 
 function Trail({ progress }: { progress: MotionValue<number> }) {
-  const els = useRef<(HTMLImageElement | null)[]>([])
-  const slots = useRef<Slot[]>(
+  const { isMobile } = useMobile()
+  const els = useRef<Array<HTMLImageElement | null>>([])
+  const slots = useRef<Array<Slot>>(
     Array.from({ length: POOL }, () => ({
       born: -1, x: 0, y: 0, drift: 0, rise: 0, r0: 0, r1: 0, s: 1,
     })),
@@ -112,20 +119,32 @@ function Trail({ progress }: { progress: MotionValue<number> }) {
       prevX.current = x
       // The slower she goes, the tighter the spacing — the trail thickens
       // exactly when she's labouring, and thins out when she's flying.
-      const spacing = W * (0.05 + 0.2 * Math.min(1, dx / 8))
+      const spacing = W * (isMobile ? 0.05 + 0.1 * Math.min(1, dx / 8) : 0.05 + 0.2 * Math.min(1, dx / 8))
 
       const emit = (anchorX: number) => {
         const s = slots.current[next.current]
         next.current = (next.current + 1) % POOL
         s.born = now
         // Off the back of the bike (she faces left, so behind = right).
-        s.x = anchorX + W * (0.62 + rnd() * 0.14)
-        s.y = W * (0.28 + rnd() * 0.18)
-        s.rise = window.innerHeight * (0.3 + rnd() * 0.3)
-        s.drift = W * (0.1 + rnd() * 0.5)
-        s.r0 = -35 + rnd() * 20
-        s.r1 = 5 + rnd() * 40
-        s.s = 0.55 + rnd() * 0.9
+        if (isMobile) {
+          // Phones: a tight column streaming straight up off her back, so it
+          // reads as one plume behind the rider rather than scattered debris.
+          s.x = anchorX + W * (0.58 + rnd() * 0.14)
+          s.y = W * (0.32 + rnd() * 0.12)
+          s.rise = window.innerHeight * (0.38 + rnd() * 0.16)
+          s.drift = W * (0.02 + rnd() * 0.16)
+          s.r0 = -14 + rnd() * 10
+          s.r1 = -4 + rnd() * 14
+          s.s = 0.8 + rnd() * 0.35
+        } else {
+          s.x = anchorX + W * (0.62 + rnd() * 0.14)
+          s.y = W * (0.28 + rnd() * 0.18)
+          s.rise = window.innerHeight * (0.3 + rnd() * 0.3)
+          s.drift = W * (0.1 + rnd() * 0.5)
+          s.r0 = -35 + rnd() * 20
+          s.r1 = 5 + rnd() * 40
+          s.s = 0.55 + rnd() * 0.9
+        }
         lastEmit.current = now
       }
 
@@ -136,7 +155,7 @@ function Trail({ progress }: { progress: MotionValue<number> }) {
       }
 
       // Nearly stopped: no distance is being covered, so fall back to a rate.
-      if (dx < 0.4 && now - lastEmit.current > 160) {
+      if (dx < 0.4 && now - lastEmit.current > (isMobile ? 220 : 160)) {
         lastX.current = x
         emit(x)
       }
@@ -148,7 +167,7 @@ function Trail({ progress }: { progress: MotionValue<number> }) {
       const el = els.current[i]
       const s = slots.current[i]
       if (!el) continue
-      const age = (now - s.born) / LIFE_MS
+      const age = (now - s.born) / (isMobile ? LIFE_MS_MOBILE : LIFE_MS)
       if (s.born < 0 || age >= 1) {
         el.style.opacity = '0'
         continue
@@ -175,13 +194,11 @@ function Trail({ progress }: { progress: MotionValue<number> }) {
           alt=""
           aria-hidden
           draggable={false}
-          className={`pointer-events-none absolute left-0 max-w-none will-change-transform ${
-            i % 2 ? 'max-md:hidden' : ''
-          }`}
+          className="pointer-events-none absolute left-0 max-w-none will-change-transform"
           style={{
             bottom: CYCLIST_BOTTOM,
-            width: CHECK_SIZE,
-            height: CHECK_HEIGHT,
+            width: isMobile ? CHECK_SIZE_MOBILE : CHECK_SIZE,
+            height: isMobile ? CHECK_SIZE_MOBILE * 0.8 : CHECK_HEIGHT,
             opacity: 0,
           }}
         />
@@ -207,7 +224,7 @@ type KudosItem = {
 }
 
 /** Each lands on the rider from close by, a beat apart. */
-const KUDOS: KudosItem[] = [
+const KUDOS: Array<KudosItem> = [
   { name: 'Sophia', avatar: avatarSophia, message: 'LETS GOOOOO', from: [12, -12] },
   { name: 'Marcus', avatar: avatarMarcus, gif: kermitGif, from: [14, -4] },
   { name: 'Priya', avatar: avatarPriya, message: 'holy consistency', from: [10, -16] },
@@ -220,18 +237,22 @@ const HITS = KUDOS.map((_, i) => 0.385 + 0.06 * i)
 function KudosToast({
   progress,
   index,
+  mobile,
 }: {
   progress: MotionValue<number>
   index: number
+  /** Phones: centred, full-width cards that drop in from above the screen on
+   *  the Y axis only. Fixed per mount (the stage keys on it). */
+  mobile: boolean
 }) {
   const { name, avatar, message, gif, from } = KUDOS[index]
   const hit = HITS[index]
   const start = hit - 0.05
-  const x = useTransform(progress, [start, hit], [`${from[0]}vw`, '0vw'], {
+  const x = useTransform(progress, [start, hit], [mobile ? '0vw' : `${from[0]}vw`, '0vw'], {
     clamp: true,
     ease: easeInOut,
   })
-  const y = useTransform(progress, [start, hit], [`${from[1]}vh`, '0vh'], {
+  const y = useTransform(progress, [start, hit], [mobile ? '-100vh' : `${from[1]}vh`, '0vh'], {
     clamp: true,
     ease: easeInOut,
   })
@@ -247,7 +268,7 @@ function KudosToast({
     [0, 1, 1, 0],
     { clamp: true },
   )
-  const rotate = useTransform(progress, [start, hit], [index % 2 ? 5 : -5, 0], {
+  const rotate = useTransform(progress, [start, hit], [mobile ? 0 : index % 2 ? 5 : -5, 0], {
     clamp: true,
   })
   // The hit: a violet ring ripples out from the rider.
@@ -261,23 +282,24 @@ function KudosToast({
         style={{ scale: ring, opacity: ringOpacity }}
       />
       <motion.div
-        className="absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2"
+        // Phones: the card lands just above her head rather than over it.
+        className="absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 max-md:-translate-y-full"
         style={{ x, y, scale, opacity, rotate }}
       >
-        <div className="flex w-[300px] flex-col gap-3 rounded-2xl bg-white p-4 font-outfit shadow-[0_1px_2px_rgba(0,0,0,0.03),0_12px_40px_-16px_rgba(0,0,0,0.22)] ring-1 ring-black/5 max-md:w-[230px] max-md:gap-2 max-md:p-3">
-          <div className="text-[13px] font-light text-ink/55 max-md:text-[11px]">
+        <div className="flex w-[300px] flex-col gap-3 rounded-2xl bg-white p-4 font-outfit shadow-[0_1px_2px_rgba(0,0,0,0.03),0_12px_40px_-16px_rgba(0,0,0,0.22)] ring-1 ring-black/5 max-md:w-[min(calc(100vw-48px),340px)] max-md:rounded-[20px] max-md:p-5 max-md:shadow-[0_2px_4px_rgba(0,0,0,0.04),0_20px_50px_-12px_rgba(0,0,0,0.28)]">
+          <div className="text-[13px] font-light text-ink/55 max-md:text-[14px]">
             Cheered you on · just now
           </div>
-          <div className="flex items-start gap-3 max-md:gap-2">
+          <div className="flex items-start gap-3">
             <img
               src={avatar}
               alt=""
               draggable={false}
-              className="size-10 shrink-0 rounded-full object-cover max-md:size-8"
+              className="size-10 shrink-0 rounded-full object-cover max-md:size-11"
             />
             <div className="flex min-w-0 flex-1 flex-col gap-1">
               <div className="flex items-center justify-between gap-2">
-                <span className="text-[17px] font-medium leading-tight text-ink max-md:text-[14px]">
+                <span className="text-[17px] font-medium leading-tight text-ink max-md:text-[18px]">
                   {name}
                 </span>
               </div>
@@ -286,10 +308,10 @@ function KudosToast({
                   src={gif}
                   alt=""
                   draggable={false}
-                  className="h-24 w-auto self-start rounded-xl object-cover max-md:h-[72px]"
+                  className="h-24 w-auto self-start rounded-xl object-cover max-md:h-32"
                 />
               ) : (
-                <span className="text-[15px] font-light leading-snug text-ink max-md:text-[13px]">
+                <span className="text-[15px] font-light leading-snug text-ink max-md:text-[17px]">
                   {message}
                 </span>
               )}
@@ -306,6 +328,7 @@ function KudosToast({
 /* -------------------------------------------------------------------------- */
 
 export function FinaleStage({ progress }: { progress: MotionValue<number> }) {
+  const { isMobile } = useMobile()
   const ride = useTransform(progress, PEDAL_AT, PEDAL_TO, { clamp: true })
   const x = useTransform(progress, riderLeft)
   // Straining in the stall: a slow rock back and forth, easing off once
@@ -333,8 +356,9 @@ export function FinaleStage({ progress }: { progress: MotionValue<number> }) {
   const logoScale = useTransform(progress, [0.94, 1], [0.85, 1], { clamp: true })
 
   // Kudos converge on the rider's chest where she stalls.
+  // On phones they're centred on the screen instead, so the wide cards fit.
   const anchor = {
-    left: `calc(${STALL_VW}vw + ${CYCLIST_W} * 0.62)`,
+    left: isMobile ? '50%' : `calc(${STALL_VW}vw + ${CYCLIST_W} * 0.62)`,
     bottom: `calc(${CYCLIST_BOTTOM} + ${CYCLIST_W} * 0.82)`,
   }
 
@@ -363,9 +387,9 @@ export function FinaleStage({ progress }: { progress: MotionValue<number> }) {
         {/* After the rider in the DOM, so the checks sit over the glow. */}
         <Trail progress={progress} />
 
-        <div className="absolute" style={anchor}>
+        <div key={isMobile ? 'm' : 'd'} className="absolute" style={anchor}>
           {KUDOS.map((_, i) => (
-            <KudosToast key={i} progress={progress} index={i} />
+            <KudosToast key={i} progress={progress} index={i} mobile={isMobile} />
           ))}
         </div>
       </motion.div>

@@ -5,7 +5,9 @@ type Variant = 'violet' | 'ghost'
 
 const VARIANTS: Record<Variant, string> = {
   violet: 'bg-violet text-white shadow-[0_0_40.6px_rgba(133,77,255,0.25)]',
-  ghost: 'bg-white text-violet shadow-[0_0_24px_rgba(0,0,0,0.1)]',
+  // On phones the soft shadow vanishes against the page, so it gets an edge.
+  ghost:
+    'bg-white text-violet shadow-[0_0_24px_rgba(0,0,0,0.1)] max-md:shadow-none max-md:ring-1 max-md:ring-violet/30',
 }
 
 /**
@@ -29,8 +31,9 @@ export function PillButton({
 }) {
   const classes = cn(
     't-button inline-flex h-[52px] min-w-[247px] items-center justify-center rounded-[65px] px-6',
-    // Below 768px two 247px pills no longer fit side by side, so they stretch.
-    'max-md:w-full max-md:min-w-0',
+    // Below 768px two 247px pills no longer fit side by side, so they stretch
+    // into full-width, thumb-sized buttons.
+    'max-md:h-14 max-md:w-full max-md:min-w-0 max-md:text-[17px]',
     'transition-transform duration-200 ease-out hover:-translate-y-px active:translate-y-0',
     VARIANTS[variant],
     className,

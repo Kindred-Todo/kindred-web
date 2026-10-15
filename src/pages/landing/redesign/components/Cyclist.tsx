@@ -1,4 +1,5 @@
-import { motion, useTransform, type MotionValue } from 'framer-motion'
+import {  motion, useTransform } from 'framer-motion'
+import type {MotionValue} from 'framer-motion';
 import sheetSrc from '@/assets/redesign/cyclist-sheet.webp'
 
 /**

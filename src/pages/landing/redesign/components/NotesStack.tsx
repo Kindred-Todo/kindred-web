@@ -85,12 +85,12 @@ function Banner({ note }: { note: Note }) {
       </span>
       <div className="min-w-0 flex-1">
         <div className="flex items-baseline gap-2">
-          <p className="text-red-error min-w-0 flex-1 truncate text-[15px] leading-tight font-medium">
+          <p className="text-red-error min-w-0 flex-1 truncate text-[15px] leading-tight font-medium max-md:text-base">
             {note.title}
           </p>
           <span className="text-copy-dim shrink-0 text-xs">now</span>
         </div>
-        <p className="text-copy truncate text-sm leading-snug font-light">
+        <p className="text-copy truncate text-sm leading-snug font-light max-md:text-[15px]">
           <span className="text-ink">{note.app}</span> · {note.body}
         </p>
       </div>
@@ -265,8 +265,8 @@ export function NotesStack({
       <div className="invisible flex items-center gap-3 px-4 py-3">
         <span className="h-10 w-10" />
         <div>
-          <p className="text-[15px] leading-tight">&nbsp;</p>
-          <p className="text-sm leading-snug">&nbsp;</p>
+          <p className="text-[15px] leading-tight max-md:text-base">&nbsp;</p>
+          <p className="text-sm leading-snug max-md:text-[15px]">&nbsp;</p>
         </div>
       </div>
       {NOTES.map((note, index) => (

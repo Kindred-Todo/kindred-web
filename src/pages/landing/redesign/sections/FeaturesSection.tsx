@@ -40,16 +40,16 @@ export function FeaturesSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full overflow-hidden bg-page min-h-[min(1259px,72.86vw)] pt-[clamp(56px,7.93vw,137px)] max-md:flex max-md:flex-col max-md:pb-10"
+      className="relative w-full overflow-hidden bg-page min-h-[min(1259px,72.86vw)] pt-[clamp(56px,7.93vw,137px)] max-md:min-h-0 max-md:pt-20 max-md:pb-20"
     >
       {/* Feature cards — 01 hosts the capture waveform, B stays blank behind it */}
       <div
         aria-hidden="true"
-        className="absolute left-[44.16%] top-[min(153px,8.85vw)] w-[52.14%] h-[min(468px,27.08vw)] rounded-[24px] bg-white shadow-[0_12px_56px_rgba(0,0,0,0.08)] max-md:order-2 max-md:static max-md:mt-10 max-md:h-auto max-md:w-full max-md:aspect-[901/468]"
+        className="absolute left-[44.16%] top-[min(153px,8.85vw)] w-[52.14%] h-[min(468px,27.08vw)] rounded-[24px] bg-white shadow-[0_12px_56px_rgba(0,0,0,0.08)] r-hide-mobile"
       >
         <CaptureWaveform
           active={inView}
-          className="absolute left-[44%] top-1/2 -translate-x-1/2 -translate-y-1/2 max-md:left-1/2 max-md:w-[70%]"
+          className="absolute left-[44%] top-1/2 -translate-x-1/2 -translate-y-1/2"
         />
       </div>
       <div
@@ -58,18 +58,27 @@ export function FeaturesSection() {
       />
 
       {/* Four rows in a single grid so numerals stay aligned with titles */}
-      <div className="grid7 relative gap-y-[clamp(40px,3.7vw,64px)] max-md:order-1">
+      <div className="grid7 relative gap-y-[clamp(40px,3.7vw,64px)] max-md:gap-y-14">
         {FEATURES.map((feature) => (
           <div
             key={feature.index}
             className="col-start-1 col-end-4 row-start-auto grid grid-cols-[subgrid] grid-rows-1 max-md:block"
           >
-            <p className="t-index col-start-1 text-ink max-md:mb-3">
+            <p className="t-index col-start-1 text-ink max-md:mb-2 max-md:text-violet">
               {feature.index}
             </p>
-            <div className="col-start-2 col-span-2 flex max-w-[min(417px,24.13vw)] max-md:max-w-none flex-col gap-[16px]">
+            <div className="col-start-2 col-span-2 flex max-w-[min(417px,24.13vw)] max-md:max-w-none flex-col gap-[16px] max-md:gap-3">
               <h3 className="t-feature text-ink">{feature.title}</h3>
-              <p className="t-small text-copy-dim">{feature.body}</p>
+              <p className="t-small text-copy-dim max-md:text-copy">{feature.body}</p>
+              {/* Phones: the capture card sits inline under feature 01. */}
+              {feature.index === '01' && (
+                <div
+                  aria-hidden="true"
+                  className="relative mt-4 hidden aspect-[16/9] w-full items-center justify-center rounded-[20px] bg-white shadow-[0_12px_56px_rgba(0,0,0,0.08)] max-md:flex"
+                >
+                  <CaptureWaveform active={inView} className="w-[78%]" />
+                </div>
+              )}
             </div>
           </div>
         ))}

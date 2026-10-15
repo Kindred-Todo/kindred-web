@@ -50,6 +50,18 @@ const CARRIER =
   'The mirror remembers what you never were. Under the floor, a sun rehearses its absence. ' +
   'Do not wake. The answer. It dreams in reverse. At the end of nothing, someone knocks twice.'
 
+/**
+ * The carrier at phone widths. The full run is ~30 lines at the phone type
+ * size and would overflow the pinned screen, so phones get a cut of the same
+ * filler that keeps the block to one screenful with a slot every few lines.
+ */
+const CARRIER_MOBILE =
+  'the speed of dark? Nothing. An empty door. ' +
+  'The clock swallowed its hands. A key without a room. ' +
+  'Count the silence. The seventh echo is yours. ' +
+  'Under the floor, a sun rehearses its absence. ' +
+  'Do not wake. At the end, someone knocks twice.'
+
 /** Split `text` into `count` near-equal runs, cutting only at word boundaries. */
 function carrierRuns(text: string, count: number): Array<string> {
   const runs: Array<string> = []
@@ -99,6 +111,7 @@ const SLOTS = FRAMES[0].length
 
 /** The carrier, cut so slot i sits after run i. */
 const RUNS = carrierRuns(CARRIER, SLOTS + 1)
+const RUNS_MOBILE = carrierRuns(CARRIER_MOBILE, SLOTS + 1)
 
 /** The phrase the notifications burst out of: "and shame you when the burst fades." */
 const ANCHOR = { frame: 1, slot: 3 }
@@ -227,6 +240,16 @@ export function StatementSection() {
   // turned violet. Only these two numbers re-render, not the scroll position.
   const [phase, setPhase] = useState({ frame: 0, lit: 0 })
 
+  // Phones get the shorter carrier (see CARRIER_MOBILE).
+  const [mobile, setMobile] = useState(false)
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 767px)')
+    const update = () => setMobile(query.matches)
+    update()
+    query.addEventListener('change', update)
+    return () => query.removeEventListener('change', update)
+  }, [])
+
   // Measured straight off the section's rect rather than through
   // framer-motion's `useScroll({ target })` — Lenis drives native window
   // scroll, so a plain scroll listener is both simpler and dependable here.
@@ -314,7 +337,7 @@ export function StatementSection() {
       window.removeEventListener('scroll', measure)
       window.removeEventListener('resize', measure)
     }
-  }, [finale, notes, reduceMotion])
+  }, [finale, notes, reduceMotion, mobile])
 
   // Tell the finale where the last line of text ends so the cyclist rides
   // along it (distance from the viewport bottom up to the text's bottom edge),
@@ -389,7 +412,7 @@ export function StatementSection() {
           aria-hidden="true"
         >
           <p className="t-statement w-full">
-            {RUNS.map((carrier, slot) => (
+            {(mobile ? RUNS_MOBILE : RUNS).map((carrier, slot) => (
               <Fragment key={slot}>
                 <span className="t-run">{carrier}</span>
                 {slot < SLOTS && (

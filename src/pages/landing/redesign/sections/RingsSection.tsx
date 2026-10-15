@@ -1,16 +1,15 @@
 import { memo, useEffect, useMemo, useRef, useState } from 'react'
 import {
   AnimatePresence,
+  
   motion,
   useMotionValueEvent,
   useReducedMotion,
   useScroll,
-  useTransform,
-  type MotionValue,
+  useTransform
 } from 'framer-motion'
 import { ConcentricRings } from '../components/ConcentricRings'
 import {
-  APP,
   AppCaption,
   AppDots,
   AppGreeting,
@@ -19,19 +18,25 @@ import {
   AppSelector,
   AppSidebar,
   AppStage,
+  AppTabBar,
   CAPTION_H,
   CARD_H,
+  DAY_RING_PROGRESS,
   FOOTER_BOTTOM,
   GREETING_H,
-  INPUT_BOTTOM,
-  INPUT_H,
+  NUDGE_BOTTOM,
+  NUDGE_BOTTOM_M,
   RING_SIZE,
-  SIDEBAR_W,
   SELECTOR_H,
+  SIDEBAR_W,
   SignupPrompt,
   StageGlow,
+  TABBAR_H,
+  appLayout,
 } from '../components/DesktopApp'
 import { DotGrid } from '../components/DotGrid'
+import type {MotionValue} from 'framer-motion';
+import type { AppLayout } from '../components/DesktopApp'
 
 /**
  * "Say yes to your productivity rings" — then the whole screen turns into the
@@ -45,8 +50,7 @@ import { DotGrid } from '../components/DotGrid'
  *   0.58 → 1.00  the screen transforms. The sidebar slides in from the left
  *                and everything shifts over to make room; the rings shrink
  *                into the app's day ring; the headline and sub-copy settle into
- *                the app's greeting and streak line; the add-a-task pill
- *                becomes the app's quick-add field. Nothing is a cut — every
+ *                the app's greeting and streak line. Nothing is a cut — every
  *                element is the same element, moved and restyled.
  *
  * The app's geometry (components/DesktopApp) is the target of every move, so
@@ -64,7 +68,20 @@ const RING_TOP_VH = 0.22
 const RING_BEAT = 204
 const HEAD_GAP = 40
 const SUB_GAP = 20
-const PILL_BOTTOM_VH = 0.12
+
+/** Phones: a bigger ring and a two-line headline, sized off the screen height
+ *  so the beat still fits a 667px-tall phone. */
+const RING_BEAT_M = 232
+const RING_TOP_VH_M = 0.16
+const HEAD_H_M = 92
+/** The desktop headline is one line; the sub-copy hangs off it, not off the
+ *  (taller) app greeting it turns into. */
+const HEAD_H = 40
+
+/** The beat's copy at phone size. The t-rings / t-label steps are tuned for a
+ *  line of UI; here they're the section headline and its standfirst. */
+const HEAD_M = 'max-md:text-[clamp(32px,9.4vw,40px)] max-md:leading-[1.12] max-md:px-6'
+const SUB_M = 'max-md:text-[19px] max-md:leading-[1.4] max-md:px-8'
 
 const SCORE = 66
 
@@ -147,25 +164,32 @@ const AppExtras = memo(function AppExtras({
   opacity,
   y,
   sidebarW,
+  mobile,
+  layout,
 }: {
   opacity: MotionValue<number>
   y: MotionValue<number>
   sidebarW: number
+  mobile: boolean
+  layout: AppLayout
 }) {
   return (
     <div className="absolute inset-y-0 right-0" style={{ left: sidebarW }} aria-hidden>
       <motion.div className="absolute inset-0" style={{ opacity, y }}>
-        <AppStage />
+        <AppStage layout={layout} compact={mobile} />
       </motion.div>
+      {/* On a phone the tab bar takes the footer's place. */}
+      {!mobile && (
+        <motion.div
+          className="absolute inset-x-0 flex justify-center"
+          style={{ opacity, bottom: FOOTER_BOTTOM }}
+        >
+          <AppSeeDay />
+        </motion.div>
+      )}
       <motion.div
         className="absolute inset-x-0 flex justify-center"
-        style={{ opacity, bottom: FOOTER_BOTTOM }}
-      >
-        <AppSeeDay />
-      </motion.div>
-      <motion.div
-        className="absolute inset-x-0 flex justify-center"
-        style={{ opacity, bottom: INPUT_BOTTOM + INPUT_H + 14 }}
+        style={{ opacity, bottom: mobile ? NUDGE_BOTTOM_M : NUDGE_BOTTOM }}
       >
         <AppNudge />
       </motion.div>
@@ -189,7 +213,13 @@ export function RingsSection() {
     return () => window.removeEventListener('resize', measure)
   }, [])
 
-  const sidebarW = vp.w >= 768 ? SIDEBAR_W : 0
+  const mobile = vp.w < 768
+  const sidebarW = mobile ? 0 : SIDEBAR_W
+  const ringBeat = mobile ? Math.min(RING_BEAT_M, vp.h * 0.27) : RING_BEAT
+  const appGeo = useMemo(
+    () => appLayout(mobile ? vp.h - TABBAR_H : vp.h, mobile),
+    [vp.h, mobile],
+  )
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -209,15 +239,15 @@ export function RingsSection() {
   useMotionValueEvent(m, 'change', (v) => setMState(v))
 
   // Every move is the distance between the beat's position and the app's slot.
-  const ringTopBeat = RING_TOP_VH * vp.h
-  const headTopBeat = ringTopBeat + RING_BEAT + HEAD_GAP
-  const subTopBeat = headTopBeat + GREETING_H + SUB_GAP
+  const ringTopBeat = (mobile ? RING_TOP_VH_M : RING_TOP_VH) * vp.h
+  const headTopBeat = ringTopBeat + ringBeat + HEAD_GAP
+  const subTopBeat = headTopBeat + (mobile ? HEAD_H_M : HEAD_H) + SUB_GAP
 
   const shiftX = useTransform(m, (v) => (sidebarW / 2) * v)
-  const ringY = useTransform(m, (v) => (APP.ringTop - ringTopBeat) * v)
-  const ringScale = useTransform(m, (v) => 1 - (1 - RING_SIZE / RING_BEAT) * v)
-  const headY = useTransform(m, (v) => (APP.greetingTop - headTopBeat) * v)
-  const subY = useTransform(m, (v) => (APP.captionTop - subTopBeat) * v)
+  const ringY = useTransform(m, (v) => (appGeo.ringTop - ringTopBeat) * v)
+  const ringScale = useTransform(m, (v) => 1 - (1 - RING_SIZE / ringBeat) * v)
+  const headY = useTransform(m, (v) => (appGeo.greetingTop - headTopBeat) * v)
+  const subY = useTransform(m, (v) => (appGeo.captionTop - subTopBeat) * v)
   const scoreFade = useTransform(m, [0, 0.45], [1, 0])
   const haloOpacity = useTransform(m, [0.3, 0.8], [0, 1])
   // The words change in place once the elements have landed: a threshold plus
@@ -230,28 +260,20 @@ export function RingsSection() {
 
   const sidebarX = useTransform(m, [0.08, 0.62], [-sidebarW, 0], { clamp: true })
   const sidebarOpacity = useTransform(m, [0.12, 0.5], [0, 1], { clamp: true })
+  // Phones: the tab bar rises from the bottom edge where the sidebar would slide in.
+  const tabY = useTransform(m, [0.08, 0.62], [TABBAR_H, 0], { clamp: true })
 
   const appBgOpacity = useTransform(m, [0.05, 0.5], [0, 1], { clamp: true })
   const dotOpacity = useTransform(m, [0.05, 0.5], [1, 0], { clamp: true })
   const extrasOpacity = useTransform(m, [0.6, 0.92], [0, 1], { clamp: true })
   const extrasY = useTransform(m, [0.6, 0.92], [18, 0], { clamp: true })
 
-  // The pill becomes the quick-add field: same element, new size and skin.
-  const pillBottom = PILL_BOTTOM_VH * vp.h
-  const pillY = useTransform(m, (v) => (pillBottom - INPUT_BOTTOM) * v)
-  const pillW = useTransform(m, (v) => {
-    const from = Math.min(560, vp.w * 0.76)
-    const to = Math.min(672, vp.w - sidebarW - 96)
-    return from + (to - from) * v
-  })
-  // Centred while it's the marketing pill, left-aligned once it's the field.
-  const pillPad = useTransform(m, [0, 1], [130, 20])
-  const pillGlass = useTransform(m, [0.5, 0.78], [1, 0])
-  const pillSkin = useTransform(m, [0.5, 0.78], [0, 1])
 
   // Beat one fills with scroll (plan → do → share, staggered via ConcentricRings);
-  // the morph then takes the completed stack down to the app's day ring at 62%.
-  const ringProgress = Math.max(0, fill - 0.38 * Math.min(1, Math.max(0, mState)))
+  // the morph then drains the completed rings to the app's day ring: pale
+  // tracks with a short stub of progress each.
+  const ringProgress =
+    mState > 0 ? DAY_RING_PROGRESS.map((stub) => 1 - (1 - stub) * mState) : fill
 
   if (reduceMotion) {
     return (
@@ -282,10 +304,10 @@ export function RingsSection() {
               }
             />
           </div>
-          <h2 className="t-rings text-ink mt-[clamp(20px,3.59vw,62px)] max-md:max-w-[20ch]">
+          <h2 className={`t-rings text-ink mt-[clamp(20px,3.59vw,62px)] max-md:mt-10 max-md:max-w-[16ch] ${HEAD_M}`}>
             Say <span className="t-accent t-accent--soft">yes</span> to your productivity rings
           </h2>
-          <p className="t-label text-ink mt-[clamp(20px,1.62vw,28px)] text-center leading-[1.25] max-md:px-5">
+          <p className={`t-label text-ink mt-[clamp(20px,1.62vw,28px)] text-center leading-[1.25] ${SUB_M}`}>
             Closing your rings is a simple daily ritual that will
             <br className="max-md:hidden" /> 10x your output
           </p>
@@ -324,7 +346,23 @@ export function RingsSection() {
           </motion.div>
         )}
 
-        <AppExtras opacity={extrasOpacity} y={extrasY} sidebarW={sidebarW} />
+        {mobile && (
+          <motion.div
+            className="absolute inset-x-0 bottom-0 z-10"
+            style={{ y: tabY, opacity: sidebarOpacity }}
+            aria-hidden
+          >
+            <AppTabBar />
+          </motion.div>
+        )}
+
+        <AppExtras
+          opacity={extrasOpacity}
+          y={extrasY}
+          sidebarW={sidebarW}
+          mobile={mobile}
+          layout={appGeo}
+        />
 
         {/* Everything that transforms */}
         <motion.div className="absolute inset-0" style={{ x: shiftX }}>
@@ -333,7 +371,7 @@ export function RingsSection() {
             className="absolute left-1/2 flex justify-center"
             style={{ top: ringTopBeat, x: '-50%', y: ringY, scale: ringScale, transformOrigin: 'top center' }}
           >
-            <div className="relative" style={{ width: RING_BEAT, height: RING_BEAT }}>
+            <div className="relative" style={{ width: ringBeat, height: ringBeat }}>
               <motion.span
                 className="absolute rounded-full"
                 style={{
@@ -344,11 +382,11 @@ export function RingsSection() {
                 }}
               />
               <ConcentricRings
-                size={RING_BEAT}
-                // Scaled by RING_SIZE/RING_BEAT at the end, so these land on
+                size={ringBeat}
+                // Scaled by RING_SIZE/ringBeat at the end, so these land on
                 // the app's own 6px stroke and 2px gap.
-                strokeWidth={6 / (RING_SIZE / RING_BEAT)}
-                gap={2 / (RING_SIZE / RING_BEAT)}
+                strokeWidth={6 / (RING_SIZE / ringBeat)}
+                gap={2 / (RING_SIZE / ringBeat)}
                 progress={ringProgress}
                 stagger={STAGGER}
                 center={
@@ -357,7 +395,7 @@ export function RingsSection() {
                     style={{
                       opacity: scoreFade,
                       fontFamily: 'var(--font-outfit)',
-                      fontSize: '40px',
+                      fontSize: 40 * (ringBeat / RING_BEAT),
                       fontWeight: 600,
                       fontVariantNumeric: 'tabular-nums',
                       lineHeight: 1,
@@ -376,7 +414,7 @@ export function RingsSection() {
             className="absolute left-1/2 flex w-full max-w-[92vw] flex-col items-center text-center"
             style={{ top: headTopBeat, x: '-50%', y: headY, height: GREETING_H }}
           >
-            <h2 className="t-rings text-ink absolute inset-x-0 top-0" style={swap(!swapped)}>
+            <h2 className={`t-rings text-ink absolute inset-x-0 top-0 ${HEAD_M}`} style={swap(!swapped)}>
               Say <span className="t-accent t-accent--soft">yes</span> to your productivity rings
             </h2>
             <div className="absolute inset-x-0 top-0" style={swap(swapped)}>
@@ -389,66 +427,13 @@ export function RingsSection() {
             className="absolute left-1/2 flex w-full max-w-[92vw] flex-col items-center text-center"
             style={{ top: subTopBeat, x: '-50%', y: subY, height: CAPTION_H }}
           >
-            <p className="t-label text-ink absolute inset-x-0 top-0 max-md:px-5" style={swap(!swapped)}>
+            <p className={`t-label text-ink absolute inset-x-0 top-0 ${SUB_M}`} style={swap(!swapped)}>
               Closing your rings is a simple daily ritual that will
               <br className="max-md:hidden" /> 10x your output
             </p>
             <div className="absolute inset-x-0 top-0" style={swap(swapped)}>
               <AppCaption />
             </div>
-          </motion.div>
-
-          {/* Add-a-task pill → the app's quick-add field */}
-          <motion.div
-            className="absolute left-1/2 flex items-center"
-            style={{
-              bottom: pillBottom,
-              x: '-50%',
-              y: pillY,
-              width: pillW,
-              height: 56,
-              borderRadius: 999,
-            }}
-          >
-            <motion.div
-              className="bg-glass absolute inset-0 rounded-full shadow-[0_0_16px_rgba(0,0,0,0.15)]"
-              style={{ opacity: pillGlass }}
-            />
-            <motion.div
-              className="absolute inset-0 rounded-full bg-white"
-              style={{
-                opacity: pillSkin,
-                boxShadow: '0 1px 2px rgba(0,0,0,0.03), 0 8px 28px -14px rgba(0,0,0,0.12)',
-              }}
-            />
-            <motion.div
-              className="relative flex w-full items-center gap-[10px]"
-              style={{ paddingLeft: pillPad }}
-            >
-              <span className="t-rings text-violet" style={{ fontWeight: 300 }}>
-                +
-              </span>
-              <span className="relative">
-                <span className="t-button text-violet whitespace-nowrap" style={swap(!swapped)}>
-                  Add a task, like gym @ 10AM tomorrow
-                </span>
-                <span
-                  className="font-outfit absolute inset-0 whitespace-nowrap"
-                  style={{ ...swap(swapped), fontSize: 16, fontWeight: 300, color: '#919090' }}
-                >
-                  Add a task, like gym @7am tomorrow
-                </span>
-              </span>
-            </motion.div>
-            {/* The submit button only exists in the app */}
-            <motion.div
-              className="absolute right-[8px] flex items-center justify-center rounded-full bg-violet text-white"
-              style={{ opacity: pillSkin, width: 32, height: 32 }}
-            >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-                <path d="M8 13V3M8 3L3.5 7.5M8 3l4.5 4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </motion.div>
           </motion.div>
         </motion.div>
 

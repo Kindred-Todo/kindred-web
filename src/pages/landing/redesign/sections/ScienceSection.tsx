@@ -12,15 +12,14 @@ const stats = [
 export function ScienceSection() {
   return (
     <section className="relative w-full overflow-hidden border-t-2 border-b-2 border-hairline bg-night min-h-[min(763px,44.16vw)]">
-      <div className="grid7 pt-[clamp(56px,5.38vw,93px)]">
+      <div className="grid7 pt-[clamp(56px,5.38vw,93px)] max-md:pt-24 max-md:pb-16">
         {/* Left — headline, body, link. Both columns are pinned to row 1: the
             headline box and the stat column overlap at column 6 in the design,
             so without an explicit row the stats get auto-placed onto row 2. */}
         <div className="col-start-1 col-span-6 row-start-1">
           <h2 className="t-display text-white max-w-[min(1284px,74.31vw)]">
             Built on science thats
-            <br />
-            been around forever
+            <br className="max-md:hidden" /> been around forever
           </h2>
           <p className="t-label text-copy-dim leading-[1.25] max-w-[min(700px,40.51vw)] max-md:max-w-none mt-[clamp(20px,1.39vw,24px)]">
             Decades of research say the same thing. People follow through when
@@ -37,7 +36,7 @@ export function ScienceSection() {
         </div>
 
         {/* Right — stat rows, cols 6–7, first hairline 89px from section top */}
-        <div className="col-start-6 col-span-2 row-start-1 max-md:mt-12 -mt-[min(4px,0.23vw)]">
+        <div className="col-start-6 col-span-2 row-start-1 max-md:mt-14 -mt-[min(4px,0.23vw)]">
           {stats.map((stat, i) => (
             <div
               key={stat.value}
@@ -45,7 +44,7 @@ export function ScienceSection() {
                 i === 0 ? 'border-t border-white/40' : ''
               }`}
             >
-              <p className="t-stat text-white">{stat.value}</p>
+              <p className="t-stat text-white max-md:text-[52px]">{stat.value}</p>
               <p className="t-label text-copy-dim leading-[1.25] mt-[clamp(4px,0.35vw,6px)]">
                 {stat.label}
               </p>

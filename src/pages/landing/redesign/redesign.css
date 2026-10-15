@@ -253,6 +253,18 @@
    Sections then own their own mobile rhythm with `max-md:` overrides.
    ============================================================================ */
 @media (max-width: 767px) {
+  /* Mobile type scale. The desktop clamps bottom out far too small at phone
+     widths (a 26px hero, 14px body), so phones get their own steps, sized
+     for a 375–430px screen. Sections inherit these through the t-* classes. */
+  :root {
+    --text-display: clamp(40px, 11.5vw, 54px);
+    --text-hero: clamp(30px, 8.6vw, 40px);
+    --text-feature: clamp(26px, 7.2vw, 32px);
+    --text-rings: clamp(22px, 6vw, 26px);
+    --text-body-lg: 18px;
+    --text-body-sm: 16px;
+  }
+
   .grid7 {
     grid-template-columns: minmax(0, 1fr);
     padding-inline: 20px;
@@ -349,5 +361,23 @@
   .capture-wave.is-active .capture-wave__bar {
     animation: none;
     transform: scaleY(1);
+  }
+}
+
+/* Statement — mobile
+   Phones read the statement as one screenful (see CARRIER_MOBILE): a touch
+   under the hero size so ~10 lines fit under the nav, real side margins, and
+   slightly open leading so the justified lines don't collide. */
+@media (max-width: 767px) {
+  /* Capped by height too, so short phones (667px) still fit every line. */
+  .t-statement {
+    font-size: min(clamp(28px, 7.8vw, 36px), 3.8svh);
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    padding-inline: 16px;
+  }
+  /* A wrapped phrase is centred under itself, not justified across the line. */
+  .t-statement .t-layer {
+    text-align-last: center;
   }
 }

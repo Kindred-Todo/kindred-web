@@ -1,21 +1,19 @@
 import { useEffect, useState } from 'react'
-import { motion, useSpring, useTransform, type MotionValue } from 'framer-motion'
+import {  motion, useSpring, useTransform } from 'framer-motion'
 import {
-  ArrowRight,
-  ArrowUp,
-  Check,
   Airplane,
+  ArrowRight,
   Barbell,
+  Bell,
   BookOpen,
   Briefcase,
-  Bell,
   CalendarBlank,
   CaretLeft,
   CaretRight,
   ChartLineUp,
   Clock,
-  Confetti,
   Code,
+  Confetti,
   GearSix,
   GraduationCap,
   House,
@@ -33,6 +31,8 @@ import {
   X,
 } from '@phosphor-icons/react'
 import { ConcentricRings } from './ConcentricRings'
+import type {MotionValue} from 'framer-motion';
+import checkLogoSrc from '@/assets/check-logo.svg'
 
 const SIGNUP_URL = 'https://app.kindredtodo.com/login'
 
@@ -48,49 +48,58 @@ const SIGNUP_URL = 'https://app.kindredtodo.com/login'
  * when the screen turns into the product.
  */
 export const SIDEBAR_W = 272
-export const APP_PT = 32 // main column padding-top
-export const RING_SIZE = 64
-export const GREETING_MT = 30
-export const GREETING_H = 40
-export const CAPTION_MT = 8
+export const RING_SIZE = 56
+export const GREETING_H = 52
 export const CAPTION_H = 22
-export const SELECTOR_MT = 22
 export const SELECTOR_H = 28
-export const CARD_MT = 24
 export const CARD_H = 232
-export const DOTS_MT = 22
-export const INPUT_BOTTOM = 84
-export const INPUT_H = 62
+const DOTS_H = 20
+export const NUDGE_H = 46
+export const NUDGE_BOTTOM = 96
 export const FOOTER_BOTTOM = 48
 
-export const APP = {
-  ringTop: APP_PT,
-  greetingTop: APP_PT + RING_SIZE + GREETING_MT,
-  captionTop: APP_PT + RING_SIZE + GREETING_MT + GREETING_H + CAPTION_MT,
-  selectorTop: APP_PT + RING_SIZE + GREETING_MT + GREETING_H + CAPTION_MT + CAPTION_H + SELECTOR_MT,
-  cardTop:
-    APP_PT +
-    RING_SIZE +
-    GREETING_MT +
-    GREETING_H +
-    CAPTION_MT +
-    CAPTION_H +
-    SELECTOR_MT +
-    SELECTOR_H +
-    CARD_MT,
-  dotsTop:
-    APP_PT +
-    RING_SIZE +
-    GREETING_MT +
-    GREETING_H +
-    CAPTION_MT +
-    CAPTION_H +
-    SELECTOR_MT +
-    SELECTOR_H +
-    CARD_MT +
-    CARD_H +
-    DOTS_MT,
+/** Phones get the app's mobile Home: no sidebar, a tighter column, and a tab
+ *  bar along the bottom in place of the sidebar's navigation. */
+export const TABBAR_H = 64
+export const NUDGE_BOTTOM_M = TABBAR_H + 16
+
+/** Gaps down the Home stack: ring → greeting → streak line → workspace
+ *  switcher → task stack → dots. */
+const GAPS = { greeting: 30, caption: 8, selector: 36, card: 40, dots: 22 }
+const GAPS_M = { greeting: 20, caption: 10, selector: 20, card: 24, dots: 16 }
+
+export type AppLayout = {
+  ringTop: number
+  greetingTop: number
+  captionTop: number
+  selectorTop: number
+  cardTop: number
+  dotsTop: number
 }
+
+/**
+ * Where each piece of the Home stage sits for a stage `h` tall. The app
+ * centres the stack vertically (the day ring lands about a quarter of the way
+ * down), lifted only as far as it takes to clear the nudge at the bottom.
+ */
+export function appLayout(h: number, mobile: boolean): AppLayout {
+  const g = mobile ? GAPS_M : GAPS
+  const stackH =
+    RING_SIZE + g.greeting + GREETING_H + g.caption + CAPTION_H + g.selector +
+    SELECTOR_H + g.card + CARD_H + g.dots + DOTS_H
+  const floor = h - (mobile ? NUDGE_BOTTOM_M : NUDGE_BOTTOM) - NUDGE_H - 12
+  const ringTop = Math.max(16, Math.min((h - stackH) / 2, floor - stackH))
+  const greetingTop = ringTop + RING_SIZE + g.greeting
+  const captionTop = greetingTop + GREETING_H + g.caption
+  const selectorTop = captionTop + CAPTION_H + g.selector
+  const cardTop = selectorTop + SELECTOR_H + g.card
+  const dotsTop = cardTop + CARD_H + g.dots
+  return { ringTop, greetingTop, captionTop, selectorTop, cardTop, dotsTop }
+}
+
+/** The day ring as the app shows it at the start of a day: pale tracks with
+ *  short stubs of progress at twelve o'clock. */
+export const DAY_RING_PROGRESS = [0.07, 0.05, 0.035]
 
 const INK = '#13121f'
 const PRIMARY = '#854dff'
@@ -315,8 +324,7 @@ export function AppRing({ progress = 0.62 }: { progress?: number }) {
         size={RING_SIZE}
         strokeWidth={6}
         gap={2}
-        progress={[0.4, 1, 0.05]}
-        stagger={0.3}
+        progress={DAY_RING_PROGRESS}
       />
     </div>
   )
@@ -325,11 +333,10 @@ export function AppRing({ progress = 0.62 }: { progress?: number }) {
 export function AppGreeting() {
   return (
     <h1
-      className="font-fraunces"
+      className="font-fraunces text-[44px] max-md:text-[36px]"
       style={{
-        fontSize: 32,
         fontWeight: 600,
-        letterSpacing: '-0.06em',
+        letterSpacing: '-0.03em',
         lineHeight: `${GREETING_H}px`,
         color: INK,
         fontVariationSettings: "'SOFT' 50, 'WONK' 1, 'opsz' 144",
@@ -342,7 +349,7 @@ export function AppGreeting() {
 
 export function AppCaption() {
   return (
-    <span className="font-outfit" style={{ fontSize: 14, fontWeight: 300, color: MUTED }}>
+    <span className="font-outfit text-[14px] max-md:text-[15px]" style={{ fontWeight: 300, color: MUTED }}>
       Add a task to keep your streak alive
     </span>
   )
@@ -394,14 +401,14 @@ const PRIORITY: Record<string, string> = {
 function TaskStack({ index }: { index: number }) {
   const n = TASKS.length
   return (
-    <div className="relative" style={{ height: CARD_H, width: 448 }}>
+    <div className="relative" style={{ height: CARD_H, width: 'min(448px, 100vw)' }}>
       {TASKS.map((task, i) => {
         const d = (i - index + n) % n
         const hidden = d > 2
         return (
           <div
             key={task.title}
-            className="absolute inset-x-0 bottom-0 flex flex-col bg-white"
+            className="absolute inset-x-0 bottom-0 flex flex-col bg-white max-md:inset-x-4"
             style={{
               borderRadius: 18,
               padding: 20,
@@ -468,7 +475,7 @@ function TaskStack({ index }: { index: number }) {
 }
 
 /** Everything in the app's main column, at the app's own coordinates. */
-export function AppStage() {
+export function AppStage({ layout: G, compact = false }: { layout: AppLayout; compact?: boolean }) {
   const [index, setIndex] = useState(0)
 
   // The stack flips itself, the way it waits for a scroll or an arrow key.
@@ -479,20 +486,28 @@ export function AppStage() {
 
   return (
     <>
-      <div className="absolute inset-x-0 flex justify-center" style={{ top: APP.selectorTop, height: SELECTOR_H }}>
+      <div className="absolute inset-x-0 flex justify-center" style={{ top: G.selectorTop, height: SELECTOR_H }}>
         <AppSelector />
       </div>
-      <div className="absolute inset-x-0 flex justify-center" style={{ top: APP.cardTop }}>
+      <div className="absolute inset-x-0 flex justify-center" style={{ top: G.cardTop }}>
         <TaskStack index={index} />
       </div>
-      <div className="absolute inset-x-0 flex justify-center" style={{ top: APP.dotsTop }}>
-        <AppDots index={index} count={TASKS.length} />
+      <div className="absolute inset-x-0 flex justify-center" style={{ top: G.dotsTop }}>
+        <AppDots index={index} count={TASKS.length} compact={compact} />
       </div>
     </>
   )
 }
 
-export function AppDots({ index, count }: { index: number; count: number }) {
+export function AppDots({
+  index,
+  count,
+  compact = false,
+}: {
+  index: number
+  count: number
+  compact?: boolean
+}) {
   const shown = Math.min(7, count)
   return (
     <div className="flex items-center" style={{ gap: 12 }}>
@@ -513,7 +528,8 @@ export function AppDots({ index, count }: { index: number; count: number }) {
         className="font-outfit"
         style={{ fontSize: 14, fontWeight: 300, color: MUTED, fontVariantNumeric: 'tabular-nums' }}
       >
-        {index + 1} of {count} · scroll or ↑↓ to flip
+        {index + 1} of {count}
+        {compact ? '' : ' · scroll or ↑↓ to flip'}
       </span>
     </div>
   )
@@ -547,7 +563,8 @@ export function SignupPrompt({ progress }: { progress: MotionValue<number> }) {
 
   return (
     <motion.div
-      className="absolute inset-0 z-40 flex items-center justify-center px-6"
+      // Phones get it as a bottom sheet, the way a native app would ask.
+      className="absolute inset-0 z-40 flex items-center justify-center px-6 max-md:items-end max-md:px-0"
       style={{ opacity }}
     >
       <div
@@ -555,13 +572,14 @@ export function SignupPrompt({ progress }: { progress: MotionValue<number> }) {
         style={{ background: 'rgba(19,18,31,0.22)', backdropFilter: 'blur(3px)' }}
       />
       <motion.div
-        className="relative flex w-full max-w-[420px] flex-col items-center rounded-[22px] bg-white px-8 py-9 text-center"
+        className="relative flex w-full max-w-[420px] flex-col items-center rounded-[22px] bg-white px-8 py-9 text-center max-md:max-w-none max-md:rounded-b-none max-md:rounded-t-[28px] max-md:px-6 max-md:pt-8 max-md:pb-[calc(20px+env(safe-area-inset-bottom))]"
         style={{
           scale,
           y,
           boxShadow: '0 24px 70px -20px rgba(19,18,31,0.35), 0 2px 8px rgba(19,18,31,0.06)',
         }}
       >
+        <span className="absolute top-2.5 left-1/2 hidden h-[5px] w-10 -translate-x-1/2 rounded-full bg-black/12 max-md:block" />
         <button
           type="button"
           onClick={() => setDismissed(true)}
@@ -572,30 +590,29 @@ export function SignupPrompt({ progress }: { progress: MotionValue<number> }) {
           <X size={16} />
         </button>
 
-        <span
-          className="flex items-center justify-center rounded-full"
-          style={{ width: 52, height: 52, background: PRIMARY, boxShadow: '0 10px 26px -8px rgba(133,77,255,0.6)' }}
-        >
-          <Check size={26} weight="bold" style={{ color: '#fff' }} />
-        </span>
+        {/* Kindred's own check mark, not a generic tick in a circle. */}
+        <img
+          src={checkLogoSrc}
+          alt=""
+          draggable={false}
+          className="h-[42px] w-[52px] max-md:h-[45px] max-md:w-14"
+        />
 
         {/* The page's t-* classes are display scale (they clamp up to 36/24px
             on a 1728 canvas). This card is a normal-size dialog, so keep the
             families/weights and set the sizes to the site's UI scale. */}
-        <h3 className="t-rings text-ink mt-[18px]" style={{ fontSize: 22 }}>
+        <h3 className="t-rings text-ink mt-[18px] text-[22px] max-md:text-[30px]">
           Make it yours
         </h3>
-        <p className="t-small text-ink/60 mt-2" style={{ fontSize: 15, lineHeight: 1.45 }}>
+        <p className="t-small text-ink/60 mt-2 text-[15px] leading-[1.45] max-md:mt-3 max-md:text-[17px]">
           Kindred is free. Create an account to keep your streaks, invite a friend, and get kudos
           when you follow through.
         </p>
 
         <a
           href={SIGNUP_URL}
-          className="t-button mt-7 flex w-full items-center justify-center gap-2 text-white transition-opacity hover:opacity-95"
+          className="t-button mt-7 flex h-12 w-full items-center justify-center gap-2 text-[15px] text-white transition-opacity hover:opacity-95 max-md:h-14 max-md:text-[17px]"
           style={{
-            fontSize: 15,
-            height: 48,
             borderRadius: 999,
             background: PRIMARY,
             boxShadow: '0 10px 24px -8px rgba(133,77,255,0.6)',
@@ -607,13 +624,43 @@ export function SignupPrompt({ progress }: { progress: MotionValue<number> }) {
         <button
           type="button"
           onClick={() => setDismissed(true)}
-          className="t-button mt-3 text-[#919090] transition-colors hover:text-[#13121f]"
-          style={{ fontSize: 15 }}
+          className="t-button mt-3 text-[15px] text-[#919090] transition-colors hover:text-[#13121f] max-md:mt-2 max-md:h-12 max-md:w-full max-md:text-[16px]"
         >
           Maybe later
         </button>
       </motion.div>
     </motion.div>
+  )
+}
+
+const TABS = [
+  { icon: House, label: 'Home', active: true },
+  { icon: CalendarBlank, label: 'Calendar' },
+  { icon: Newspaper, label: 'Feed' },
+  { icon: UsersThree, label: 'Together' },
+  { icon: User, label: 'Profile' },
+]
+
+/** The mobile app's bottom tab bar — the sidebar's navigation, on a phone. */
+export function AppTabBar() {
+  return (
+    <div
+      className="flex items-start justify-around bg-white/90 backdrop-blur-md"
+      style={{ height: TABBAR_H, paddingTop: 8, borderTop: '1px solid rgba(102,102,102,0.14)' }}
+    >
+      {TABS.map(({ icon: Icon, label, active }) => (
+        <div
+          key={label}
+          className="flex flex-col items-center"
+          style={{ gap: 3, width: 64, color: active ? PRIMARY : MUTED }}
+        >
+          <Icon size={24} weight={active ? 'fill' : 'regular'} />
+          <span className="font-outfit" style={{ fontSize: 11, fontWeight: active ? 500 : 400 }}>
+            {label}
+          </span>
+        </div>
+      ))}
+    </div>
   )
 }
 
@@ -638,33 +685,6 @@ export function AppNudge() {
         Tidy up
       </span>
       <X size={15} style={{ color: MUTED, marginLeft: 4 }} />
-    </div>
-  )
-}
-
-/** The quick-add pill the marketing CTA turns into. */
-export function AppInput() {
-  return (
-    <div
-      className="flex items-center bg-white"
-      style={{
-        height: INPUT_H,
-        gap: 12,
-        padding: '8px 8px 8px 20px',
-        borderRadius: 999,
-        boxShadow: '0 1px 2px rgba(0,0,0,0.03), 0 8px 28px -14px rgba(0,0,0,0.12)',
-      }}
-    >
-      <Plus size={18} weight="bold" style={{ color: PRIMARY, flexShrink: 0 }} />
-      <span className="font-outfit truncate" style={{ fontSize: 16, fontWeight: 300, color: MUTED }}>
-        Add a task, like gym @7am tomorrow
-      </span>
-      <span
-        className="ml-auto flex shrink-0 items-center justify-center text-white"
-        style={{ width: 32, height: 32, borderRadius: 999, background: PRIMARY }}
-      >
-        <ArrowUp size={16} weight="bold" />
-      </span>
     </div>
   )
 }

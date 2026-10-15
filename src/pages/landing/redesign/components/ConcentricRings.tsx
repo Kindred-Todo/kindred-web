@@ -70,7 +70,7 @@ export function ConcentricRings({
   strokeWidth?: number
   gap?: number
   /** One value for all three rings, or one per ring (outer → inner). */
-  progress?: number | number[]
+  progress?: number | Array<number>
   stagger?: number
   center?: ReactNode
   className?: string
