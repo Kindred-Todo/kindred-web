@@ -69,7 +69,8 @@ export function ConcentricRings({
   size?: number
   strokeWidth?: number
   gap?: number
-  progress?: number
+  /** One value for all three rings, or one per ring (outer → inner). */
+  progress?: number | number[]
   stagger?: number
   center?: ReactNode
   className?: string
@@ -78,7 +79,9 @@ export function ConcentricRings({
   // rather than all at once; the last one still lands exactly at progress 1.
   const span = Math.max(0.05, 1 - stagger * (RING_ORDER.length - 1))
   const ringProgress = (index: number) =>
-    Math.min(1, Math.max(0, (progress - index * stagger) / span))
+    Array.isArray(progress)
+      ? progress[index] ?? 0
+      : Math.min(1, Math.max(0, (progress - index * stagger) / span))
 
   return (
     <div className={className} style={{ position: 'relative', width: size, height: size, flexShrink: 0 }}>

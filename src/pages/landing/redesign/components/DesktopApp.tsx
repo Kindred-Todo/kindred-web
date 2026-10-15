@@ -315,7 +315,7 @@ export function AppRing({ progress = 0.62 }: { progress?: number }) {
         size={RING_SIZE}
         strokeWidth={6}
         gap={2}
-        progress={progress}
+        progress={[0.4, 1, 0.05]}
         stagger={0.3}
       />
     </div>
