@@ -7,6 +7,7 @@ import { routeTree } from './routeTree.gen'
 
 import './styles.css'
 import './pages/landing/styles.css'
+import './pages/landing/redesign/redesign.css'
 
 import reportWebVitals from './reportWebVitals.ts'
 import { MobileProvider } from './contexts/MobileContext.tsx'

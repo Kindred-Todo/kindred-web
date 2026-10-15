@@ -41,6 +41,38 @@
 
   --font-fraunces: 'Fraunces', serif;
   --font-outfit: 'Outfit', sans-serif;
+
+  /* ==========================================================================
+     LANDING REDESIGN TOKENS  (Figma "Kindred" › Desktop Website, 8755:304)
+     Consumed by src/pages/landing/redesign/*. Lives here because Tailwind v4
+     only compiles @theme from its entry stylesheet.
+     ========================================================================== */
+
+  /* ---- Palette ---------------------------------------------------------- */
+  --color-ink: #000000;
+  --color-page: #fdfeff;
+  --color-page-soft: #fafcff;
+  --color-copy: #5c5c5c;
+  --color-copy-dim: #9d9d9d;
+  --color-night: #0c0c1a;
+  --color-violet: #854dff;
+  --color-violet-glow: rgba(133, 77, 255, 0.25);
+  --color-hairline: rgba(23, 22, 38, 0.1);
+  --color-glass: rgba(255, 255, 255, 0.1);
+
+  /* Productivity rings — mirrors Kindred/shared/rings.ts so they can't drift */
+  --color-ring-plan: #854dff;
+  --color-ring-do: #2f9bff;
+  --color-ring-share: #ff6ec7;
+
+  /* ---- Fluid type sizes (design px @1728 → vw) ---------------------------
+     min = the mobile size, max = the design size at the 1728 canvas. */
+  --text-display: clamp(38px, 5.5556vw, 96px); /* section headlines, quote */
+  --text-hero: clamp(26px, 3.7037vw, 64px); /* wordmark, hero h1, stat, statement */
+  --text-feature: clamp(22px, 2.7778vw, 48px); /* 01–04 numerals + titles */
+  --text-rings: clamp(18px, 2.0833vw, 36px); /* "Say yes to your rings" */
+  --text-body-lg: clamp(16px, 1.3889vw, 24px); /* body, labels, meta */
+  --text-body-sm: clamp(14px, 1.1574vw, 20px); /* feature body, buttons, links */
 }
 
 @layer base {
@@ -338,28 +370,35 @@ button:disabled {
    subtle tint, inner edge highlight, top sheen, soft drop — so the frosted
    look reads on any background. */
 .glass {
-  background-color: rgba(255, 255, 255, 0.12) !important;
+  /* Stronger white tint + a faint cool undertone so the pill separates from
+     the #fdfeff page instead of melting into it. */
+  background-color: rgba(255, 255, 255, 0.42) !important;
   /* Keep the drop shadow LIGHT — the SVG displacement filter samples pixels
      from outside the pill, and a heavy shadow below the pill gets refracted
-     back into the bottom of the glass as a dark gradient. */
+     back into the bottom of the glass as a dark gradient. Edge definition
+     comes from the inset rings: a crisp top highlight, a hairline overall
+     rim, and a faint dark bottom edge (glass thickness). */
   box-shadow:
-    0 3px 8px rgba(19, 18, 31, 0.05),
-    inset 0 0 0 0.5px rgba(255, 255, 255, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.65) !important;
+    0 1px 2px rgba(19, 18, 31, 0.04),
+    0 8px 24px rgba(19, 18, 31, 0.07),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.9),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 0 rgba(23, 22, 38, 0.06) !important;
   transition:
     background-color 0.36s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.36s cubic-bezier(0.22, 1, 0.36, 1) !important;
 }
-/* Expanded state — keep the SAME light tint as the closed pill (a darker
-   white tint over a near-white desktop hero just reads as a gray block).
-   Only the edge ring / top sheen get a touch stronger so the menu items
-   feel contained without the whole pill turning gray. */
+/* Expanded state — same tint (a darker white tint over a near-white desktop
+   hero just reads as a gray block); the rim/top sheen get a touch stronger
+   so the menu items feel contained. */
 [data-pill-expanded='true'] .glass {
-  background-color: rgba(255, 255, 255, 0.12) !important;
+  background-color: rgba(255, 255, 255, 0.5) !important;
   box-shadow:
-    0 4px 12px rgba(19, 18, 31, 0.06),
-    inset 0 0 0 0.5px rgba(255, 255, 255, 0.55),
-    inset 0 1px 0 rgba(255, 255, 255, 0.75) !important;
+    0 2px 4px rgba(19, 18, 31, 0.05),
+    0 12px 32px rgba(19, 18, 31, 0.08),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 1),
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 0 -1px 0 rgba(23, 22, 38, 0.07) !important;
 }
 
 /* The library applies a heavy `text-shadow: 0 2px 12px rgba(0,0,0,0.4)` to the

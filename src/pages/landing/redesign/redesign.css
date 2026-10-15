@@ -1,0 +1,295 @@
+/* ============================================================================
+   Kindred — landing redesign
+   Source of truth: Figma "Kindred" › Desktop Website (node 8755:304)
+   Canvas 1728px · 7 columns · 62px margin · 20px gutter · 26px dot pitch
+   ============================================================================ */
+
+/* NOTE: the @theme token block for this redesign lives in `src/styles.css`.
+   Tailwind v4 only compiles @theme from its own entry stylesheet, so a second
+   stylesheet's @theme is emitted verbatim (an unknown at-rule) and its custom
+   properties never reach :root. Keep tokens there, everything else here. */
+
+:root {
+  /* ---- Layout ----------------------------------------------------------- */
+  --grid-max: 1728px;
+  --grid-margin: clamp(20px, 3.588vw, 62px);
+  --grid-gutter: 20px;
+  --dot-pitch: 26px;
+  --dot-color: rgba(23, 22, 38, 0.16);
+  --dot-color-violet: rgba(133, 77, 255, 0.28);
+}
+
+/* ============================================================================
+   TYPOGRAPHY MAP
+   Every text style in the design, as a single self-contained class.
+   Fraunces carries variable axes: SOFT 50 / WONK 1 / opsz 144.
+   Tracking is -0.02em across the scale (the design's -1.92px @96px etc.).
+   ============================================================================ */
+@layer components {
+  .t-display,
+  .t-quote,
+  .t-wordmark,
+  .t-stat,
+  .t-feature,
+  .t-index {
+    font-family: var(--font-fraunces);
+    font-weight: 300;
+    font-variation-settings: 'SOFT' 50, 'WONK' 1, 'opsz' 144;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .t-display {
+    font-size: var(--text-display);
+  } /* 96 · "Positive feedback loops…" */
+  .t-quote {
+    font-size: var(--text-display);
+  } /* 96 · testimonial */
+  .t-wordmark {
+    font-size: var(--text-hero);
+    font-weight: 600;
+  } /* 64 · "kindred" */
+  .t-stat {
+    font-size: var(--text-hero);
+  } /* 64 · 3X / 94 Studies / 95% */
+  .t-feature {
+    font-size: var(--text-feature);
+    font-weight: 400;
+  } /* 48 · "Capture as fast you can yap" */
+  .t-index {
+    font-size: var(--text-feature);
+    font-weight: 400;
+  } /* 48 · 01–04 */
+
+  /* Fraunces italic accent inside a display line — "fun", "happier", "yes" */
+  .t-accent {
+    font-family: var(--font-fraunces);
+    font-style: italic;
+    font-weight: 400;
+    font-variation-settings: 'SOFT' 50, 'WONK' 1, 'opsz' 144;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--color-violet);
+  }
+  .t-accent--soft {
+    font-variation-settings: 'SOFT' 25, 'WONK' 1, 'opsz' 144;
+  }
+
+  /* Outfit — the sans */
+  .t-hero {
+    font-family: var(--font-outfit);
+    font-weight: 400;
+    font-size: var(--text-hero);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  /* Full-bleed uppercase statement, justified edge to edge */
+  .t-statement {
+    font-family: var(--font-outfit);
+    font-weight: 100;
+    font-size: var(--text-hero);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    text-align: justify;
+  }
+  .t-statement strong {
+    font-weight: 500;
+  }
+  .t-statement .t-statement--loud {
+    font-weight: 700;
+  }
+
+  /* Key words inside the cryptic statement. They already sit heavier than the
+     Thin carrier text; scrolling lights them up violet one at a time, spelling
+     out the dialogue. `data-w` carries the design's emphasis weight. */
+  .t-key {
+    transition: color 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .t-key[data-w='m'] {
+    font-weight: 500;
+  }
+  .t-key[data-w='r'] {
+    font-weight: 400;
+  }
+  .t-key[data-w='b'] {
+    font-weight: 700;
+  }
+  .t-key.is-on {
+    color: var(--color-violet);
+  }
+  .t-rings {
+    font-family: var(--font-outfit);
+    font-weight: 400;
+    font-size: var(--text-rings);
+    line-height: 1.25;
+  }
+  .t-body {
+    font-family: var(--font-outfit);
+    font-weight: 400;
+    font-size: var(--text-body-lg);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--color-copy);
+  }
+  .t-label {
+    font-family: var(--font-outfit);
+    font-weight: 300;
+    font-size: var(--text-body-lg);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .t-small {
+    font-family: var(--font-outfit);
+    font-weight: 300;
+    font-size: var(--text-body-sm);
+    line-height: 1.5;
+    letter-spacing: -0.02em;
+  }
+  .t-button {
+    font-family: var(--font-outfit);
+    font-weight: 400;
+    font-size: var(--text-body-sm);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .t-link {
+    font-family: var(--font-outfit);
+    font-weight: 300;
+    font-size: var(--text-body-sm);
+    line-height: 1;
+    letter-spacing: 0.02em;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+/* ============================================================================
+   LAYOUT
+   ============================================================================ */
+@layer components {
+  /* The 7-column grid. Columns land at x = 62 / 294 / 526 / 758 / 990 / 1222 / 1454 */
+  .grid7 {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    column-gap: var(--grid-gutter);
+    width: 100%;
+    max-width: var(--grid-max);
+    margin-inline: auto;
+    padding-inline: var(--grid-margin);
+  }
+
+  /* Repeating halftone dot field used as section texture */
+  .dot-grid {
+    background-image: radial-gradient(
+      var(--dot-color) 1.5px,
+      transparent 1.6px
+    );
+    background-size: var(--dot-pitch) var(--dot-pitch);
+  }
+  .dot-grid--violet {
+    --dot-color: var(--dot-color-violet);
+  }
+}
+
+/* ============================================================================
+   RESPONSIVE
+   The desktop art-direction is expressed on the 1728px canvas. Below 768px
+   the 7-column grid collapses to a single column, so every `col-start-*`
+   placement resolves to a full-width row and sections read top-to-bottom.
+   Sections then own their own mobile rhythm with `max-md:` overrides.
+   ============================================================================ */
+@media (max-width: 767px) {
+  .grid7 {
+    grid-template-columns: minmax(0, 1fr);
+    padding-inline: 20px;
+  }
+
+  /* Collapse every placement to one full-width row, including the sections
+     that pin two columns to `row-start-1` to overlap them on the canvas. */
+  .grid7 > * {
+    grid-column: 1 / -1 !important;
+    grid-row: auto !important;
+  }
+
+  /* Decorative canvas-absolute art that only reads on the wide canvas. */
+  .r-hide-mobile {
+    display: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Home-stage wash — copied from the desktop app (src/index.css + StageGlow.tsx).
+   An ellipse anchored near the top (110% 70% at 50% 10%) whose edge is the
+   tinted arc, with a halftone lattice riding that edge. The wash sinks and
+   breathes; the dots surface then fade.
+   --------------------------------------------------------------------------- */
+:root {
+  --wash-tint: 233 223 255;
+  --wash-dot: 188 157 255;
+  --wash-peak: 1;
+}
+.stage-wash-drop {
+  opacity: var(--wash-peak);
+  animation: stage-wash-sink 1400ms cubic-bezier(0.33, 1, 0.68, 1) 250ms both;
+}
+.stage-wash-breathe {
+  animation: stage-wash-breathe 6400ms cubic-bezier(0.37, 0, 0.63, 1) 1650ms infinite;
+}
+.stage-wash-dots {
+  opacity: 0;
+  animation: stage-wash-dots 3250ms cubic-bezier(0.2, 0, 0, 1) 100ms both;
+}
+@keyframes stage-wash-sink {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(0, 20%, 0); }
+}
+@keyframes stage-wash-breathe {
+  0%, 100% { transform: translate3d(0, 0, 0); opacity: 0.9; }
+  50% { transform: translate3d(0, -3%, 0); opacity: 1; }
+}
+@keyframes stage-wash-dots {
+  0% { opacity: 0; }
+  10.8% { opacity: 1; }
+  53.8% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stage-wash-drop { animation: none; transform: translate3d(0, 20%, 0); }
+  .stage-wash-breathe,
+  .stage-wash-dots { animation: none; }
+}
+
+/* ---------------------------------------------------------------------------
+   Capture waveform — the voice-capture feature card's live equalizer. Bars
+   pulse only while the card is in view (`.is-active`); idle is a low flat
+   line. Per-bar duration/phase come from --dur/--delay set inline.
+   --------------------------------------------------------------------------- */
+.capture-wave {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  width: min(480px, 70%);
+}
+.capture-wave__bar {
+  flex: 1 1 0;
+  min-width: 2px;
+  border-radius: 999px;
+  background: var(--color-violet);
+  transform: scaleY(0.14);
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.capture-wave.is-active .capture-wave__bar {
+  transform: scaleY(1);
+  animation: capture-wave-pulse var(--dur, 1200ms) ease-in-out var(--delay, 0ms) infinite;
+}
+@keyframes capture-wave-pulse {
+  0%, 100% { transform: scaleY(0.22); }
+  50% { transform: scaleY(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .capture-wave.is-active .capture-wave__bar {
+    animation: none;
+    transform: scaleY(1);
+  }
+}

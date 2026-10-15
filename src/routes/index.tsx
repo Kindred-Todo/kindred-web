@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Toaster } from '@/components/ui/sonner'
 import TopNav from '@/components/topnav'
-import NewLanding from '@/pages/landing/NewLanding'
+import RedesignLanding from '@/pages/landing/redesign/RedesignLanding'
 
 export const Route = createFileRoute('/')({
   component: App,
@@ -12,7 +12,7 @@ function App() {
     <div className="w-full min-h-screen">
       <TopNav />
       <Toaster />
-      <NewLanding />
+      <RedesignLanding />
     </div>
   )
 }

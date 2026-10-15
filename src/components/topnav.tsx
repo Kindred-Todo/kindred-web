@@ -9,13 +9,14 @@ import { cn } from '@/lib/utils'
 import { useMobile } from '@/contexts/MobileContext'
 
 const DOWNLOAD_URL = 'https://apps.apple.com/us/app/kindred-todo/id6744142764'
-const LOGIN_URL = 'https://app.kindredtodo.com/login'
+const SIGNUP_URL = 'https://app.kindredtodo.com/login'
 
 // LiquidGlass sizes itself from the children's intrinsic width (its inner
-// `.glass` div is inline-flex). The wrapper, children, and CTA all use this
+// `.glass` div is inline-flex). The wrapper, children, and pill all use this
 // formula so the glass stays aligned with the layout.
-const PILL_WIDTH = 'min(calc(100vw - 32px), 412px)'
-const PILL_TOP_ROW_HEIGHT = 44
+// 359×52 matches the redesign nav pill (Figma node 8789:713).
+const PILL_WIDTH = 'min(calc(100vw - 32px), 359px)'
+const PILL_TOP_ROW_HEIGHT = 52
 const MENU_ITEM_HEIGHT = 46 // 14px padding-top + 18px text + 14px padding-bottom
 const MENU_AREA_PADDING_Y = 4
 // 1px divider between top row and items + items area + dividers between items
@@ -27,42 +28,25 @@ const computeExpandedHeight = (itemCount: number) =>
   Math.max(0, itemCount - 1)
 
 type MenuItem =
-  | { label: string; to: '/' | '/team'; disabled?: false }
+  | { label: string; to: '/' | '/team' }
   | { label: string; disabled: true }
+  | { label: string; action: 'download' }
 
 const MENU_ITEMS: MenuItem[] = [
   { label: 'Home', to: '/' },
   { label: 'Team', to: '/team' },
+  { label: 'Download', action: 'download' },
   { label: 'About', disabled: true },
 ]
 
 export default function TopNav() {
   const location = useLocation()
-  const isHome = location.pathname === '/'
   const { isMobile } = useMobile()
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isVisible, setIsVisible] = useState(!isHome)
   const [menuOpen, setMenuOpen] = useState(false)
   const [qrOpen, setQrOpen] = useState(false)
+  const [isDarkBehind, setIsDarkBehind] = useState(false)
+  const navRef = useRef<HTMLElement>(null)
   const glassContentRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      // Reveal the nav once the "You've Tried Every Productivity App."
-      // (motivation) section scrolls into view. Fall back to the old
-      // dark-sections threshold if the section can't be found (e.g. another
-      // page that re-uses TopNav).
-      const motivationEl = document.getElementById('motivation-section')
-      const threshold = motivationEl
-        ? motivationEl.offsetTop - window.innerHeight * 0.5
-        : window.innerHeight * 4 - 100
-      setIsScrolled(window.scrollY > window.innerHeight - 100)
-      setIsVisible(!isHome || window.scrollY > threshold)
-    }
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll()
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [isHome])
 
   useEffect(() => {
     setMenuOpen(false)
@@ -88,33 +72,103 @@ export default function TopNav() {
     return () => ro.disconnect()
   }, [])
 
-  const isLightMode = isHome && !isScrolled
-  const textColor = isLightMode ? colors.text.white : colors.text.primary
-  const menuTextColor = isLightMode ? 'rgba(255,255,255,0.92)' : colors.text.primary
-  const dividerColor = isLightMode ? 'rgba(255,255,255,0.14)' : 'rgba(19,18,31,0.08)'
+  // Once the rings section starts turning into the desktop app, the nav has to
+  // go: the app's own chrome owns the screen from there down.
+  const [appMode, setAppMode] = useState(0)
+  useEffect(() => {
+    let last = 0
+    const check = () => {
+      const el = document.getElementById('rings-stage')
+      let next = 0
+      if (el) {
+        const scrollable = el.offsetHeight - window.innerHeight
+        const p = scrollable > 0 ? (window.scrollY - el.offsetTop) / scrollable : 0
+        next = Math.min(1, Math.max(0, (p - 0.55) / 0.25))
+      }
+      // Only re-render when it actually moves.
+      if (Math.abs(next - last) > 0.02 || (next === 0) !== (last === 0)) {
+        last = next
+        setAppMode(next)
+      }
+    }
+    check()
+    window.addEventListener('scroll', check, { passive: true })
+    window.addEventListener('resize', check)
+    return () => {
+      window.removeEventListener('scroll', check)
+      window.removeEventListener('resize', check)
+    }
+  }, [])
+
+  // The redesign shows the pill at the top of the hero and keeps it on screen.
+  const textColor = colors.primary
+  const menuTextColor = colors.text.primary
+  const dividerColor = 'rgba(19,18,31,0.08)'
+
+  // The pill is fixed, so it glides over the page's alternating light/dark
+  // sections. Detect the section colour sitting behind it so the CTA row
+  // below stays legible on both.
+  useEffect(() => {
+    const check = () => {
+      const navEl = navRef.current
+      const cx = window.innerWidth / 2
+      const cy = Math.min(70, Math.max(16, window.innerWidth * 0.0405)) + 26
+      const behind = document
+        .elementsFromPoint(cx, cy)
+        .find((el) => !navEl || !navEl.contains(el))
+      let node: Element | null = behind ?? null
+      while (node) {
+        const m = getComputedStyle(node)
+          .backgroundColor.match(/rgba?\(([\d.]+),\s*([\d.]+),\s*([\d.]+)(?:,\s*([\d.]+))?\)/)
+        if (m && (m[4] === undefined || parseFloat(m[4]) > 0.5)) {
+          const lum = 0.2126 * +m[1] + 0.7152 * +m[2] + 0.0722 * +m[3]
+          setIsDarkBehind(lum < 140)
+          return
+        }
+        node = node.parentElement
+      }
+    }
+    check()
+    window.addEventListener('scroll', check, { passive: true })
+    window.addEventListener('resize', check)
+    return () => {
+      window.removeEventListener('scroll', check)
+      window.removeEventListener('resize', check)
+    }
+  }, [])
 
   const expandedHeight = computeExpandedHeight(MENU_ITEMS.length)
   const pillHeight = menuOpen ? expandedHeight : PILL_TOP_ROW_HEIGHT
   const pillTransition = { duration: 0.36, ease: [0.22, 1, 0.36, 1] as const }
 
+  const startDownload = () => {
+    setMenuOpen(false)
+    if (isMobile) {
+      window.location.href = DOWNLOAD_URL
+    } else {
+      setQrOpen(true)
+    }
+  }
+
   return (
     <>
       <nav
-        className={cn(
-          'fixed left-1/2 z-50 flex -translate-x-1/2 flex-col items-center gap-[10px] transition-all duration-300',
-          isVisible ? 'opacity-100 translate-y-0' : 'pointer-events-none -translate-y-full opacity-0',
-        )}
+        ref={navRef}
+        className="fixed left-1/2 z-50 flex -translate-x-1/2 flex-col items-center gap-[10px] transition-all duration-300"
+        // Figma places the pill 70px from the top of the 1728 canvas.
         style={{
-          top: 16,
+          top: 'clamp(16px, 4.05vw, 70px)',
           width: PILL_WIDTH,
+          opacity: 1 - appMode,
+          pointerEvents: appMode > 0.5 ? 'none' : 'auto',
         }}
         aria-label="Primary navigation"
       >
         {/* The pill itself. LiquidGlass sits absolutely inside this wrapper so
             its 6 internal layers overlap (top:50% + translate(-50%,-50%))
             instead of stacking in flow. The wrapper drives its own height so
-            the DownloadButton below sits at the right spot; the LiquidGlass
-            children animate the same height so the layered glass tracks. */}
+            the expanded menu reveals correctly; the LiquidGlass children
+            animate the same height so the layered glass tracks. */}
         <motion.div
           animate={{ height: pillHeight }}
           initial={false}
@@ -123,7 +177,7 @@ export default function TopNav() {
           style={{ position: 'relative', width: '100%', height: PILL_TOP_ROW_HEIGHT }}
         >
           <LiquidGlass
-            cornerRadius={16}
+            cornerRadius={26}
             padding="0"
             // `overLight` stacks bg-black layers on top of the glass to
             // darken it. That defeats the refraction — keep it off so the
@@ -134,10 +188,11 @@ export default function TopNav() {
             // (that's what was reading as a black/gray gradient).
             displacementScale={28}
             // blurAmount feeds the library as `blur((overLight ? 12 : 4) + amount*32)px`.
-            // 0.10 → ~7px frost when closed, 0.40 → ~17px when expanded.
-            blurAmount={menuOpen ? 0.4 : 0.1}
-            saturation={menuOpen ? 200 : 160}
-            aberrationIntensity={1.2}
+            // 0.18 → ~10px frost when closed (enough to read as glass on the
+            // near-white page), 0.40 → ~17px when expanded.
+            blurAmount={menuOpen ? 0.4 : 0.18}
+            saturation={menuOpen ? 200 : 180}
+            aberrationIntensity={1.6}
             elasticity={0}
             mode="standard"
             // top/left must be set explicitly: the library applies
@@ -158,29 +213,18 @@ export default function TopNav() {
             >
               <div
                 className="flex shrink-0 items-center justify-between"
-                style={{ height: PILL_TOP_ROW_HEIGHT, padding: '0 16px' }}
+                style={{ height: PILL_TOP_ROW_HEIGHT, padding: '0 24px' }}
               >
                 <Link
                   to="/"
-                  className="font-outfit font-normal leading-none transition-colors"
-                  style={{
-                    fontSize: 20,
-                    letterSpacing: '-0.2px',
-                    color: textColor,
-                  }}
+                  className="font-outfit font-normal leading-none transition-opacity hover:opacity-70"
+                  style={{ fontSize: 24, letterSpacing: '-0.6px', color: menuTextColor }}
                 >
                   kindred
                 </Link>
                 <button
-                  className={cn(
-                    'flex items-center justify-center rounded transition-colors',
-                    isLightMode ? 'hover:bg-white/15' : 'hover:bg-black/5',
-                  )}
-                  style={{
-                    width: 28,
-                    height: 28,
-                    color: textColor,
-                  }}
+                  className="flex items-center justify-center rounded transition-colors hover:bg-black/5"
+                  style={{ width: 28, height: 28, color: textColor }}
                   onClick={() => setMenuOpen(!menuOpen)}
                   aria-label={menuOpen ? 'Close menu' : 'Open menu'}
                   aria-expanded={menuOpen}
@@ -195,7 +239,7 @@ export default function TopNav() {
                         transition={{ duration: 0.18 }}
                         style={{ display: 'inline-flex' }}
                       >
-                        <X size={20} strokeWidth={1.8} />
+                        <X size={24} strokeWidth={1.9} />
                       </motion.span>
                     ) : (
                       <motion.span
@@ -206,7 +250,7 @@ export default function TopNav() {
                         transition={{ duration: 0.18 }}
                         style={{ display: 'inline-flex' }}
                       >
-                        <Menu size={20} strokeWidth={1.8} />
+                        <Menu size={24} strokeWidth={1.9} />
                       </motion.span>
                     )}
                   </AnimatePresence>
@@ -237,11 +281,11 @@ export default function TopNav() {
                     alignItems: 'center',
                     fontSize: 18,
                     letterSpacing: '-0.2px',
-                    padding: '0 20px',
+                    padding: '0 24px',
                     borderTop: i === 0 ? 'none' : `1px solid ${dividerColor}`,
                     color: menuTextColor,
                   }
-                  if (item.disabled) {
+                  if ('disabled' in item) {
                     return (
                       <div
                         key={item.label}
@@ -252,16 +296,27 @@ export default function TopNav() {
                       </div>
                     )
                   }
+                  if ('action' in item) {
+                    return (
+                      <button
+                        key={item.label}
+                        type="button"
+                        onClick={startDownload}
+                        style={{ ...itemStyle, width: '100%', textAlign: 'left' }}
+                        className="font-outfit font-normal transition-colors hover:bg-black/4"
+                        tabIndex={menuOpen ? 0 : -1}
+                      >
+                        {item.label}
+                      </button>
+                    )
+                  }
                   return (
                     <Link
                       key={item.label}
                       to={item.to}
                       onClick={() => setMenuOpen(false)}
                       style={itemStyle}
-                      className={cn(
-                        'font-outfit font-normal transition-colors',
-                        isLightMode ? 'hover:bg-white/8' : 'hover:bg-black/4',
-                      )}
+                      className="font-outfit font-normal transition-colors hover:bg-black/4"
                       tabIndex={menuOpen ? 0 : -1}
                     >
                       {item.label}
@@ -273,28 +328,28 @@ export default function TopNav() {
           </LiquidGlass>
         </motion.div>
 
+        {/* Secondary row — Log in link + the purple primary CTA. Desktop
+            click opens the QR modal (download happens on the phone); mobile
+            goes straight to the App Store. */}
         <div className="flex items-center gap-[10px]">
           <motion.a
-            href={LOGIN_URL}
-            className="inline-flex items-center justify-center font-outfit font-normal transition-colors"
+            href={SIGNUP_URL}
+            className="inline-flex items-center justify-center font-outfit font-normal transition-opacity hover:opacity-70"
             style={{
               fontSize: 15,
-              height: 40,
-              borderRadius: 10,
-              padding: '0 16px',
-              color: textColor,
-              border: `1px solid ${isLightMode ? 'rgba(255,255,255,0.4)' : 'rgba(19,18,31,0.16)'}`,
-              background: isLightMode ? 'rgba(255,255,255,0.1)' : 'rgba(19,18,31,0.03)',
+              letterSpacing: '-0.2px',
+              height: 44,
+              padding: '0 14px',
+              borderRadius: 22,
+              color: isDarkBehind ? 'rgba(255,255,255,0.92)' : colors.text.primary,
+              textShadow: isDarkBehind ? '0 1px 2px rgba(0,0,0,0.2)' : 'none',
             }}
             whileHover={{ y: -1 }}
             whileTap={{ scale: 0.98 }}
           >
             Log in
           </motion.a>
-          <DownloadButton
-            isMobile={isMobile}
-            onDesktopClick={() => setQrOpen(true)}
-          />
+          <DownloadButton isMobile={isMobile} onDesktopClick={() => setQrOpen(true)} />
         </div>
       </nav>
 
@@ -380,14 +435,19 @@ function DownloadButton({
 }) {
   const sharedStyle: React.CSSProperties = {
     fontSize: 15,
-    height: 40,
-    borderRadius: 10,
-    background: colors.primary,
-    padding: '0 14px 0 14px',
-    gap: 10,
+    letterSpacing: '-0.2px',
+    height: 44,
+    borderRadius: 22,
+    padding: '0 20px',
+    gap: 8,
+    background: 'var(--color-violet)',
+    // Top inner highlight + violet glow so the pill reads as the primary
+    // action rather than a flat purple rectangle.
+    boxShadow:
+      'inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 8px 24px rgba(133, 77, 255, 0.35)',
   }
   const sharedClass =
-    'group inline-flex items-center justify-between font-outfit font-normal text-white'
+    'inline-flex items-center justify-center font-outfit font-normal text-white'
 
   if (isMobile) {
     return (
@@ -397,7 +457,7 @@ function DownloadButton({
         style={sharedStyle}
         whileTap={{ scale: 0.98 }}
       >
-        <AppleLogo />
+        <AppleLogo className="h-4 w-4" />
         <span>Download Now</span>
         <ArrowRight size={15} strokeWidth={2} />
       </motion.a>
@@ -413,7 +473,7 @@ function DownloadButton({
       whileHover={{ y: -1 }}
       whileTap={{ scale: 0.98 }}
     >
-      <AppleLogo />
+      <AppleLogo className="h-4 w-4" />
       <span>Download Now</span>
       <ArrowRight size={15} strokeWidth={2} />
     </motion.button>
