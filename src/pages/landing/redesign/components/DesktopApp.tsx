@@ -579,8 +579,13 @@ export function SignupPrompt({ progress }: { progress: MotionValue<number> }) {
           <Check size={26} weight="bold" style={{ color: '#fff' }} />
         </span>
 
-        <h3 className="t-rings text-ink mt-[18px]">Make it yours</h3>
-        <p className="t-label text-ink/60 mt-2">
+        {/* The page's t-* classes are display scale (they clamp up to 36/24px
+            on a 1728 canvas). This card is a normal-size dialog, so keep the
+            families/weights and set the sizes to the site's UI scale. */}
+        <h3 className="t-rings text-ink mt-[18px]" style={{ fontSize: 22 }}>
+          Make it yours
+        </h3>
+        <p className="t-small text-ink/60 mt-2" style={{ fontSize: 15, lineHeight: 1.45 }}>
           Kindred is free. Create an account to keep your streaks, invite a friend, and get kudos
           when you follow through.
         </p>
@@ -589,6 +594,7 @@ export function SignupPrompt({ progress }: { progress: MotionValue<number> }) {
           href={SIGNUP_URL}
           className="t-button mt-7 flex w-full items-center justify-center gap-2 text-white transition-opacity hover:opacity-95"
           style={{
+            fontSize: 15,
             height: 48,
             borderRadius: 999,
             background: PRIMARY,
@@ -602,6 +608,7 @@ export function SignupPrompt({ progress }: { progress: MotionValue<number> }) {
           type="button"
           onClick={() => setDismissed(true)}
           className="t-button mt-3 text-[#919090] transition-colors hover:text-[#13121f]"
+          style={{ fontSize: 15 }}
         >
           Maybe later
         </button>

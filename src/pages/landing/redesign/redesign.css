@@ -83,7 +83,10 @@
     line-height: 1;
     letter-spacing: -0.02em;
   }
-  /* Full-bleed uppercase statement, justified edge to edge */
+  /* Full-bleed uppercase statement, justified edge to edge. The last line is
+     justified too, so every scene reads as a solid rectangle instead of one
+     that stops partway across. The carrier is dimmed off black so the words it
+     carries (see .t-key) sit forward of it. */
   .t-statement {
     font-family: var(--font-outfit);
     font-weight: 100;
@@ -92,6 +95,8 @@
     letter-spacing: -0.02em;
     text-transform: uppercase;
     text-align: justify;
+    text-align-last: justify;
+    color: var(--color-text-dim);
   }
   .t-statement strong {
     font-weight: 500;
@@ -100,23 +105,71 @@
     font-weight: 700;
   }
 
-  /* Key words inside the cryptic statement. They already sit heavier than the
-     Thin carrier text; scrolling lights them up violet one at a time, spelling
-     out the dialogue. `data-w` carries the design's emphasis weight. */
+  /* Emphasised phrases inside the cryptic statement. Each `t-slot` stacks every
+     frame's phrase for that spot in one grid cell — one `t-layer` per frame,
+     only one visible — so the slot is as wide as its widest phrase and the
+     carrier around it never reflows as the phrases change. Each layer holds one
+     `t-key` per word; scrolling lights them violet one at a time, spelling out
+     the argument. The weights sit a step heavier than the Figma values so the
+     violet reads at a glance against the Thin carrier. */
+  .t-slot {
+    display: inline-grid;
+    white-space: nowrap;
+  }
+  /* A phrase narrower than its slot sits centred in it rather than justified
+     across it, so the spare space reads as the paragraph's own word spacing. */
+  .t-layer {
+    grid-area: 1 / 1;
+    text-align: center;
+    text-align-last: center;
+  }
+  /* Behind the notifications everything dims (`--dim`, set in JS) except the
+     phrase they burst out of. */
+  .t-run,
+  .t-slot:not(.is-anchor) {
+    opacity: calc(1 - var(--dim, 0));
+  }
   .t-key {
+    color: var(--color-ink);
     transition: color 420ms cubic-bezier(0.22, 1, 0.36, 1);
   }
   .t-key[data-w='m'] {
-    font-weight: 500;
+    font-weight: 600;
   }
   .t-key[data-w='r'] {
-    font-weight: 400;
+    font-weight: 500;
   }
   .t-key[data-w='b'] {
     font-weight: 700;
   }
   .t-key.is-on {
     color: var(--color-violet);
+  }
+  .t-layer.is-alarm .t-key {
+    color: var(--color-red-error);
+  }
+  /* The morph (see `cipher` in StatementSection), on the emphasised phrases
+     only. A scrambled character keeps its own advance width — the glyph is
+     painted over the transparent original — so line breaks never move. Settled
+     noise sits back in a pale violet; the front of the wave is full strength. */
+  .t-char {
+    position: relative;
+  }
+  .t-char.is-cipher {
+    color: transparent;
+  }
+  .t-char.is-cipher::after {
+    content: attr(data-g);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-violet);
+    opacity: 0.4;
+  }
+  .t-char.is-hot::after {
+    opacity: 1;
   }
   .t-rings {
     font-family: var(--font-outfit);
@@ -210,6 +263,11 @@
   .grid7 > * {
     grid-column: 1 / -1 !important;
     grid-row: auto !important;
+  }
+
+  /* At phone widths the longest phrases outrun the line, so they may wrap. */
+  .t-slot {
+    white-space: normal;
   }
 
   /* Decorative canvas-absolute art that only reads on the wide canvas. */

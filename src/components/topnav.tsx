@@ -218,7 +218,7 @@ export default function TopNav() {
                 <Link
                   to="/"
                   className="font-outfit font-normal leading-none transition-opacity hover:opacity-70"
-                  style={{ fontSize: 24, letterSpacing: '-0.6px', color: menuTextColor }}
+                  style={{ fontSize: 20, letterSpacing: '-0.5px', color: menuTextColor }}
                 >
                   kindred
                 </Link>
